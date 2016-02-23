@@ -1,0 +1,2023 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!--
+    EADI Schema (XSD 1.1)
+    Version: 1.1
+    Date: 20140430
+    Publisher: Israel Archives Network project
+                http://web.nli.org.il/sites/NLI/Hebrew/library/aboutus/now/projects/IAN/
+    
+    This version of EADI schema has been written from the official 2002 schema to accommodate the needs of the Israel Archives Network project.
+    
+    Editors:
+    Eyal Reuven (The National Library of Israel)
+    Yael Gherman (Yad Vashem - The Holocaust Martyrs' and Heroes' Remembrance Authority)
+    
+    Revision history:
+    4) 2014-08-26:
+    * Added some more enumerations to "format".
+    * Fixed a typo in @type of "file" type (date=>data).
+    3) 2014-04-30:
+    * Date for Chronitem is not mandatory anymore.
+    * Custodian history (custodhist) is now available for all levels.
+    * Custodian history now supports the description of previous unitids.
+    * Vertex(es) are now encapsulated within a "location" wrapper.
+    2) 2014-03-17:
+    * Attribute "unit" of type "Extent" field was removed.
+    * Attribute "value" of type "Dimensions" is now called "formattedValue".
+    * Acqinfo type can now contain the element <p> which can contain the type <persname>, which will be used to specify the owners, if exists.
+    * Persname, Corpname and thesaurusElement are now mixed to allow accomodation of values in addition to their attributes.
+    * phystech and controlAccess are now referenced from the m.desc.allLevels group.
+    * The "Printer" field was added under "imprint".
+    * Added digitalCopies file locations for use when importing data.
+    * Added repositoryCode regular expression.
+    * Date-eadi type now allows filling only unformatted date (element value) to satisfy the mandatory date definition. 
+    
+    1) 2014-03-06: 
+    * EADI Schema draft released.
+-->
+<xs:schema elementFormDefault="qualified" targetNamespace="urn:isbn:1-931666-22-9"
+    xmlns="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">  
+    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.loc.gov/standards/xlink/xlink.xsd"/>
+        
+    <!--  ******************************* -->    
+    <!--        EAD ROOT element          --> 
+    <!--  ******************************* -->
+
+    <xs:element name="ead">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="eadheader" type="eadheader" minOccurs="1" maxOccurs="1" />
+                <xs:element name="archdesc" type="archdesc" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    <!-- ********************************************************* -->
+    <!--       XML elements definition (mostly complexTypes)       -->
+    <!-- ********************************************************* -->
+    
+    <xs:simpleType name="boolean">
+        <xs:restriction base="xs:NMTOKENS">
+            <xs:enumeration value="true"/>
+            <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>    
+    
+    <xs:simpleType name="nonEmptyString">
+        <xs:restriction base="xs:string">
+            <xs:pattern value=".*[^\s].*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <!-- complexType date definition -->
+    <xs:attributeGroup name="am.date.normal">
+        <xs:attribute name="normal">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:pattern
+                        value="(\-?(0|1|2)([0-9]{3})(((01|02|03|04|05|06|07|08|09|10|11|12)((0[1-9])|((1|2)[0-9])|(3[0-1])))|\-((01|02|03|04|05|06|07|08|09|10|11|12)(\-((0[1-9])|((1|2)[0-9])|(3[0-1])))?))?)(/\-?(0|1|2)([0-9]{3})(((01|02|03|04|05|06|07|08|09|10|11|12)((0[1-9])|((1|2)[0-9])|(3[0-1])))|\-((01|02|03|04|05|06|07|08|09|10|11|12)(\-((0[1-9])|((1|2)[0-9])|(3[0-1])))?))?)?"
+                    />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="am.dates.calendar">
+        <xs:attribute default="gregorian" name="calendar">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="gregorian"/>
+                    <xs:enumeration value="Hebrew"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="am.dates.era">
+        <xs:attribute default="ce" name="era">            
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ce"/>
+                    <xs:enumeration value="bce"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:complexType mixed="true" name="date-eadi">
+        <xs:attributeGroup ref="am.dates.era"/>
+        <xs:attributeGroup ref="am.dates.calendar"/>
+        <xs:attributeGroup ref="am.date.normal"/>
+        <xs:attribute name="certainty"/>
+        <xs:attribute name="encodinganalog"/>
+        <xs:assert test="@normal or normalize-space(.)"/>
+    </xs:complexType>
+
+    <xs:complexType name="imprint"><!-- דפוסת -->
+        <xs:all>
+            <xs:element name="geogname" type="xs:string" minOccurs="0" maxOccurs="1"/><!-- מקום הוצאה לאור -->
+            <xs:element name="date" type="date-eadi" minOccurs="0" maxOccurs="1"/> <!-- תאריך הוצאה לאור -->
+            <xs:element name="publisher" type="publisher" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="printer" type="xs:string" minOccurs="0" maxOccurs="1"/><!-- דפוס -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="origination">        
+        <xs:group ref="corpnameAndPersnameBundle" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:complexType>
+    
+    <xs:group name="corpnameAndPersnameBundle">
+        <xs:choice>
+            <xs:element name="corpname" type="corpname" maxOccurs="unbounded" />
+            <xs:element name="persname" type="persname" maxOccurs="unbounded" />            
+        </xs:choice>
+    </xs:group>
+    
+    <xs:complexType name="thesaurusElement" mixed="true">
+        <xs:attributeGroup ref="thesaurusAccess"/>
+    </xs:complexType>
+        
+    <xs:complexType name="corpname" mixed="true">
+        <xs:attribute name="role" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="creator"/>
+                    <xs:enumeration value="initiatorStudio"/>
+                    <xs:enumeration value="PhotographingStudio"/>
+                    <xs:enumeration value="DevelopingStudio"/>
+                    <xs:enumeration value="publisher"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>
+        <xs:attributeGroup ref="thesaurusAccess"/>
+    </xs:complexType>
+    
+    <xs:complexType name="persname" mixed="true">
+        <xs:attribute name="role" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="photographer"/>
+                    <xs:enumeration value="creator"/>
+                    <xs:enumeration value="publisher"/>
+                    <xs:enumeration value="typist"/>
+                    <xs:enumeration value="proofreader"/>
+                    <xs:enumeration value="cataloguer"/>
+                    <xs:enumeration value="architect"/>
+                    <xs:enumeration value="interviewer"/>
+                    <xs:enumeration value="producer"/>
+                    <xs:enumeration value="editor"/>
+                    <xs:enumeration value="director"/>
+                    <xs:enumeration value="leadingActor"/>                    
+                    <xs:enumeration value="owners"/>                    
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>
+        <xs:attributeGroup ref="thesaurusAccess"/>
+    </xs:complexType>
+    
+    <xs:complexType name="unittitle" mixed="true" >
+        <xs:all>
+            <xs:element name="imprint" type="imprint" minOccurs="0" maxOccurs="1" /><!-- דפוסת -->
+            <xs:element name="title" type="nonEmptyString" minOccurs="1" maxOccurs="1"/><!-- כותר -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="period" mixed="true"><!-- תקופה/תקופות -->
+        <xs:attributeGroup ref="thesaurusAccess"/>
+    </xs:complexType>
+    
+    <xs:complexType name="scopeContent" mixed="true"/><!-- תוכן -->
+            
+    <xs:complexType name="extent" mixed="true"/><!-- היקף -->
+
+    <xs:complexType name="medium" mixed="true">
+        <xs:attribute name="mediumType" use="required"><!-- מדיה -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Paper"/>
+                    <xs:enumeration value="Photograph"/>
+                    <xs:enumeration value="Still Film Roll"/>
+                    <xs:enumeration value="Electronic Resource"/>
+                    <xs:enumeration value="Gramophone Record"/>
+                    <xs:enumeration value="Video Tape"/>
+                    <xs:enumeration value="Compact Disc"/>
+                    <xs:enumeration value="Magnetic Film"/>
+                    <xs:enumeration value="Floppy Disk"/>
+                    <xs:enumeration value="External Hard Drive"/>
+                    <xs:enumeration value="Film Motion Picture Roll"/>
+                    <xs:enumeration value="Black and White Motion Picture Roll"/>
+                    <xs:enumeration value="Reel-to-reel Audio Tape Recording"/>
+                    <xs:enumeration value="Electronic Resource"/>
+                    <xs:enumeration value="Wax cylinder"/>
+                    <xs:enumeration value="Parchment"/>                    
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType> 
+        </xs:attribute>        
+        <xs:attribute name="format"><!-- פורמט/פורמטים -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="TIFF"/>
+                    <xs:enumeration value="JPEG"/>
+                    <xs:enumeration value="BMP"/>
+                    <xs:enumeration value="MP3"/>
+                    <xs:enumeration value="WAVE"/>
+                    <xs:enumeration value="PDF"/>
+                    <xs:enumeration value="MDB"/>
+                    <xs:enumeration value="EXCEL"/>
+                    <xs:enumeration value="WORD"/>
+                    <xs:enumeration value="HTML"/>
+                    <xs:enumeration value="POWERPOINT"/>
+                    <xs:enumeration value="A0"/>
+                    <xs:enumeration value="A1"/>
+                    <xs:enumeration value="A2"/>
+                    <xs:enumeration value="A3"/>
+                    <xs:enumeration value="A4"/>
+                    <xs:enumeration value="A5"/>
+                    <xs:enumeration value="Film Negative"/>
+                    <xs:enumeration value="Film Positive"/>
+                    <xs:enumeration value="Silver Print"/>
+                    <xs:enumeration value="Albumen Print"/>
+                    <xs:enumeration value="Glass Negative"/>
+                    <xs:enumeration value="VHS"/>                  
+                    <xs:enumeration value="Mini-DV"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType> 
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="diplomaticsForm"><!--  צורה דיפלומטית -->
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Incoming/Outgoing Telegram"/>
+                    <xs:enumeration value="Letter"/>
+                    <xs:enumeration value="Official letter"/>
+                    <xs:enumeration value="Protocol"/>
+                    <xs:enumeration value="Report"/>
+                    <xs:enumeration value="Contract"/>
+                    <xs:enumeration value="Speech"/>
+                    <xs:enumeration value="Article"/>
+                    <xs:enumeration value="Notice"/>
+                    <xs:enumeration value="Minutes"/>
+                    <xs:enumeration value="Postcard"/>
+                    <xs:enumeration value="Announcement"/>
+                    <xs:enumeration value="Decleration"/>
+                    <xs:enumeration value="Arbitration Decision"/>
+                    <xs:enumeration value="List"/>
+                    <xs:enumeration value="Diary"/>
+                    <xs:enumeration value="Note"/>
+                    <xs:enumeration value="Poem"/>
+                    <xs:enumeration value="Interview"/>
+                    <xs:enumeration value="Photograph"/>
+                    <xs:enumeration value="Map"/>
+                    <xs:enumeration value="Poster"/>
+                    <xs:enumeration value="History"/>
+                    <xs:enumeration value="Schematics"/>
+                    <xs:enumeration value="Motion Picture"/>
+                    <xs:enumeration value="Coin/Medal"/>
+                    <xs:enumeration value="Exhibit"/>
+                    <xs:enumeration value="Memorandum"/>
+                    <xs:enumeration value="Notice"/>
+                    <xs:enumeration value="Advertising flyer"/>
+                    <xs:enumeration value="Brochure"/>
+                    <xs:enumeration value="Program"/>
+                    <xs:enumeration value="Ticket"/>
+                    <xs:enumeration value="Invitation"/>                    
+                    <xs:enumeration value="Sticker"/>                    
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="accessrestrict" mixed="true"><!-- חסוי בפני הצגה באינטרנט או הרשאה להצגה-->
+        <xs:attribute name="digitalObjectAccess" type="boolean" default="true" />
+        <xs:attribute name="metadataAccess" type="boolean" default="true" />
+    </xs:complexType>
+    
+    <xs:complexType name="userestrict" mixed="true"/><!--  תנאי העתקה / זכויות יוצרים -->
+    
+    <xs:complexType name="phystech">
+        <xs:sequence>
+            <xs:element name="physicalCondition" type="physicalCondition" minOccurs="1" maxOccurs="unbounded" /><!-- מצב פיזי -->
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="originalsLoc" mixed="true"/><!-- מיקום חומר מקור -->
+    
+    <xs:complexType name="physloc" mixed="true"/><!-- מיקום פיזי / מצב ההשאלה של הפריט -->
+    
+    <xs:complexType name="note" mixed="true"/>
+    
+    <xs:complexType name="otherfindaid" mixed="true"/>
+    
+    <xs:complexType name="descriptionUnitStatus">
+        <xs:attribute name="status"><!-- מצב העבודה על יחידת התיאור -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Unverified Draft"/>
+                    <xs:enumeration value="Edited Draft"/>
+                    <xs:enumeration value="Final"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+       
+    <xs:complexType name="language">
+        <xs:attributeGroup ref="langcode"/>
+        <xs:attributeGroup ref="scriptcode"/>
+    </xs:complexType>
+    
+    <xs:complexType name="langmaterial">
+        <xs:sequence>
+            <xs:element name="language" type="language" minOccurs="0" maxOccurs="unbounded" /><!-- שפה -->
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="bibliography" mixed="true"/>
+    
+    <xs:complexType name="bioghist" mixed="true"/>
+
+    <xs:complexType name="custodhist" mixed="true">
+        <xs:sequence>
+            <xs:element name="originalunitid" type="originalunitid" minOccurs="0" maxOccurs="unbounded"/><!-- סימול/מזהה מקורי -->
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="appraisal" mixed="true"/>
+    
+    <xs:complexType name="accruals" mixed="true"/>
+    
+    <xs:complexType name="arrangement" mixed="true"/>
+    
+    <xs:complexType name="processingStatus" mixed="true"/>
+    
+    <xs:complexType name="acqinfo">
+        <xs:sequence>
+            <xs:element name="p">
+                <xs:complexType mixed="true">
+                    <xs:sequence>
+                        <xs:element name="persname" type="persname" minOccurs="0" maxOccurs="unbounded"/><!-- בעלים -->
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="genreform">
+        <xs:attribute name="type"><!-- סוג חומר -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Audio"/>
+                    <xs:enumeration value="Videos"/>
+                    <xs:enumeration value="Posters"/>
+                    <xs:enumeration value="Schamatics"/>
+                    <xs:enumeration value="Oral History"/>
+                    <xs:enumeration value="Photographs"/>
+                    <xs:enumeration value="Objects"/>
+                    <xs:enumeration value="Documents"/>
+                    <xs:enumeration value="Maps"/>                    
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="dimensions">
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Width"/>
+                    <xs:enumeration value="Height"/>
+                    <xs:enumeration value="Depth"/>
+                    <xs:enumeration value="Duration"/>
+                    <xs:enumeration value="Weight"/>
+                    <xs:enumeration value="Length"/>
+                    <xs:enumeration value="Other"/>                    
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="unit" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Seconds"/>
+                    <xs:enumeration value="Minutes"/>
+                    <xs:enumeration value="Hours"/>
+                    <xs:enumeration value="Days"/>
+                    <xs:enumeration value="Pages"/>
+                    <xs:enumeration value="Kilograms"/>
+                    <xs:enumeration value="Grams"/>
+                    <xs:enumeration value="Centimeters"/>
+                    <xs:enumeration value="Meters"/>
+                    <xs:enumeration value="Kilometers"/>
+                    <xs:enumeration value="Inch (US)"/>
+                    <xs:enumeration value="Foot (US)"/>
+                    <xs:enumeration value="Yard (US)"/>
+                    <xs:enumeration value="Mile (US)"/>
+                    <xs:enumeration value="Inch (Imperial)"/>
+                    <xs:enumeration value="Foot (Imperial)"/>
+                    <xs:enumeration value="Mile (Imperial)"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>
+        <xs:attribute name="formattedValue" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:pattern value="[0-9]*" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="publisher">
+        <xs:group ref="corpnameAndPersnameBundle" minOccurs="0" maxOccurs="1" /> <!-- שם מוציא לאור -->        
+    </xs:complexType>
+
+    <xs:complexType name="color">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Black and white"/>
+                    <xs:enumeration value="Brown"/>
+                    <xs:enumeration value="Color"/>
+                    <xs:enumeration value="Shaded"/>
+                    <xs:enumeration value="Hand-drawn"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>        
+    </xs:complexType>
+
+    <xs:complexType name="colorOfPaper">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="AliceBlue "/>
+                    <xs:enumeration value="AntiqueWhite "/>
+                    <xs:enumeration value="Aqua "/>
+                    <xs:enumeration value="Aquamarine "/>
+                    <xs:enumeration value="Azure "/>
+                    <xs:enumeration value="Beige "/>
+                    <xs:enumeration value="Bisque "/>
+                    <xs:enumeration value="Black "/>
+                    <xs:enumeration value="BlanchedAlmond "/>
+                    <xs:enumeration value="Blue "/>
+                    <xs:enumeration value="BlueViolet "/>
+                    <xs:enumeration value="Brown "/>
+                    <xs:enumeration value="BurlyWood "/>
+                    <xs:enumeration value="CadetBlue "/>
+                    <xs:enumeration value="Chartreuse "/>
+                    <xs:enumeration value="Chocolate "/>
+                    <xs:enumeration value="Coral "/>
+                    <xs:enumeration value="CornflowerBlue "/>
+                    <xs:enumeration value="Cornsilk "/>
+                    <xs:enumeration value="Crimson "/>
+                    <xs:enumeration value="Cyan "/>
+                    <xs:enumeration value="DarkBlue "/>
+                    <xs:enumeration value="DarkCyan "/>
+                    <xs:enumeration value="DarkGoldenRod "/>
+                    <xs:enumeration value="DarkGray "/>
+                    <xs:enumeration value="DarkGreen "/>
+                    <xs:enumeration value="DarkKhaki "/>
+                    <xs:enumeration value="DarkMagenta "/>
+                    <xs:enumeration value="DarkOliveGreen "/>
+                    <xs:enumeration value="DarkOrange "/>
+                    <xs:enumeration value="DarkOrchid "/>
+                    <xs:enumeration value="DarkRed "/>
+                    <xs:enumeration value="DarkSalmon "/>
+                    <xs:enumeration value="DarkSeaGreen "/>
+                    <xs:enumeration value="DarkSlateBlue "/>
+                    <xs:enumeration value="DarkSlateGray "/>
+                    <xs:enumeration value="DarkTurquoise "/>
+                    <xs:enumeration value="DarkViolet "/>
+                    <xs:enumeration value="DeepPink "/>
+                    <xs:enumeration value="DeepSkyBlue "/>
+                    <xs:enumeration value="DimGray "/>
+                    <xs:enumeration value="DodgerBlue "/>
+                    <xs:enumeration value="FireBrick "/>
+                    <xs:enumeration value="FloralWhite "/>
+                    <xs:enumeration value="ForestGreen "/>
+                    <xs:enumeration value="Fuchsia "/>
+                    <xs:enumeration value="Gainsboro "/>
+                    <xs:enumeration value="GhostWhite "/>
+                    <xs:enumeration value="Gold "/>
+                    <xs:enumeration value="GoldenRod "/>
+                    <xs:enumeration value="Gray "/>
+                    <xs:enumeration value="Green "/>
+                    <xs:enumeration value="GreenYellow "/>
+                    <xs:enumeration value="HoneyDew "/>
+                    <xs:enumeration value="HotPink "/>
+                    <xs:enumeration value="IndianRed  "/>
+                    <xs:enumeration value="Indigo  "/>
+                    <xs:enumeration value="Ivory "/>
+                    <xs:enumeration value="Khaki "/>
+                    <xs:enumeration value="Lavender "/>
+                    <xs:enumeration value="LavenderBlush "/>
+                    <xs:enumeration value="LawnGreen "/>
+                    <xs:enumeration value="LemonChiffon "/>
+                    <xs:enumeration value="LightBlue "/>
+                    <xs:enumeration value="LightCoral "/>
+                    <xs:enumeration value="LightCyan "/>
+                    <xs:enumeration value="LightGoldenRodYellow "/>
+                    <xs:enumeration value="LightGray "/>
+                    <xs:enumeration value="LightGreen "/>
+                    <xs:enumeration value="LightPink "/>
+                    <xs:enumeration value="LightSalmon "/>
+                    <xs:enumeration value="LightSeaGreen "/>
+                    <xs:enumeration value="LightSkyBlue "/>
+                    <xs:enumeration value="LightSlateGray "/>
+                    <xs:enumeration value="LightSteelBlue "/>
+                    <xs:enumeration value="LightYellow "/>
+                    <xs:enumeration value="Lime "/>
+                    <xs:enumeration value="LimeGreen "/>
+                    <xs:enumeration value="Linen "/>
+                    <xs:enumeration value="Magenta "/>
+                    <xs:enumeration value="Maroon "/>
+                    <xs:enumeration value="MediumAquaMarine "/>
+                    <xs:enumeration value="MediumBlue "/>
+                    <xs:enumeration value="MediumOrchid "/>
+                    <xs:enumeration value="MediumPurple "/>
+                    <xs:enumeration value="MediumSeaGreen "/>
+                    <xs:enumeration value="MediumSlateBlue "/>
+                    <xs:enumeration value="MediumSpringGreen "/>
+                    <xs:enumeration value="MediumTurquoise "/>
+                    <xs:enumeration value="MediumVioletRed "/>
+                    <xs:enumeration value="MidnightBlue "/>
+                    <xs:enumeration value="MintCream "/>
+                    <xs:enumeration value="MistyRose "/>
+                    <xs:enumeration value="Moccasin "/>
+                    <xs:enumeration value="NavajoWhite "/>
+                    <xs:enumeration value="Navy "/>
+                    <xs:enumeration value="OldLace "/>
+                    <xs:enumeration value="Olive "/>
+                    <xs:enumeration value="OliveDrab "/>
+                    <xs:enumeration value="Orange "/>
+                    <xs:enumeration value="OrangeRed "/>
+                    <xs:enumeration value="Orchid "/>
+                    <xs:enumeration value="PaleGoldenRod "/>
+                    <xs:enumeration value="PaleGreen "/>
+                    <xs:enumeration value="PaleTurquoise "/>
+                    <xs:enumeration value="PaleVioletRed "/>
+                    <xs:enumeration value="PapayaWhip "/>
+                    <xs:enumeration value="PeachPuff "/>
+                    <xs:enumeration value="Peru "/>
+                    <xs:enumeration value="Pink "/>
+                    <xs:enumeration value="Plum "/>
+                    <xs:enumeration value="PowderBlue "/>
+                    <xs:enumeration value="Purple "/>
+                    <xs:enumeration value="Red "/>
+                    <xs:enumeration value="RosyBrown "/>
+                    <xs:enumeration value="RoyalBlue "/>
+                    <xs:enumeration value="SaddleBrown "/>
+                    <xs:enumeration value="Salmon "/>
+                    <xs:enumeration value="SandyBrown "/>
+                    <xs:enumeration value="SeaGreen "/>
+                    <xs:enumeration value="SeaShell "/>
+                    <xs:enumeration value="Sienna "/>
+                    <xs:enumeration value="Silver "/>
+                    <xs:enumeration value="SkyBlue "/>
+                    <xs:enumeration value="SlateBlue "/>
+                    <xs:enumeration value="SlateGray "/>
+                    <xs:enumeration value="Snow "/>
+                    <xs:enumeration value="SpringGreen "/>
+                    <xs:enumeration value="SteelBlue "/>
+                    <xs:enumeration value="Tan "/>
+                    <xs:enumeration value="Teal "/>
+                    <xs:enumeration value="Thistle "/>
+                    <xs:enumeration value="Tomato "/>
+                    <xs:enumeration value="Turquoise "/>
+                    <xs:enumeration value="Violet "/>
+                    <xs:enumeration value="Wheat "/>
+                    <xs:enumeration value="White "/>
+                    <xs:enumeration value="WhiteSmoke "/>
+                    <xs:enumeration value="Yellow "/>
+                    <xs:enumeration value="YellowGreen "/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>        
+    </xs:complexType>    
+    
+    <xs:complexType name="physfacet">
+        <xs:all>
+            <xs:element name="color" type="color" minOccurs="0" maxOccurs="1"/><!-- צבעוניות-->
+            <xs:element name="colorPrint" type="boolean" minOccurs="0" maxOccurs="1"/><!-- הדפסה צבעונית -->            
+            <xs:element name="colorOfPaper" type="colorOfPaper" minOccurs="0" maxOccurs="1"/><!-- צבע הנייר -->            
+            <xs:element name="videoColor" type="boolean" minOccurs="0" maxOccurs="1"/><!-- צבע-->            
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="genreSpecificData">
+        <xs:choice>
+            <xs:element name="photographs" type="photographs"/>
+            <xs:element name="maps" type="maps"/>
+            <xs:element name="posters" type="posters"/>
+            <xs:element name="schematics" type="schematics"/>
+            <xs:element name="oralHistory" type="oralHisory"/>
+            <xs:element name="video" type="video"/>
+            <xs:element name="audio" type="audio"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="photographs">
+        <xs:all>
+            <xs:element name="photographType" type="photographType" minOccurs="0" maxOccurs="unbounded"/><!-- סוג תצלום-->
+            <xs:element name="partpartOfSeriesName" type="partOfSeriesName" minOccurs="0" maxOccurs="1"/><!-- חלק מסדרה בשם-->
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="photographType">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Panoramic"/>
+                    <xs:enumeration value="Scenery"/>
+                    <xs:enumeration value="Portrait"/>
+                    <xs:enumeration value="Head and Shoulders"/>
+                    <xs:enumeration value="Collage"/>
+                    <xs:enumeration value="Aerial"/>
+                    <xs:enumeration value="Medical imaging"/>
+                    <xs:enumeration value="Group photo"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>   
+    </xs:complexType>
+    
+    <xs:complexType name="maps">
+        <xs:all>
+            <xs:element name="type" type="mapType" minOccurs="0" maxOccurs="1"/><!-- סוג מפה-->
+            <xs:element name="scale" type="scale" minOccurs="0" maxOccurs="1"/><!-- קנה מידה-->
+            <xs:element name="partOfSeriesName" type="partOfSeriesName" minOccurs="0" maxOccurs="1"/><!-- חלק מסדרה בשם -->
+            <xs:element name="coordinateSystem" type="coordinateSystem" minOccurs="0" maxOccurs="1"/><!-- רשת קואורדינטות -->           
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="mapType">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Physical"/>
+                    <xs:enumeration value="Political"/>
+                    <xs:enumeration value="Urban building scheme"/>
+                    <xs:enumeration value="Topographical"/>
+                    <xs:enumeration value="Urbna"/>
+                    <xs:enumeration value="Tourism"/>
+                    <xs:enumeration value="Road map"/>
+                    <xs:enumeration value="Administrative"/>
+                    <xs:enumeration value="Trails"/>
+                    <xs:enumeration value="Historic"/>
+                    <xs:enumeration value="Population"/>
+                    <xs:enumeration value="Transportation"/>
+                    <xs:enumeration value="Climate"/>
+                    <xs:enumeration value="Geological"/>
+                    <xs:enumeration value="Structural"/>
+                    <xs:enumeration value="Lots"/>
+                    <xs:enumeration value="Cadastral"/>
+                    <xs:enumeration value="Archeological"/>
+                    <xs:enumeration value="Communication"/>
+                    <xs:enumeration value="Afforestation"/>
+                    <xs:enumeration value="Communities"/>
+                    <xs:enumeration value="Holy sites"/>
+                    <xs:enumeration value="Vegetation"/>
+                    <xs:enumeration value="Hydrologic"/>
+                    <xs:enumeration value="Marine"/>
+                    <xs:enumeration value="Infrastructres"/>
+                    <xs:enumeration value="Military"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>           
+    </xs:complexType>
+    
+    <xs:complexType name="scale">
+        <xs:attribute name="value" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:pattern value="1:[0-9]*" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>        
+        <xs:attribute name="system"><!-- שיטת מדידה -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Metric"/>
+                    <xs:enumeration value="Imperial"/>
+                    <xs:enumeration value="United States customary"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>
+    </xs:complexType>
+    
+    <xs:complexType name="partOfSeriesName" mixed="true"/>            
+    
+    <xs:complexType name="coordinateSystem">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ICS"/>
+                    <xs:enumeration value="ITM"/>
+                    <xs:enumeration value="ED1950"/>
+                    <xs:enumeration value="WGS1984"/>
+                    <xs:enumeration value="OTHER"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="schematics">
+        <xs:all>
+            <xs:element name="type" type="schematicsType" minOccurs="0" maxOccurs="1"/><!-- סוג השרטוט/תכנית -->
+            <xs:element name="scale" type="scale" minOccurs="0" maxOccurs="1"/><!-- קנה מידה -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="schematicsType">
+        <xs:attribute name="value" type="xs:string"/>
+    </xs:complexType>    
+    
+    <xs:complexType name="oralHisory">
+        <xs:all>
+            <xs:element name="interviewee" type="thesaurusElement" minOccurs="0" maxOccurs="unbounded"/><!-- שם המרואיין -->
+            <xs:element name="isTranscribed" type="boolean" minOccurs="0" maxOccurs="1"/><!-- קיום תמליל -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="posters">
+        <xs:sequence>
+            <xs:element name="type" type="posterType" minOccurs="0" maxOccurs="1"/><!-- סוג כרזה -->
+        </xs:sequence>        
+    </xs:complexType>
+    
+    <xs:complexType name="posterType">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Announcement"/>
+                    <xs:enumeration value="Placard"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>  
+    </xs:complexType>
+    
+    <xs:complexType name="audio">
+        <xs:sequence>
+            <xs:element name="recordingMethod" type="recordingMethod" minOccurs="0" maxOccurs="1"/><!-- סוג הקלטת קול -->
+        </xs:sequence>        
+    </xs:complexType>
+    
+    <xs:complexType name="recordingMethod">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Digital"/>
+                    <xs:enumeration value="Analog"/>
+                    <xs:enumeration value="Other"/>
+                </xs:restriction>
+            </xs:simpleType>            
+        </xs:attribute>          
+    </xs:complexType>
+    
+    <xs:complexType name="cameraType" mixed="true"/>
+       
+    <xs:complexType name="auxLang">
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="subtitle"/>
+                    <xs:enumeration value="dubbing"/>
+                </xs:restriction>
+            </xs:simpleType>          
+        </xs:attribute>
+        <xs:attributeGroup ref="langcode"/>
+    </xs:complexType>
+    
+    <xs:complexType name="video">
+        <xs:all>
+            <xs:element name="cameraType" type="cameraType" minOccurs="0" maxOccurs="1"/><!-- שיטת הסרטה -->
+            <xs:element name="auxLang" type="auxLang" minOccurs="0" maxOccurs="unbounded"/><!-- דיבוב/כתוביות -->
+            <xs:element name="hasAudio" type="boolean" minOccurs="0" maxOccurs="1"/><!-- האם יש קול? -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="geographicalLocation">
+        <xs:sequence>
+            <xs:element name="location" type="geoLocation"/>            
+            <xs:element name="context" type="geographicalContext" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="geoLocation" mixed="true">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="vertex" type="vertex" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="coordinateSystem" type="nonEmptyString" use="required"/>                    
+        <xs:attribute name="geoType" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Point"/>
+                    <xs:enumeration value="Line"/>
+                    <xs:enumeration value="Polygon"/>
+                    <xs:enumeration value="Ellipse"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>    
+    
+    <xs:complexType name="vertex">
+        <xs:sequence>
+            <xs:element name="latitude" type="nonEmptyString" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="longitude" type="nonEmptyString" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="height" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>        
+    </xs:complexType>
+
+    <xs:complexType name="geographicalContext" mixed="true"/>
+
+    <xs:complexType name="physicalCondition">
+        <xs:attribute name="value">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Tears"/>
+                    <xs:enumeration value="Folds"/>
+                    <xs:enumeration value="Staining"/>
+                    <xs:enumeration value="Discoloration"/>
+                    <xs:enumeration value="Brittleness"/>
+                    <xs:enumeration value="Adhesive tape"/>
+                    <xs:enumeration value="Insect damages"/>
+                    <xs:enumeration value="Insect specks"/>
+                    <xs:enumeration value="Mold"/>
+                    <xs:enumeration value="Faded text"/>
+                    <xs:enumeration value="Binding missing"/>
+                    <xs:enumeration value="Teared binding"/>
+                    <xs:enumeration value="Adhesive residues"/>
+                    <xs:enumeration value="Scratches"/>
+                    <xs:enumeration value="Surface dirt"/>
+                    <xs:enumeration value="Acidity"/>
+                    <xs:enumeration value="Foxing"/>
+                    <xs:enumeration value="Creases"/>
+                    <xs:enumeration value="Holes"/>
+                    <xs:enumeration value="Smudges"/>
+                    <xs:enumeration value="Cockling"/>
+                    <xs:enumeration value="Cracks"/>
+                    <xs:enumeration value="Losses"/>
+                    <xs:enumeration value="Rodent damages"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>  
+    </xs:complexType>
+    
+    <xs:complexType name="descrules" mixed="true"/>
+    
+    <xs:complexType name="originalunitid" mixed="true">
+        <xs:attribute name="origin" type="xs:string" /><!-- מקור הסימול/מזהה המקורי -->        
+    </xs:complexType>
+    
+<!-- ************************************************************ -->    
+<!-- *                    ATTRIBUTE GROUPS                      * -->
+<!-- ************************************************************ -->    
+    
+    <xs:attributeGroup name="defaultDescriptiveAttributes">
+        <xs:attribute name="id" type="xs:string"/><!-- מספר מערכת --><!-- חובה -->
+        <xs:attribute name="level" use="required"><!-- רמת תיאור --><!-- חובה -->
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Item"/><!-- פריט -->
+                    <xs:enumeration value="File"/><!-- תיק -->
+                    <xs:enumeration value="Sub-Series"/><!-- תת-סדרה -->
+                    <xs:enumeration value="Series"/><!-- סדרה -->
+                    <xs:enumeration value="Sub-Fond"/><!-- תת-חטיבה -->
+                    <xs:enumeration value="Fond"/><!-- חטיבה -->
+                    <xs:enumeration value="Collection"/><!-- אוסף  -->
+                    <xs:enumeration value="Archive"/><!-- ארכיון -->
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="countryCode">
+        <xs:attribute name="countryCode" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:enumeration value="AF"/>
+                    <xs:enumeration value="AX"/>
+                    <xs:enumeration value="AL"/>
+                    <xs:enumeration value="DZ"/>
+                    <xs:enumeration value="AS"/>
+                    <xs:enumeration value="AD"/>
+                    <xs:enumeration value="AO"/>
+                    <xs:enumeration value="AI"/>
+                    <xs:enumeration value="AQ"/>
+                    <xs:enumeration value="AG"/>
+                    <xs:enumeration value="AR"/>
+                    <xs:enumeration value="AM"/>
+                    <xs:enumeration value="AW"/>
+                    <xs:enumeration value="AU"/>
+                    <xs:enumeration value="AT"/>
+                    <xs:enumeration value="AZ"/>
+                    <xs:enumeration value="BS"/>
+                    <xs:enumeration value="BH"/>
+                    <xs:enumeration value="BD"/>
+                    <xs:enumeration value="BB"/>
+                    <xs:enumeration value="BY"/>
+                    <xs:enumeration value="BE"/>
+                    <xs:enumeration value="BZ"/>
+                    <xs:enumeration value="BJ"/>
+                    <xs:enumeration value="BM"/>
+                    <xs:enumeration value="BT"/>
+                    <xs:enumeration value="BO"/>
+                    <xs:enumeration value="BA"/>
+                    <xs:enumeration value="BW"/>
+                    <xs:enumeration value="BV"/>
+                    <xs:enumeration value="BR"/>
+                    <xs:enumeration value="IO"/>
+                    <xs:enumeration value="BN"/>
+                    <xs:enumeration value="BG"/>
+                    <xs:enumeration value="BF"/>
+                    <xs:enumeration value="BI"/>
+                    <xs:enumeration value="KH"/>
+                    <xs:enumeration value="CM"/>
+                    <xs:enumeration value="CA"/>
+                    <xs:enumeration value="CV"/>
+                    <xs:enumeration value="KY"/>
+                    <xs:enumeration value="CF"/>
+                    <xs:enumeration value="TD"/>
+                    <xs:enumeration value="CL"/>
+                    <xs:enumeration value="CN"/>
+                    <xs:enumeration value="CX"/>
+                    <xs:enumeration value="CC"/>
+                    <xs:enumeration value="CO"/>
+                    <xs:enumeration value="KM"/>
+                    <xs:enumeration value="CG"/>
+                    <xs:enumeration value="CD"/>
+                    <xs:enumeration value="CK"/>
+                    <xs:enumeration value="CR"/>
+                    <xs:enumeration value="CI"/>
+                    <xs:enumeration value="HR"/>
+                    <xs:enumeration value="CU"/>
+                    <xs:enumeration value="CY"/>
+                    <xs:enumeration value="CZ"/>
+                    <xs:enumeration value="DK"/>
+                    <xs:enumeration value="DJ"/>
+                    <xs:enumeration value="DM"/>
+                    <xs:enumeration value="DO"/>
+                    <xs:enumeration value="EC"/>
+                    <xs:enumeration value="EG"/>
+                    <xs:enumeration value="SV"/>
+                    <xs:enumeration value="GQ"/>
+                    <xs:enumeration value="ER"/>
+                    <xs:enumeration value="EE"/>
+                    <xs:enumeration value="ET"/>
+                    <xs:enumeration value="FK"/>
+                    <xs:enumeration value="FO"/>
+                    <xs:enumeration value="FJ"/>
+                    <xs:enumeration value="FI"/>
+                    <xs:enumeration value="FR"/>
+                    <xs:enumeration value="GF"/>
+                    <xs:enumeration value="PF"/>
+                    <xs:enumeration value="TF"/>
+                    <xs:enumeration value="GA"/>
+                    <xs:enumeration value="GM"/>
+                    <xs:enumeration value="GE"/>
+                    <xs:enumeration value="DE"/>
+                    <xs:enumeration value="GH"/>
+                    <xs:enumeration value="GI"/>
+                    <xs:enumeration value="GR"/>
+                    <xs:enumeration value="GL"/>
+                    <xs:enumeration value="GD"/>
+                    <xs:enumeration value="GP"/>
+                    <xs:enumeration value="GU"/>
+                    <xs:enumeration value="GT"/>
+                    <xs:enumeration value="GN"/>
+                    <xs:enumeration value="GW"/>
+                    <xs:enumeration value="GY"/>
+                    <xs:enumeration value="HT"/>
+                    <xs:enumeration value="HM"/>
+                    <xs:enumeration value="VA"/>
+                    <xs:enumeration value="HN"/>
+                    <xs:enumeration value="HK"/>
+                    <xs:enumeration value="HU"/>
+                    <xs:enumeration value="IS"/>
+                    <xs:enumeration value="IN"/>
+                    <xs:enumeration value="ID"/>
+                    <xs:enumeration value="IR"/>
+                    <xs:enumeration value="IQ"/>
+                    <xs:enumeration value="IE"/>
+                    <xs:enumeration value="IL"/>
+                    <xs:enumeration value="IT"/>
+                    <xs:enumeration value="JM"/>
+                    <xs:enumeration value="JP"/>
+                    <xs:enumeration value="JO"/>
+                    <xs:enumeration value="KZ"/>
+                    <xs:enumeration value="KE"/>
+                    <xs:enumeration value="KI"/>
+                    <xs:enumeration value="KP"/>
+                    <xs:enumeration value="KR"/>
+                    <xs:enumeration value="KW"/>
+                    <xs:enumeration value="KG"/>
+                    <xs:enumeration value="LA"/>
+                    <xs:enumeration value="LV"/>
+                    <xs:enumeration value="LB"/>
+                    <xs:enumeration value="LS"/>
+                    <xs:enumeration value="LR"/>
+                    <xs:enumeration value="LY"/>
+                    <xs:enumeration value="LI"/>
+                    <xs:enumeration value="LT"/>
+                    <xs:enumeration value="LU"/>
+                    <xs:enumeration value="MO"/>
+                    <xs:enumeration value="MK"/>
+                    <xs:enumeration value="MG"/>
+                    <xs:enumeration value="MW"/>
+                    <xs:enumeration value="MY"/>
+                    <xs:enumeration value="MV"/>
+                    <xs:enumeration value="ML"/>
+                    <xs:enumeration value="MT"/>
+                    <xs:enumeration value="MH"/>
+                    <xs:enumeration value="MQ"/>
+                    <xs:enumeration value="MR"/>
+                    <xs:enumeration value="MU"/>
+                    <xs:enumeration value="YT"/>
+                    <xs:enumeration value="MX"/>
+                    <xs:enumeration value="FM"/>
+                    <xs:enumeration value="MD"/>
+                    <xs:enumeration value="MC"/>
+                    <xs:enumeration value="MN"/>
+                    <xs:enumeration value="MS"/>
+                    <xs:enumeration value="MA"/>
+                    <xs:enumeration value="MZ"/>
+                    <xs:enumeration value="MM"/>
+                    <xs:enumeration value="NA"/>
+                    <xs:enumeration value="NR"/>
+                    <xs:enumeration value="NP"/>
+                    <xs:enumeration value="NL"/>
+                    <xs:enumeration value="AN"/>
+                    <xs:enumeration value="NC"/>
+                    <xs:enumeration value="NZ"/>
+                    <xs:enumeration value="NI"/>
+                    <xs:enumeration value="NE"/>
+                    <xs:enumeration value="NG"/>
+                    <xs:enumeration value="NU"/>
+                    <xs:enumeration value="NF"/>
+                    <xs:enumeration value="MP"/>
+                    <xs:enumeration value="NO"/>
+                    <xs:enumeration value="OM"/>
+                    <xs:enumeration value="PK"/>
+                    <xs:enumeration value="PW"/>
+                    <xs:enumeration value="PA"/>
+                    <xs:enumeration value="PG"/>
+                    <xs:enumeration value="PY"/>
+                    <xs:enumeration value="PE"/>
+                    <xs:enumeration value="PH"/>
+                    <xs:enumeration value="PN"/>
+                    <xs:enumeration value="PL"/>
+                    <xs:enumeration value="PT"/>
+                    <xs:enumeration value="PR"/>
+                    <xs:enumeration value="QA"/>
+                    <xs:enumeration value="RE"/>
+                    <xs:enumeration value="RO"/>
+                    <xs:enumeration value="RU"/>
+                    <xs:enumeration value="RW"/>
+                    <xs:enumeration value="SH"/>
+                    <xs:enumeration value="KN"/>
+                    <xs:enumeration value="LC"/>
+                    <xs:enumeration value="PM"/>
+                    <xs:enumeration value="VC"/>
+                    <xs:enumeration value="WS"/>
+                    <xs:enumeration value="SM"/>
+                    <xs:enumeration value="ST"/>
+                    <xs:enumeration value="SA"/>
+                    <xs:enumeration value="SN"/>
+                    <xs:enumeration value="CS"/>
+                    <xs:enumeration value="SC"/>
+                    <xs:enumeration value="SL"/>
+                    <xs:enumeration value="SG"/>
+                    <xs:enumeration value="SK"/>
+                    <xs:enumeration value="SI"/>
+                    <xs:enumeration value="SB"/>
+                    <xs:enumeration value="SO"/>
+                    <xs:enumeration value="ZA"/>
+                    <xs:enumeration value="GS"/>
+                    <xs:enumeration value="ES"/>
+                    <xs:enumeration value="LK"/>
+                    <xs:enumeration value="SD"/>
+                    <xs:enumeration value="SR"/>
+                    <xs:enumeration value="SJ"/>
+                    <xs:enumeration value="SZ"/>
+                    <xs:enumeration value="SE"/>
+                    <xs:enumeration value="CH"/>
+                    <xs:enumeration value="SY"/>
+                    <xs:enumeration value="TW"/>
+                    <xs:enumeration value="TJ"/>
+                    <xs:enumeration value="TZ"/>
+                    <xs:enumeration value="TH"/>
+                    <xs:enumeration value="TL"/>
+                    <xs:enumeration value="TG"/>
+                    <xs:enumeration value="TK"/>
+                    <xs:enumeration value="TO"/>
+                    <xs:enumeration value="TT"/>
+                    <xs:enumeration value="TN"/>
+                    <xs:enumeration value="TR"/>
+                    <xs:enumeration value="TM"/>
+                    <xs:enumeration value="TC"/>
+                    <xs:enumeration value="TV"/>
+                    <xs:enumeration value="UG"/>
+                    <xs:enumeration value="UA"/>
+                    <xs:enumeration value="AE"/>
+                    <xs:enumeration value="GB"/>
+                    <xs:enumeration value="US"/>
+                    <xs:enumeration value="UM"/>
+                    <xs:enumeration value="UY"/>
+                    <xs:enumeration value="UZ"/>
+                    <xs:enumeration value="VU"/>
+                    <xs:enumeration value="VE"/>
+                    <xs:enumeration value="VN"/>
+                    <xs:enumeration value="VG"/>
+                    <xs:enumeration value="VI"/>
+                    <xs:enumeration value="WF"/>
+                    <xs:enumeration value="EH"/>
+                    <xs:enumeration value="YE"/>
+                    <xs:enumeration value="ZM"/>
+                    <xs:enumeration value="ZW"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="thesaurusAccess">        
+        <xs:attribute name="authfilenumber" />
+        <xs:attribute name="source"/>        
+    </xs:attributeGroup>
+    
+    <xs:attributeGroup name="repositoryCode"><!--  ISIL iso15511 -->
+        <xs:attribute name="repositoryCode" type="data.repositorycode" use="required"/>
+    </xs:attributeGroup> 
+
+    <xs:simpleType name="data.repositorycode">
+        <xs:restriction base="xs:token">
+            <xs:pattern
+                value="((AF|AX|AL|DZ|AS|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BA|BW|BV|BR|IO|BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|CI|HR|CU|CY|CZ|DK|DJ|DM|DO|EC|EG|SV|GQ|ER|EE|ET|FK|FO|FJ|FI|FR|GF|PF|TF|GA|GM|GE|DE|GH|GI|GR|GL|GD|GP|GU|GT|GN|GW|GY|HT|HM|VA|HN|HK|HU|IS|IN|ID|IR|IQ|IE|IL|IT|JM|JP|JO|KZ|KE|KI|KP|KR|KW|KG|LA|LV|LB|LS|LR|LY|LI|LT|LU|MO|MK|MG|MW|MY|MV|ML|MT|MH|MQ|MR|MU|YT|MX|FM|MD|MC|MN|MS|MA|MZ|MM|NA|NR|NP|NL|AN|NC|NZ|NI|NE|NG|NU|NF|MP|NO|OM|PK|PW|PA|PG|PY|PE|PH|PN|PL|PT|PR|QA|RE|RO|RU|RW|SH|KN|LC|PM|VC|WS|SM|ST|SA|SN|CS|SC|SL|SG|SK|SI|SB|SO|ZA|GS|ES|LK|SD|SR|SJ|SZ|SE|CH|SY|TW|TJ|TZ|TH|TL|TG|TK|TO|TT|TN|TR|TM|TC|TV|UG|UA|AE|GB|US|UM|UY|UZ|VU|VE|VN|VG|VI|WF|EH|YE|ZM|ZW)|([a-zA-Z]{1})|([a-zA-Z]{3,4}))(-[a-zA-Z0-9:/\-]{1,11})"
+            />
+        </xs:restriction>
+    </xs:simpleType>
+
+    	<xs:attributeGroup name="langcode">
+		<xs:attribute name="langcode">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="aar"/>
+					<xs:enumeration value="abk"/>
+					<xs:enumeration value="ace"/>
+					<xs:enumeration value="ach"/>
+					<xs:enumeration value="ada"/>
+					<xs:enumeration value="ady"/>
+					<xs:enumeration value="afa"/>
+					<xs:enumeration value="afh"/>
+					<xs:enumeration value="afr"/>
+					<xs:enumeration value="aka"/>
+					<xs:enumeration value="akk"/>
+					<xs:enumeration value="alb"/>
+					<xs:enumeration value="ale"/>
+					<xs:enumeration value="alg"/>
+					<xs:enumeration value="amh"/>
+					<xs:enumeration value="ang"/>
+					<xs:enumeration value="apa"/>
+					<xs:enumeration value="ara"/>
+					<xs:enumeration value="arc"/>
+					<xs:enumeration value="arg"/>
+					<xs:enumeration value="arm"/>
+					<xs:enumeration value="arn"/>
+					<xs:enumeration value="arp"/>
+					<xs:enumeration value="art"/>
+					<xs:enumeration value="arw"/>
+					<xs:enumeration value="asm"/>
+					<xs:enumeration value="ast"/>
+					<xs:enumeration value="ath"/>
+					<xs:enumeration value="aus"/>
+					<xs:enumeration value="ava"/>
+					<xs:enumeration value="ave"/>
+					<xs:enumeration value="awa"/>
+					<xs:enumeration value="aym"/>
+					<xs:enumeration value="aze"/>
+					<xs:enumeration value="bad"/>
+					<xs:enumeration value="bai"/>
+					<xs:enumeration value="bak"/>
+					<xs:enumeration value="bal"/>
+					<xs:enumeration value="bam"/>
+					<xs:enumeration value="ban"/>
+					<xs:enumeration value="baq"/>
+					<xs:enumeration value="bas"/>
+					<xs:enumeration value="bat"/>
+					<xs:enumeration value="bej"/>
+					<xs:enumeration value="bel"/>
+					<xs:enumeration value="bem"/>
+					<xs:enumeration value="ben"/>
+					<xs:enumeration value="ber"/>
+					<xs:enumeration value="bho"/>
+					<xs:enumeration value="bih"/>
+					<xs:enumeration value="bik"/>
+					<xs:enumeration value="bin"/>
+					<xs:enumeration value="bis"/>
+					<xs:enumeration value="bla"/>
+					<xs:enumeration value="bnt"/>
+					<xs:enumeration value="bod"/>
+					<xs:enumeration value="bos"/>
+					<xs:enumeration value="bra"/>
+					<xs:enumeration value="bre"/>
+					<xs:enumeration value="btk"/>
+					<xs:enumeration value="bua"/>
+					<xs:enumeration value="bug"/>
+					<xs:enumeration value="bul"/>
+					<xs:enumeration value="bur"/>
+					<xs:enumeration value="bur"/>
+					<xs:enumeration value="byn"/>
+					<xs:enumeration value="cad"/>
+					<xs:enumeration value="cai"/>
+					<xs:enumeration value="car"/>
+					<xs:enumeration value="cat"/>
+					<xs:enumeration value="cau"/>
+					<xs:enumeration value="ceb"/>
+					<xs:enumeration value="cel"/>
+					<xs:enumeration value="ces"/>
+					<xs:enumeration value="cha"/>
+					<xs:enumeration value="chb"/>
+					<xs:enumeration value="che"/>
+					<xs:enumeration value="chg"/>
+					<xs:enumeration value="chi"/>
+					<xs:enumeration value="chk"/>
+					<xs:enumeration value="chm"/>
+					<xs:enumeration value="chn"/>
+					<xs:enumeration value="cho"/>
+					<xs:enumeration value="chp"/>
+					<xs:enumeration value="chr"/>
+					<xs:enumeration value="chu"/>
+					<xs:enumeration value="chv"/>
+					<xs:enumeration value="chy"/>
+					<xs:enumeration value="cmc"/>
+					<xs:enumeration value="cop"/>
+					<xs:enumeration value="cor"/>
+					<xs:enumeration value="cos"/>
+					<xs:enumeration value="cpe"/>
+					<xs:enumeration value="cpf"/>
+					<xs:enumeration value="cpp"/>
+					<xs:enumeration value="cre"/>
+					<xs:enumeration value="crh"/>
+					<xs:enumeration value="crp"/>
+					<xs:enumeration value="csb"/>
+					<xs:enumeration value="cus"/>
+					<xs:enumeration value="cym"/>
+					<xs:enumeration value="cze"/>
+					<xs:enumeration value="cze"/>
+					<xs:enumeration value="dak"/>
+					<xs:enumeration value="dan"/>
+					<xs:enumeration value="dar"/>
+					<xs:enumeration value="day"/>
+					<xs:enumeration value="del"/>
+					<xs:enumeration value="den"/>
+					<xs:enumeration value="deu"/>
+					<xs:enumeration value="dgr"/>
+					<xs:enumeration value="din"/>
+					<xs:enumeration value="div"/>
+					<xs:enumeration value="doi"/>
+					<xs:enumeration value="dra"/>
+					<xs:enumeration value="dsb"/>
+					<xs:enumeration value="dua"/>
+					<xs:enumeration value="dum"/>
+					<xs:enumeration value="dut"/>
+					<xs:enumeration value="dut"/>
+					<xs:enumeration value="dyu"/>
+					<xs:enumeration value="dzo"/>
+					<xs:enumeration value="efi"/>
+					<xs:enumeration value="egy"/>
+					<xs:enumeration value="eka"/>
+					<xs:enumeration value="ell"/>
+					<xs:enumeration value="elx"/>
+					<xs:enumeration value="eng"/>
+					<xs:enumeration value="enm"/>
+					<xs:enumeration value="epo"/>
+					<xs:enumeration value="est"/>
+					<xs:enumeration value="eus"/>
+					<xs:enumeration value="eus"/>
+					<xs:enumeration value="ewe"/>
+					<xs:enumeration value="ewo"/>
+					<xs:enumeration value="fan"/>
+					<xs:enumeration value="fao"/>
+					<xs:enumeration value="fas"/>
+					<xs:enumeration value="fat"/>
+					<xs:enumeration value="fij"/>
+					<xs:enumeration value="fil"/>
+					<xs:enumeration value="fin"/>
+					<xs:enumeration value="fiu"/>
+					<xs:enumeration value="fon"/>
+					<xs:enumeration value="fra"/>
+					<xs:enumeration value="fre"/>
+					<xs:enumeration value="frm"/>
+					<xs:enumeration value="fro"/>
+					<xs:enumeration value="fry"/>
+					<xs:enumeration value="ful"/>
+					<xs:enumeration value="fur"/>
+					<xs:enumeration value="gaa"/>
+					<xs:enumeration value="gay"/>
+					<xs:enumeration value="gba"/>
+					<xs:enumeration value="gem"/>
+					<xs:enumeration value="geo"/>
+					<xs:enumeration value="ger"/>
+					<xs:enumeration value="gez"/>
+					<xs:enumeration value="gil"/>
+					<xs:enumeration value="gla"/>
+					<xs:enumeration value="gle"/>
+					<xs:enumeration value="glg"/>
+					<xs:enumeration value="glv"/>
+					<xs:enumeration value="gmh"/>
+					<xs:enumeration value="goh"/>
+					<xs:enumeration value="gon"/>
+					<xs:enumeration value="gor"/>
+					<xs:enumeration value="got"/>
+					<xs:enumeration value="grb"/>
+					<xs:enumeration value="grc"/>
+					<xs:enumeration value="gre"/>
+					<xs:enumeration value="gre"/>
+					<xs:enumeration value="grn"/>
+					<xs:enumeration value="guj"/>
+					<xs:enumeration value="gwi"/>
+					<xs:enumeration value="hai"/>
+					<xs:enumeration value="hat"/>
+					<xs:enumeration value="hau"/>
+					<xs:enumeration value="haw"/>
+					<xs:enumeration value="heb"/>
+					<xs:enumeration value="her"/>
+					<xs:enumeration value="hil"/>
+					<xs:enumeration value="him"/>
+					<xs:enumeration value="hin"/>
+					<xs:enumeration value="hit"/>
+					<xs:enumeration value="hmn"/>
+					<xs:enumeration value="hmo"/>
+					<xs:enumeration value="hrv"/>
+					<xs:enumeration value="hsb"/>
+					<xs:enumeration value="hun"/>
+					<xs:enumeration value="hup"/>
+					<xs:enumeration value="hye"/>
+					<xs:enumeration value="iba"/>
+					<xs:enumeration value="ibo"/>
+					<xs:enumeration value="ice"/>
+					<xs:enumeration value="ice"/>
+					<xs:enumeration value="ido"/>
+					<xs:enumeration value="iii"/>
+					<xs:enumeration value="ijo"/>
+					<xs:enumeration value="iku"/>
+					<xs:enumeration value="ile"/>
+					<xs:enumeration value="ilo"/>
+					<xs:enumeration value="ina"/>
+					<xs:enumeration value="inc"/>
+					<xs:enumeration value="ind"/>
+					<xs:enumeration value="ine"/>
+					<xs:enumeration value="inh"/>
+					<xs:enumeration value="ipk"/>
+					<xs:enumeration value="ira"/>
+					<xs:enumeration value="iro"/>
+					<xs:enumeration value="isl"/>
+					<xs:enumeration value="ita"/>
+					<xs:enumeration value="jav"/>
+					<xs:enumeration value="jbo"/>
+					<xs:enumeration value="jpn"/>
+					<xs:enumeration value="jpr"/>
+					<xs:enumeration value="jrb"/>
+					<xs:enumeration value="kaa"/>
+					<xs:enumeration value="kab"/>
+					<xs:enumeration value="kac"/>
+					<xs:enumeration value="kal"/>
+					<xs:enumeration value="kam"/>
+					<xs:enumeration value="kan"/>
+					<xs:enumeration value="kar"/>
+					<xs:enumeration value="kas"/>
+					<xs:enumeration value="kat"/>
+					<xs:enumeration value="kau"/>
+					<xs:enumeration value="kaw"/>
+					<xs:enumeration value="kaz"/>
+					<xs:enumeration value="kbd"/>
+					<xs:enumeration value="kha"/>
+					<xs:enumeration value="khi"/>
+					<xs:enumeration value="khm"/>
+					<xs:enumeration value="kho"/>
+					<xs:enumeration value="kik"/>
+					<xs:enumeration value="kin"/>
+					<xs:enumeration value="kir"/>
+					<xs:enumeration value="kmb"/>
+					<xs:enumeration value="kok"/>
+					<xs:enumeration value="kom"/>
+					<xs:enumeration value="kon"/>
+					<xs:enumeration value="kor"/>
+					<xs:enumeration value="kos"/>
+					<xs:enumeration value="kpe"/>
+					<xs:enumeration value="krc"/>
+					<xs:enumeration value="kro"/>
+					<xs:enumeration value="kru"/>
+					<xs:enumeration value="kua"/>
+					<xs:enumeration value="kum"/>
+					<xs:enumeration value="kur"/>
+					<xs:enumeration value="kut"/>
+					<xs:enumeration value="lad"/>
+					<xs:enumeration value="lah"/>
+					<xs:enumeration value="lam"/>
+					<xs:enumeration value="lao"/>
+					<xs:enumeration value="lat"/>
+					<xs:enumeration value="lav"/>
+					<xs:enumeration value="lez"/>
+					<xs:enumeration value="lim"/>
+					<xs:enumeration value="lin"/>
+					<xs:enumeration value="lit"/>
+					<xs:enumeration value="lol"/>
+					<xs:enumeration value="loz"/>
+					<xs:enumeration value="ltz"/>
+					<xs:enumeration value="lua"/>
+					<xs:enumeration value="lub"/>
+					<xs:enumeration value="lug"/>
+					<xs:enumeration value="lui"/>
+					<xs:enumeration value="lun"/>
+					<xs:enumeration value="luo"/>
+					<xs:enumeration value="lus"/>
+					<xs:enumeration value="mac"/>
+					<xs:enumeration value="mad"/>
+					<xs:enumeration value="mag"/>
+					<xs:enumeration value="mah"/>
+					<xs:enumeration value="mai"/>
+					<xs:enumeration value="mak"/>
+					<xs:enumeration value="mal"/>
+					<xs:enumeration value="man"/>
+					<xs:enumeration value="mao"/>
+					<xs:enumeration value="mao"/>
+					<xs:enumeration value="map"/>
+					<xs:enumeration value="mar"/>
+					<xs:enumeration value="mas"/>
+					<xs:enumeration value="may"/>
+					<xs:enumeration value="mdf"/>
+					<xs:enumeration value="mdr"/>
+					<xs:enumeration value="men"/>
+					<xs:enumeration value="mga"/>
+					<xs:enumeration value="mic"/>
+					<xs:enumeration value="min"/>
+					<xs:enumeration value="mis"/>
+					<xs:enumeration value="mkd"/>
+					<xs:enumeration value="mkh"/>
+					<xs:enumeration value="mlg"/>
+					<xs:enumeration value="mlt"/>
+					<xs:enumeration value="mnc"/>
+					<xs:enumeration value="mni"/>
+					<xs:enumeration value="mno"/>
+					<xs:enumeration value="moh"/>
+					<xs:enumeration value="mol"/>
+					<xs:enumeration value="mon"/>
+					<xs:enumeration value="mos"/>
+					<xs:enumeration value="mri"/>
+					<xs:enumeration value="msa"/>
+					<xs:enumeration value="mul"/>
+					<xs:enumeration value="mun"/>
+					<xs:enumeration value="mus"/>
+					<xs:enumeration value="mwl"/>
+					<xs:enumeration value="mwr"/>
+					<xs:enumeration value="mya"/>
+					<xs:enumeration value="myn"/>
+					<xs:enumeration value="myv"/>
+					<xs:enumeration value="nah"/>
+					<xs:enumeration value="nai"/>
+					<xs:enumeration value="nap"/>
+					<xs:enumeration value="nau"/>
+					<xs:enumeration value="nav"/>
+					<xs:enumeration value="nbl"/>
+					<xs:enumeration value="nde"/>
+					<xs:enumeration value="ndo"/>
+					<xs:enumeration value="nds"/>
+					<xs:enumeration value="nep"/>
+					<xs:enumeration value="new"/>
+					<xs:enumeration value="nia"/>
+					<xs:enumeration value="nic"/>
+					<xs:enumeration value="niu"/>
+					<xs:enumeration value="nld"/>
+					<xs:enumeration value="nno"/>
+					<xs:enumeration value="nob"/>
+					<xs:enumeration value="nog"/>
+					<xs:enumeration value="non"/>
+					<xs:enumeration value="nor"/>
+					<xs:enumeration value="nso"/>
+					<xs:enumeration value="nub"/>
+					<xs:enumeration value="nwc"/>
+					<xs:enumeration value="nya"/>
+					<xs:enumeration value="nym"/>
+					<xs:enumeration value="nyn"/>
+					<xs:enumeration value="nyo"/>
+					<xs:enumeration value="nzi"/>
+					<xs:enumeration value="oci"/>
+					<xs:enumeration value="oji"/>
+					<xs:enumeration value="ori"/>
+					<xs:enumeration value="orm"/>
+					<xs:enumeration value="osa"/>
+					<xs:enumeration value="oss"/>
+					<xs:enumeration value="ota"/>
+					<xs:enumeration value="oto"/>
+					<xs:enumeration value="paa"/>
+					<xs:enumeration value="pag"/>
+					<xs:enumeration value="pal"/>
+					<xs:enumeration value="pam"/>
+					<xs:enumeration value="pan"/>
+					<xs:enumeration value="pap"/>
+					<xs:enumeration value="pau"/>
+					<xs:enumeration value="peo"/>
+					<xs:enumeration value="per"/>
+					<xs:enumeration value="phi"/>
+					<xs:enumeration value="phn"/>
+					<xs:enumeration value="pli"/>
+					<xs:enumeration value="pol"/>
+					<xs:enumeration value="pon"/>
+					<xs:enumeration value="por"/>
+					<xs:enumeration value="pra"/>
+					<xs:enumeration value="pro"/>
+					<xs:enumeration value="pus"/>
+					<xs:enumeration value="que"/>
+					<xs:enumeration value="raj"/>
+					<xs:enumeration value="rap"/>
+					<xs:enumeration value="rar"/>
+					<xs:enumeration value="roa"/>
+					<xs:enumeration value="roh"/>
+					<xs:enumeration value="rom"/>
+					<xs:enumeration value="ron"/>
+					<xs:enumeration value="rum"/>
+					<xs:enumeration value="run"/>
+					<xs:enumeration value="rus"/>
+					<xs:enumeration value="sad"/>
+					<xs:enumeration value="sag"/>
+					<xs:enumeration value="sah"/>
+					<xs:enumeration value="sai"/>
+					<xs:enumeration value="sal"/>
+					<xs:enumeration value="sam"/>
+					<xs:enumeration value="san"/>
+					<xs:enumeration value="sas"/>
+					<xs:enumeration value="sat"/>
+					<xs:enumeration value="scc"/>
+					<xs:enumeration value="scn"/>
+					<xs:enumeration value="sco"/>
+					<xs:enumeration value="scr"/>
+					<xs:enumeration value="sel"/>
+					<xs:enumeration value="sem"/>
+					<xs:enumeration value="sga"/>
+					<xs:enumeration value="sgn"/>
+					<xs:enumeration value="shn"/>
+					<xs:enumeration value="sid"/>
+					<xs:enumeration value="sin"/>
+					<xs:enumeration value="sio"/>
+					<xs:enumeration value="sit"/>
+					<xs:enumeration value="sla"/>
+					<xs:enumeration value="slk"/>
+					<xs:enumeration value="slo"/>
+					<xs:enumeration value="slv"/>
+					<xs:enumeration value="sma"/>
+					<xs:enumeration value="sme"/>
+					<xs:enumeration value="smi"/>
+					<xs:enumeration value="smj"/>
+					<xs:enumeration value="smn"/>
+					<xs:enumeration value="smo"/>
+					<xs:enumeration value="sms"/>
+					<xs:enumeration value="sna"/>
+					<xs:enumeration value="snd"/>
+					<xs:enumeration value="snk"/>
+					<xs:enumeration value="sog"/>
+					<xs:enumeration value="som"/>
+					<xs:enumeration value="son"/>
+					<xs:enumeration value="sot"/>
+					<xs:enumeration value="spa"/>
+					<xs:enumeration value="sqi"/>
+					<xs:enumeration value="srd"/>
+					<xs:enumeration value="srp"/>
+					<xs:enumeration value="srr"/>
+					<xs:enumeration value="ssa"/>
+					<xs:enumeration value="ssw"/>
+					<xs:enumeration value="suk"/>
+					<xs:enumeration value="sun"/>
+					<xs:enumeration value="sus"/>
+					<xs:enumeration value="sux"/>
+					<xs:enumeration value="swa"/>
+					<xs:enumeration value="swe"/>
+					<xs:enumeration value="syr"/>
+					<xs:enumeration value="tah"/>
+					<xs:enumeration value="tai"/>
+					<xs:enumeration value="tam"/>
+					<xs:enumeration value="tat"/>
+					<xs:enumeration value="tel"/>
+					<xs:enumeration value="tem"/>
+					<xs:enumeration value="ter"/>
+					<xs:enumeration value="tet"/>
+					<xs:enumeration value="tgk"/>
+					<xs:enumeration value="tgl"/>
+					<xs:enumeration value="tha"/>
+					<xs:enumeration value="tib"/>
+					<xs:enumeration value="tib"/>
+					<xs:enumeration value="tig"/>
+					<xs:enumeration value="tir"/>
+					<xs:enumeration value="tiv"/>
+					<xs:enumeration value="tkl"/>
+					<xs:enumeration value="tlh"/>
+					<xs:enumeration value="tli"/>
+					<xs:enumeration value="tmh"/>
+					<xs:enumeration value="tog"/>
+					<xs:enumeration value="ton"/>
+					<xs:enumeration value="tpi"/>
+					<xs:enumeration value="tsi"/>
+					<xs:enumeration value="tsn"/>
+					<xs:enumeration value="tso"/>
+					<xs:enumeration value="tuk"/>
+					<xs:enumeration value="tum"/>
+					<xs:enumeration value="tup"/>
+					<xs:enumeration value="tur"/>
+					<xs:enumeration value="tut"/>
+					<xs:enumeration value="tvl"/>
+					<xs:enumeration value="twi"/>
+					<xs:enumeration value="tyv"/>
+					<xs:enumeration value="udm"/>
+					<xs:enumeration value="uga"/>
+					<xs:enumeration value="uig"/>
+					<xs:enumeration value="ukr"/>
+					<xs:enumeration value="umb"/>
+					<xs:enumeration value="und"/>
+					<xs:enumeration value="urd"/>
+					<xs:enumeration value="uzb"/>
+					<xs:enumeration value="vai"/>
+					<xs:enumeration value="ven"/>
+					<xs:enumeration value="vie"/>
+					<xs:enumeration value="vol"/>
+					<xs:enumeration value="vot"/>
+					<xs:enumeration value="wak"/>
+					<xs:enumeration value="wal"/>
+					<xs:enumeration value="war"/>
+					<xs:enumeration value="was"/>
+					<xs:enumeration value="wel"/>
+					<xs:enumeration value="wen"/>
+					<xs:enumeration value="wln"/>
+					<xs:enumeration value="wol"/>
+					<xs:enumeration value="xal"/>
+					<xs:enumeration value="xho"/>
+					<xs:enumeration value="yao"/>
+					<xs:enumeration value="yap"/>
+					<xs:enumeration value="yid"/>
+					<xs:enumeration value="yor"/>
+					<xs:enumeration value="ypk"/>
+					<xs:enumeration value="zap"/>
+					<xs:enumeration value="zen"/>
+					<xs:enumeration value="zha"/>
+					<xs:enumeration value="zho"/>
+					<xs:enumeration value="znd"/>
+					<xs:enumeration value="zul"/>
+					<xs:enumeration value="zun"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+
+    <xs:attributeGroup name="scriptcode">
+        <xs:attribute name="scriptcode">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:enumeration value="Arab"/>
+                    <xs:enumeration value="Armn"/>
+                    <xs:enumeration value="Bali"/>
+                    <xs:enumeration value="Batk"/>
+                    <xs:enumeration value="Beng"/>
+                    <xs:enumeration value="Blis"/>
+                    <xs:enumeration value="Bopo"/>
+                    <xs:enumeration value="Brah"/>
+                    <xs:enumeration value="Brai"/>
+                    <xs:enumeration value="Bugi"/>
+                    <xs:enumeration value="Buhd"/>
+                    <xs:enumeration value="Cans"/>
+                    <xs:enumeration value="Cham"/>
+                    <xs:enumeration value="Cher"/>
+                    <xs:enumeration value="Cirt"/>
+                    <xs:enumeration value="Copt"/>
+                    <xs:enumeration value="Cprt"/>
+                    <xs:enumeration value="Cyrl"/>
+                    <xs:enumeration value="Cyrs"/>
+                    <xs:enumeration value="Deva"/>
+                    <xs:enumeration value="Dsrt"/>
+                    <xs:enumeration value="Egyd"/>
+                    <xs:enumeration value="Egyh"/>
+                    <xs:enumeration value="Egyp"/>
+                    <xs:enumeration value="Ethi"/>
+                    <xs:enumeration value="Geok"/>
+                    <xs:enumeration value="Geor"/>
+                    <xs:enumeration value="Glag"/>
+                    <xs:enumeration value="Goth"/>
+                    <xs:enumeration value="Grek"/>
+                    <xs:enumeration value="Gujr"/>
+                    <xs:enumeration value="Guru"/>
+                    <xs:enumeration value="Hang"/>
+                    <xs:enumeration value="Hani"/>
+                    <xs:enumeration value="Hano"/>
+                    <xs:enumeration value="Hans"/>
+                    <xs:enumeration value="Hant"/>
+                    <xs:enumeration value="Hebr"/>
+                    <xs:enumeration value="Hira"/>
+                    <xs:enumeration value="Hmng"/>
+                    <xs:enumeration value="Hrkt"/>
+                    <xs:enumeration value="Hung"/>
+                    <xs:enumeration value="Inds"/>
+                    <xs:enumeration value="Ital"/>
+                    <xs:enumeration value="Java"/>
+                    <xs:enumeration value="Kali"/>
+                    <xs:enumeration value="Kana"/>
+                    <xs:enumeration value="Khar"/>
+                    <xs:enumeration value="Khmr"/>
+                    <xs:enumeration value="Knda"/>
+                    <xs:enumeration value="Laoo"/>
+                    <xs:enumeration value="Latf"/>
+                    <xs:enumeration value="Latg"/>
+                    <xs:enumeration value="Latn"/>
+                    <xs:enumeration value="Lepc"/>
+                    <xs:enumeration value="Limb"/>
+                    <xs:enumeration value="Lina"/>
+                    <xs:enumeration value="Linb"/>
+                    <xs:enumeration value="Mand"/>
+                    <xs:enumeration value="Maya"/>
+                    <xs:enumeration value="Mero"/>
+                    <xs:enumeration value="Mlym"/>
+                    <xs:enumeration value="Mong"/>
+                    <xs:enumeration value="Mymr"/>
+                    <xs:enumeration value="Nkoo"/>
+                    <xs:enumeration value="Ogam"/>
+                    <xs:enumeration value="Orkh"/>
+                    <xs:enumeration value="Orya"/>
+                    <xs:enumeration value="Osma"/>
+                    <xs:enumeration value="Perm"/>
+                    <xs:enumeration value="Phag"/>
+                    <xs:enumeration value="Phnx"/>
+                    <xs:enumeration value="Plrd"/>
+                    <xs:enumeration value="Qaaa"/>
+                    <xs:enumeration value="Qabx"/>
+                    <xs:enumeration value="Roro"/>
+                    <xs:enumeration value="Runr"/>
+                    <xs:enumeration value="Sara"/>
+                    <xs:enumeration value="Shaw"/>
+                    <xs:enumeration value="Sinh"/>
+                    <xs:enumeration value="Sylo"/>
+                    <xs:enumeration value="Syrc"/>
+                    <xs:enumeration value="Syre"/>
+                    <xs:enumeration value="Syrj"/>
+                    <xs:enumeration value="Syrn"/>
+                    <xs:enumeration value="Tagb"/>
+                    <xs:enumeration value="Tale"/>
+                    <xs:enumeration value="Talu"/>
+                    <xs:enumeration value="Taml"/>
+                    <xs:enumeration value="Telu"/>
+                    <xs:enumeration value="Teng"/>
+                    <xs:enumeration value="Tfng"/>
+                    <xs:enumeration value="Tglg"/>
+                    <xs:enumeration value="Thaa"/>
+                    <xs:enumeration value="Thai"/>
+                    <xs:enumeration value="Tibt"/>
+                    <xs:enumeration value="Ugar"/>
+                    <xs:enumeration value="Vaii"/>
+                    <xs:enumeration value="Visp"/>
+                    <xs:enumeration value="Xpeo"/>
+                    <xs:enumeration value="Xsux"/>
+                    <xs:enumeration value="Yiii"/>
+                    <xs:enumeration value="Zxxx"/>
+                    <xs:enumeration value="Zyyy"/>
+                    <xs:enumeration value="Zzzz"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+
+ <!-- ************************************************************ -->    
+ <!-- *   The following are XML TREE ELEMENTS A-B-O-V-E leaves   * -->
+ <!-- ************************************************************ -->    
+    
+    
+    <!--  ******************************* -->    
+    <!--     EAD general elements         --> 
+    <!--  ******************************* -->
+    
+    <xs:complexType name="eadheader">
+        <xs:sequence>
+            <xs:element name="eadid" type="eadid" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="revisiondesc" type="revisiondesc" minOccurs="0" maxOccurs="1" />
+            <xs:element name="profiledesc" type="profiledesc" minOccurs="0" maxOccurs="1" />
+            <xs:element name="filedesc" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute default="iso639-2b" name="langencoding" type="xs:NMTOKEN"/>
+        <xs:attribute default="iso15924" name="scriptencoding" type="xs:NMTOKEN"/>
+        <xs:attribute default="iso8601" name="dateencoding" type="xs:NMTOKEN"/>
+        <xs:attribute default="iso3166-1" name="countryencoding" type="xs:NMTOKEN"/>
+        <xs:attribute default="iso15511" name="repositoryencoding" type="xs:NMTOKEN"/>
+        <xs:attribute name="relatedencoding" type="xs:NMTOKEN"/>    
+    </xs:complexType>    
+
+
+    <xs:complexType name="eadid">
+        <xs:attributeGroup ref="repositoryCode"/><!-- Archive int'l repository code according to ISO 15511 (ISIL) -->
+        <xs:attributeGroup ref="countryCode"/>
+        <xs:attribute name="identifier" type="xs:string" default="EADI 1.0"/>
+    </xs:complexType>
+    
+    <xs:complexType name="profiledesc">
+        <xs:all>
+            <xs:element name="creation" type="creation" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="descrules" type="descrules" minOccurs="0" maxOccurs="1"/>
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="creation">
+        <xs:sequence>
+            <xs:element name="date" type="date-eadi" minOccurs="1" maxOccurs="1" /><!--  תאריך יצירה --> 
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="revisiondesc">
+        <xs:sequence>
+            <xs:element name="change" type="change"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="change">
+        <xs:sequence>
+            <xs:element name="date" type="date-eadi" minOccurs="1" maxOccurs="1" /><!--  תאריך עדכון -->
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="controlAccess">
+        <xs:all>
+            <xs:element name="subject" type="thesaurusElement" minOccurs="0" maxOccurs="unbounded"/><!-- מילות מפתח --><!-- נושאים עיקריים -->
+            <xs:element name="corpname" type="corpname" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="persname" type="persname" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="name" type="thesaurusElement" minOccurs="0" maxOccurs="unbounded"/><!-- מכותבים/משתתפים -->
+            <xs:element name="geogname" type="thesaurusElement" minOccurs="0" maxOccurs="unbounded" /><!-- מקום -->
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="relatedmaterial">
+        <xs:sequence>
+            <xs:element name="unitid" type="nonEmptyString"/>
+            <xs:element name="unittitle" type="unittitle"/>
+            <xs:element name="head" type="xs:string"/><!-- תיאור הקשר -->
+            <xs:element name="p" type="xs:string"/><!-- תיאור הקשר -->
+        </xs:sequence>
+        <xs:attributeGroup ref="repositoryCode"/>
+    </xs:complexType>
+    
+    <xs:complexType name="dsc">
+        <xs:choice>
+            <xs:element name="c" type="c" minOccurs="1" maxOccurs="unbounded"/>
+            <!--<xs:element name="c" minOccurs="1" maxOccurs="unbounded">
+                <xs:alternative test="@level eq 'Archive'" type="c.archivelevel"/>
+                <xs:alternative test="@level eq 'Collection'" type="c.collectionlevel"/>
+                <xs:alternative test="@level eq 'Fond'" type="c.fondlevel"/>
+                <xs:alternative test="@level eq 'Sub-Fond'" type="c.subfondlevel"/>
+                <xs:alternative test="@level eq 'Series'" type="c.serieslevel"/>
+                <xs:alternative test="@level eq 'Sub-Series'" type="c.subserieslevel"/>
+                <xs:alternative test="@level eq 'File'" type="c.filelevel"/>
+                <xs:alternative test="@level eq 'Item'" type="c.itemlevel"/>
+                <xs:alternative test="(@level ne 'Archive') and (@level ne 'Collection') and (@level ne 'Fond') and (@level ne 'Sub-Fond') and (@level ne 'Series') and (@level ne 'Sub-Series') and (@level ne 'File') and (@level ne 'Item')" type="c.errorlevelarchive"/>
+            </xs:element>                
+        </xs:choice>--></xs:choice>
+    </xs:complexType>
+    
+    <xs:complexType name="digitalCopies">
+        <xs:sequence>
+            <xs:element name="file" type="file" minOccurs="1" maxOccurs="unbounded">
+
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="file">
+        <xs:attribute name="path" type="xs:string"/><!-- קובץ עותק דיגיטלי -->
+        <xs:attribute name="type">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:enumeration value="image"/>
+                    <xs:enumeration value="dataFile"/><!-- e.g. a OCR data file -->
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!--  ****************************************** -->
+    <!--       hierarchic descriptive elements       -->
+    <!--  ****************************************** -->
+    
+    <xs:complexType name="archdesc">
+      <xs:sequence>
+          <xs:group ref="m.desc.allLevels" minOccurs="1" maxOccurs="1"/>
+          <xs:element name="dsc" type="dsc" minOccurs="0" maxOccurs="1"/>          
+      </xs:sequence>
+        <xs:attributeGroup ref="defaultDescriptiveAttributes"/>
+    </xs:complexType>
+
+    <xs:complexType name="c">
+      <xs:sequence>
+            <xs:group ref="m.desc.allLevels"/>
+            <xs:group ref="m.desc.highLevels"/>
+            <xs:group ref="m.desc.lowLevels"/>
+            <xs:element name="c" type="c" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+        <xs:attributeGroup ref="defaultDescriptiveAttributes"/>       
+    </xs:complexType>
+    
+    <!--  ****************************************** -->
+    <!--             descriptive elements            -->
+    <!--  ****************************************** -->
+        
+    <xs:complexType name="did">
+      <xs:all>
+          <xs:element name="origination" type="origination" minOccurs="1" maxOccurs="1"/><!-- חובה --><!-- יוצר--><!-- שם הסטודיו--><!-- שם המהנדס/האדריכל --><!-- שם המראיין --><!-- מפיק--><!-- עורך -->
+          <xs:element name="unitdate" type="date-eadi" minOccurs="1" maxOccurs="unbounded" /><!-- חובה --><!-- תאריך/תאריכים --><!-- תאריך הפקה -->
+          <xs:element name="unitid" type="nonEmptyString" minOccurs="1" maxOccurs="1"/><!-- סימול מזהה--><!-- חובה -->
+          <xs:element name="unittitle" type="unittitle" minOccurs="1" maxOccurs="1" /><!-- שם/כותר -->
+          <xs:element name="period" type="period" minOccurs="0" maxOccurs="unbounded" /><!-- תקופה/תקופות --><!-- תקופת אירועים -->
+          <xs:element name="diplomaticsForm" type="diplomaticsForm" minOccurs="0" maxOccurs="unbounded"/><!--  צורה דיפלומטית -->
+          <xs:element name="physloc" type="physloc" minOccurs="0" maxOccurs="unbounded"/><!--  מיקום פיזי / מצב ההשאלה של הפריט -->
+          <xs:element name="physdesc" type="physdesc" minOccurs="1" maxOccurs="1"/>          
+          <xs:element name="langmaterial" type="langmaterial" minOccurs="0" maxOccurs="1"/>
+      </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="processinfo">
+      <xs:all>
+          <xs:element name="chronlist" type="chronlist"/>
+          <xs:element name="descriptionUnitStatus" type="descriptionUnitStatus" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="note" type="processingStatus" minOccurs="0" maxOccurs="1"/><!-- מצב סידור/רישום -->
+      </xs:all>
+    </xs:complexType>
+       
+    <xs:complexType name="chronlist">
+      <xs:all>
+          <xs:element name="chronitem" type="chronitem" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:all>
+    </xs:complexType>
+    
+    <xs:complexType name="chronitem">
+        <xs:all>
+            <xs:element name="date" type="date-eadi" minOccurs="0" maxOccurs="1"/><!-- תאריך קיטלוג -->
+            <xs:element name="persname" type="persname" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:all>
+    </xs:complexType>
+        
+    <xs:complexType name="physdesc">
+        <xs:all>
+            <xs:element name="extent" type="extent" minOccurs="1" maxOccurs="unbounded"/><!-- היקף --><!-- חובה -->
+            <xs:element name="medium" type="medium" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="genreform" type="genreform" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="dimensions" type="dimensions" minOccurs="0" maxOccurs="unbounded"/><!-- מספר דפים/עמודים --><!-- משך הראיון --><!-- גודל כרזה --><!-- גודל תצלום --><!-- גודל מפה --><!-- משך --><!-- ממדי החפץ -->
+            <xs:element name="physfacet" type="physfacet" minOccurs="0" maxOccurs="1"/>            
+        </xs:all>
+    </xs:complexType>
+    
+    <!--  ******************************************************* -->
+    <!--      groups of hierarchic descriptive sub-elements       -->
+    <!--  ******************************************************* -->
+
+    <xs:group name="m.desc.lowLevels">
+        <xs:sequence>
+            <xs:element name="genreSpecificData" type="genreSpecificData" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="geographicalLocation" type="geographicalLocation" minOccurs="0" maxOccurs="unbounded"/><!-- מיקום גיאוגרפי -->
+            <xs:element name="digitalCopies" type="digitalCopies" minOccurs="0" maxOccurs="1">
+                <xs:unique name="filenames_uniqueness">
+                    <xs:selector xpath="file"/>
+                    <xs:field xpath="@path"/>
+                </xs:unique>
+            </xs:element>            
+        </xs:sequence>
+    </xs:group>
+
+    <xs:group name="m.desc.highLevels">
+        <xs:sequence>
+            <xs:element name="bioghist" type="bioghist" minOccurs="0" maxOccurs="1"/><!-- היסטוריה מנהלית/ביוגרפיה -->
+            <xs:element name="appraisal" type="appraisal" minOccurs="0" maxOccurs="1"/><!-- מידע על הערכה, ביעור ותקופות אחזקה -->
+            <xs:element name="accruals" type="accruals" minOccurs="0" maxOccurs="1"/><!-- צפי לרכישות עתידיות-->
+            <xs:element name="arrangement" type="arrangement" minOccurs="0" maxOccurs="1"/><!-- שיטת הסידור-->
+            <xs:element name="acqinfo" type="acqinfo" minOccurs="0" maxOccurs="unbounded"/><!-- מקור רכישה-->            
+        </xs:sequence>
+    </xs:group>
+    
+    <xs:group name="m.desc.allLevels">
+        <xs:sequence>
+            <xs:element name="did" type="did" minOccurs="1" maxOccurs="1" >
+                <xs:unique name="recordId_uniqueness">
+                    <xs:selector xpath="did"/>
+                    <xs:field xpath="unitid"/>
+                </xs:unique>
+            </xs:element>
+            <xs:element name="processinfo" type="processinfo" minOccurs="0" maxOccurs="1"/><!-- מצב העבודה של הרשומה -->
+            <xs:element name="scopecontent" type="scopeContent" minOccurs="0" maxOccurs="1"/><!-- תוכן -->
+            <xs:element name="accessrestrict" type="accessrestrict" minOccurs="0" maxOccurs="1" /><!-- תנאי גישה/שימוש -->
+            <xs:element name="userestrict" type="userestrict" minOccurs="0" maxOccurs="unbounded" /><!-- תנאי העתקה / זכויות יוצרים-->
+            <xs:element name="originalsLoc" type="originalsLoc" minOccurs="0" maxOccurs="unbounded"/><!-- מיקום חומר מקור -->
+            <xs:element name="controlaccess" type="controlAccess" minOccurs="0" maxOccurs="1" />
+            <xs:element name="phystech" type="phystech" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="relatedmaterial" type="relatedmaterial" minOccurs="0" maxOccurs="unbounded"/><!-- קישור לפריטים שייכים -->
+            <xs:element name="note" type="note" minOccurs="0" maxOccurs="unbounded"/><!--  הערה -->
+            <xs:element name="otherfindaid" type="otherfindaid" minOccurs="0" maxOccurs="unbounded"/><!--  עזרי איתור -->
+            <xs:element name="bibliography" type="bibliography" minOccurs="0" maxOccurs="unbounded"/><!-- הפניות -->                      
+            <xs:element name="custodhist" type="custodhist" minOccurs="0" maxOccurs="1"/><!-- היסטוריה ארכיונית ומקור הרכישה -->
+        </xs:sequence>
+    </xs:group>
+</xs:schema>

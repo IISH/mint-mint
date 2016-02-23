@@ -1,0 +1,377 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://purl.org/dc/terms/"
+  xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  elementFormDefault="qualified">
+  <annotation>
+    <documentation>
+      EDM First Implementation Schema: DC Terms
+    </documentation>
+  </annotation>
+  <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+  <element name="isPartOf" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+A resource that is included either physically or logically in the CHO.
+<dcterms:hasPart>Vol.2. Issue 1</dcterms:hasPart>
+
+Under edm:Collection:
+Any other collection(s) that contain the current collection.
+
+Under edm:WebResource:
+A resource in which the web resource is physically or logically included. This property can be used for Web resources that are part of a hierarchy. Hierarchies can be represented as hierarchies of ProvidedCHOs or hierarchies of WebResources but not both at the same time. See the Task Force report on representing hierarachical entities.
+<dcterms:isPartOf rdf:resource=“http://data.europeana.eu/item/08701/1B0BACAA44D5A807E43D9B411C9781AAD2F96E65”/>
+
+Under edm:Agent:
+Reference to an agent that the described agent is part of.
+<dcterms:isPartOf rdf:resource=“http://identifier/parentCorporation/”>
+
+Under edm:Place:
+Reference to a place that the described place is part of.
+<dcterms:isPartOf rdf:resource=“http://sws.geonames.org/2635167/”/> (United Kingdom)
+
+Under edm:TimeSpan:
+Reference to a timespan of which the described timespan is a part.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="isReferencedBy" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+Another resource that references, cites or otherwise points to the CHO.
+<dcterms:isReferencedBy>Till, Nicholas (1994) Mozart and the Enlightenment: Truth, Virtue and Beauty in Mozart’s Operas, W. W. Norton & Company</dcterms:isReferencedBy>
+
+Under edm:Collection:
+Additional materials included alongside the collection that explain, incorporate, or otherwise make use of the collection. For example, may be used for finding aids, or material that describes a collection. 
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="temporal" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Temporal characteristics of the resource Example:
+<temporal>Roman</temporal>
+
+Under edm:ProvidedCHO:
+Temporal characteristics of the CHO. i.e. what the CHO is about or depicts in terms of time (e.g. a period, date or date range.)
+<dcterms:temporal>Roman Empire</dcterms:temporal>
+or create a reference to an instance of the TimeSpan class
+<dcterms:temporal rdf:resource=“http://semium.org/time/roman_empire”/>
+
+Under edm:Collection:
+A time period(s) associated with most or all of the objects in the collection.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="tableOfContents" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A list of sub-units of the CHO. 
+<dcterms:tableOfContents>Chapter 1. Introduction, Chapter 2. History </dcterms:tableOfContents>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="spatial" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Spatial characteristics of the resource. Example:
+<spatial>Portugal</spatial>
+Spatial characteristics of the CHO. i.e. what the CHO represents or depicts in terms of space (e.g. a location, co-ordinate or place). Either dcterms:spatial or dc:type or dc:subject or dc:coverage must be provided. 
+<dcterms:spatial>Portugal</dcterms:spatial>
+or create a reference to an instance of the Place class
+<dcterms:spatial rdf:resource=“http://sws.geonames.org/2264397/”/>
+
+Under edm:Collection:
+A place(s) or area(s) associated with most or all of the objects in the collection.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="requires" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A related resource that is required by the described resource to support its function, delivery or coherence. Example:
+<requires>http://ads.ahds.ac.uk/project/userinfo/css/oldbrowsers.css</requires> where the resource described is a HTML file at http://ads.ahds.ac.uk/project/userinfo/digitalTextArchiving.html
+]]>   </documentation>
+    </annotation>
+  </element>
+
+  <element name="replaces" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A related resource that is supplanted, displaced, or superseded by the described resource. Example:
+<replaces>http://dublincore.org/about/2006/01/01/bylaws/</replaces> where the resource described is a newer version (http://dublincore.org/about/2009/01/05/bylaws/)
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="references" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Another resource that references, cites or otherwise points to the CHO. Example:
+<references> Honderd jaar Noorse schilderkunst </references>
+]]>
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="provenance" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A statement of any changes in ownership and custody of the resource since its creation that are significant for its authenticity, integrity and interpretation. This may include a description of any changes successive custodians made to the resource. Example:
+<provenance>Donated by The National Library in 1965</provenance>
+        
+Under edm:ProvidedCHO:
+A statement of changes in ownership and custody of the CHO since its creation. Significant for authenticity, integrity and interpretation.
+<dcterms:provenance>Donated to The National Library in 1965</dcterms:provenance>
+
+Under edm:Collection:
+A statement of any changes in ownership and custody of the resource since its creation that are significant for its authenticity, integrity and interpretation.
+]]>     </documentation>
+    </annotation>
+  </element>
+
+  <element name="medium" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The material or physical carrier of the CHO.
+<dcterms:medium>metal</dcterms:medium>.
+It is recommended to use reference from the following vocabularies:
+Europeana Carriers Vocabulary or from an established thesaurus, e.g. 
+RDA Carrier Types
+LC Carriers Scheme
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="isVersionOf" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Another, later resource that is a version, edition or adaptation of the CHO demonstrating substantive changes in content rather than format.
+<dcterms:hasVersion>The Sorcerer’s Apprentice (translation by Edwin Zeydel,
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="issued" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Date of formal issuance (e.g., publication) of the resource. Example:
+<issued>1993</issued>
+
+Under edm:ProvidedCHO:
+Date of formal issuance or publication of the CHO.
+<dcterms:issued>1993</dcterms:issued>
+or create a reference to an instance of the TimeSpan class
+<dcterms:issued rdf:resource=“http://semium.org/time/17xx_3_third”/> (late 18th century).
+
+Under edm:WebResource:
+Date of formal issuance or publication of the WebResource.
+<dcterms:issued>1999</dcterms:issued>
+or create a reference to an instance of the TimeSpan class
+<dcterms:issued rdf:resource=“http://semium.org/time/2010”/>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="modified" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation>The date when the resource was last modified.</documentation>
+    </annotation>
+  </element>
+
+  <element name="isRequiredBy" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Another related resource that requires the CHO to support its function, delivery or coherence
+<isRequiredBy>http://www.myslides.com/myslideshow.ppt</isRequiredBy> where the image being described is required for an online slideshow.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="isReplacedBy" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Another resource that supplants , displaces, or supersedes the CHO. 
+<dcterms:isReplacedBy>http://dublincore.org/about/2009/01/05/bylaws/</dcterms:isReplacedBy> where the resource described is an older version (http://dublincore.org/about/2006/01/01/bylaws/) or link
+<dcterms:isReplacedBy rdf:resource=“http://dublincore.org/about/2009/01/05/bylaws/”/>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="isFormatOf" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A related resource that is substantially the same as the described resource, but in another format. Example:
+<isFormatOf>Europeana_logo.tiff</isFormatOf> where the resource being described is a png image file.
+
+Under edm:ProvidedCHO:
+A resource related to the CHO that is substantially the same as the CHO but in another format. 
+<dcterms:hasFormat>http://upload.wikimedia.org/wikipedia/en/f/f3/Europeana_logo.png</dcterms:hasFormat> for a png image file of the described tiff resource.
+Or as a link to a resource
+<dcterms:hasFormat rdf:resource=“http://upload.wikimedia.org/wikipedia/en/f/f3/Europeana_logo.png’’/>
+
+Under edm:WebResource:
+Another resource that is substantially the same as the web resource but in another format.
+<dcterms:isFormatOf>http://upload.wikimedia.org/wikipedia/en/f/f3/Europeana_logo.png</dcterms:isFormatOf> for a png image file of the described tiff web resource.
+Or as a link to a resource
+<dcterms:isFormatOf rdf:resource=“http://upload.wikimedia.org/wikipedia/en/f/f3/Europeana_logo.png”/>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="hasVersion" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Another, later resource that is a version, edition or adaptation of the CHO demonstrating substantive changes in content rather than format.
+<dcterms:hasVersion>The Sorcerer’s Apprentice (translation by Edwin Zeydel)</dcterms:hasVersion>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="hasFormat" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A related resource that is substantially the same as the pre-existing described resource, but in another format. Example:
+<hasFormat>http://upload.wikimedia.org/wikipedia/en/f/f3/Europeana _logo.png</hasFormat> where the resource being described is a tiff image file.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="extent" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The size or duration of the resource. Example:
+<extent>13 cm</extent> (the width of an original object).
+<extent>34 minutes</extent> (the length of an audio file).
+
+Under edm:ProvidedCHO:
+The size or duration of the CHO.
+<dcterms:extent>13 cm</dcterms:extent> (the width of an original object).
+<dcterms:extent>00:02:44</dcterms:extent> (the duration of an audio file).
+For indicating a duration refer to the properties mo:duration or po:duration or ebucore:duration.
+
+Under edm:Collection:
+The number of objects within the collection at the provider level (as opposed to the dataset provided to Europeana).
+
+Under edm:WebResource:
+The size or duration of the digital resource.
+<dcterms:extent>1h 26 min 41 sec</dcterms:extent>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="created" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Date of creation of the resource Example:
+<created>1564</created>
+<created>Iron Age</created>
+
+Under edm:ProvidedCHO:
+The date of creation of the CHO. 
+<dcterms:created>Mid 16th century</dcterms:created> or <dcterms:created>1584</dcterms:created>
+or create a reference to an instance of the TimeSpan class
+<dcterms:created rdf:resource=“http://semium.org/time/15xx_3_third”/>
+
+Under edm:WebResource:
+Date of creation of the web resource.
+<dcterms:created>2010</dcterms:created>
+or create a reference to an instance of the TimeSpan class
+<dc:date rdf:resource=“http://semium.org/time/2010”/>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="dateCopyrighted" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation>The date when the resource was copyrighted.</documentation>
+    </annotation>
+  </element>
+
+  <element name="conformsTo" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+An established standard to which the described resource conforms. Example:
+<conformsTo>W3C WCAG 2.0</conformsTo> (for an HTML document that conforms to web content accessibility guidelines).
+
+Under edm:ProvidedCHO:
+An established standard to which the CHO conforms.
+<dcterms:conformsTo>W3C WCAG 2.0</dcterms:conformsTo> (conforms to web content accessibility guidelines).
+Or link to the resource
+<dcterms:conformsTo rdf:resource=“http://www.w3.org/TR/WCAG/”/>
+
+Under edm:WebResource:
+An established standard to which the Web Resource conforms.
+<dcterms:conformsTo>W3C WCAG 2.0</dcterms:conformsTo> (web content accessibility guidelines).
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="accrualPeriodicity" type="rdf:LiteralType">
+    <annotation>
+      <documentation>A statement of how often the collection is updated. Note that it can be used to indicate the general publication periodicity of the collection (i.e radio program)
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="alternative" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+An alternative name for the resource. This can be any form of the title that is used as a substitute or an alternative to the formal title of the resource including abbreviations or translations of the title. Example:
+<alternative>Ocho semanas</alternative>
+(When <title>Eight weeks</title>)
+
+Under edm:ProvidedCHO:
+Any alternative title of the CHO including abbreviations or translations that may not be exact.
+
+Under edm:Collection:
+Alternative name of collection.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="audience" type="rdf:LiteralType">
+    <annotation>
+      <documentation>The primary audience(s) of the collection
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="description" type="rdf:LiteralType">
+    <annotation>
+      <documentation>
+        A summary of the content and topics of the collection.
+      </documentation>
+    </annotation>
+  </element>
+
+  <element name="hasPart" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+A resource that is included either physically or logically in the CHO.
+<dcterms:hasPart>Vol.2. Issue 1</dcterms:hasPart>.
+
+Under edm:Collection:
+Any other collection(s) contained within the current collection.
+
+Under edm:Agent:
+Reference to an Agent that is part of the Agent being described (e.g. a part of a corporation).
+
+Under edm:Place:
+Reference to a place that is part of the place being described.
+<dcterms:hasPart rdf:resource=“http://sws.geonames.org/2643741/”/> (City of London).
+
+Under edm:TimeSpan:
+Reference to a timespan which is part of the described timespan.
+]]></documentation>
+    </annotation>
+  </element>
+
+</schema>

@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by cpard (EMBRACE) -->
+<xs:schema 	xmlns:sch="http://purl.oclc.org/dsdl/schematron" 
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+			xmlns="http://www.euscreen.eu/schemas/euscreen/" 
+			targetNamespace="http://www.euscreen.eu/schemas/euscreen/" 
+			elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="EUScreen">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="metadata" type="MetadataType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="MetadataType">
+		<xs:sequence>
+			<xs:element name="AdministrativeMetadata" type="AdministrativeMetadataType"/>
+			<xs:element name="ContentDescriptiveMetadata" type="ContentDescriptiveMetadataType"/>
+			<xs:element name="ObjectDescriptiveMetadata" type="ObjectDescriptiveMetadataType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContentDescriptiveMetadataType">
+		<xs:sequence>
+			<xs:element name="TitleSet" type="TitleSetType" minOccurs="0"/>
+			<xs:element name="originallanguage" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="langType">
+							<xs:attribute name="olcode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LocalKeyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="clipTitle" type="xs:string" minOccurs="0"/>
+			<xs:element name="summary" type="xs:string"/>
+			<xs:element name="summaryInEnglish" type="xs:string"/>
+			<xs:element name="ThesaurusTerm" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="thestermCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="genre" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="genreType">
+							<xs:attribute name="genreCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="topic" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="topicType">
+							<xs:attribute name="topicCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="extendedDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="SeriesSeasonNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="episodeNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjectDescriptiveMetadataType">
+		<xs:sequence>
+			<xs:element name="recordType">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="itemTypeType">
+							<xs:attribute name="itemCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="information" type="xs:string" minOccurs="0"/>
+			<xs:element name="contributor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="relationIdentifier" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="relationtype" type="relationTypeType"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LanguageInformation" type="LanguageInformationType" minOccurs="0"/>
+			<xs:element name="SpatioTemporalInformation" type="SpatioTemporalInformationType" minOccurs="0"/>
+			<xs:element name="TechnicalInformation" type="TechnicalInformationType" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AdministrativeMetadataType">
+		<xs:sequence>
+			<xs:element name="provider">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="providersType">
+							<xs:attribute name="providerCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="publisherbroadcaster" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="iprRestrictions" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="iprRestrictionsType">
+							<xs:attribute name="iprRestrictionsCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rightsTermsAndConditions" type="xs:string" minOccurs="0"/>
+			<xs:element name="firstBroadcastChannel" type="xs:string" minOccurs="0"/>
+			<xs:element name="identifier" type="xs:string"/>
+			<xs:element name="originalIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="filename" type="xs:string" minOccurs="0"/>
+			<xs:element name="digitalItemURL" type="xs:string" minOccurs="0"/>
+			<xs:element name="landingPageURL" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LanguageInformationType">
+		<xs:sequence>
+			<xs:element name="languageUsed" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="langType">
+							<xs:attribute name="luCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subtitleLanguage" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="langType">
+							<xs:attribute name="slCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="metadatalanguage" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="langType">
+							<xs:attribute name="mlCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpatialInformationType">
+		<xs:sequence>
+			<xs:element name="GeographicalCoverage" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="geocovType">
+							<xs:attribute name="geocovCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CountryofProduction" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="countryType">
+							<xs:attribute name="copCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TemporalInformationType">
+		<xs:sequence>
+			<xs:element name="productionYear" type="xs:string" minOccurs="0"/>
+			<xs:element name="broadcastDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="lastBroadCastDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="lastProductionYear" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpatioTemporalInformationType">
+		<xs:sequence>
+			<xs:element name="SpatialInformation" type="SpatialInformationType" minOccurs="0"/>
+			<xs:element name="TemporalInformation" type="TemporalInformationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TechnicalInformationType">
+		<xs:sequence>
+			<xs:element name="materialType">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="materialType">
+							<xs:attribute name="materialCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="itemDuration" type="xs:string" minOccurs="0"/>
+			<xs:element name="aspectRatio" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="aspectRatioType">
+							<xs:attribute name="ratioCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="itemColor" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="itemColourType">
+							<xs:attribute name="colorCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="itemSound" minOccurs="0">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="itemSoundType">
+							<xs:attribute name="soundCode" type="xs:string"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TitleSetInOriginalLanguageType">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string" minOccurs="0" />
+			<xs:element name="seriesOrCollectionTitle" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="alternativeSeriesOrCollectionTitle " type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TitleSetInEnglishType">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string" minOccurs="0" />
+			<xs:element name="seriesOrCollectionTitle" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="alternativeSeriesOrCollectionTitle " type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TitleSetType">
+		<xs:sequence>
+			<xs:element name="TitleSetInOriginalLanguage" type="TitleSetInOriginalLanguageType" minOccurs="0"/>
+			<xs:element name="TitleSetInEnglish" type="TitleSetInEnglishType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ObjectDescriptiveMetadata" type="ObjectDescriptiveMetadataType"/>
+	<xs:element name="ContentDescriptiveMetadata" type="ContentDescriptiveMetadataType"/>
+	<xs:element name="AdministrativeMetadata" type="AdministrativeMetadataType"/>
+	<xs:element name="metadata" type="MetadataType"/>
+	<!-- CL_Types HERE-->
+	<xs:simpleType name="geocovType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="genreType">
+		<xs:annotation>
+			<xs:documentation>Information about the genre of the resource (as defined in EUscreen)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="News"/>
+			<xs:enumeration value="Drama/Fiction"/>
+			<xs:enumeration value="Entertainment and performing arts"/>
+			<xs:enumeration value="Factual"/>
+			<xs:enumeration value="Advertisements"/>
+			<xs:enumeration value="Interstitials and trailers"/>
+			<xs:enumeration value="Sport"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="topicType">
+		<xs:annotation>
+			<xs:documentation>Information about the topic of the resource (defined in EUscreen). Please assign each item to ONE historical topic ONLY.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Wars and conflict"/>
+			<xs:enumeration value="Society and social issues"/>
+			<xs:enumeration value="Transportation, science and technology"/>
+			<xs:enumeration value="Religion and belief"/>
+			<xs:enumeration value="Politics and Economics"/>
+			<xs:enumeration value="National holidays, festivals, anniversaries and annual events"/>
+			<xs:enumeration value="The media"/>
+			<xs:enumeration value="Lifestyle and consumerism"/>
+			<xs:enumeration value="Health"/>
+			<xs:enumeration value="Environment and Nature"/>
+			<xs:enumeration value="Education"/>
+			<xs:enumeration value="Disasters"/>
+			<xs:enumeration value="Arts and culture"/>
+			<xs:enumeration value="Work and production"/>
+			<xs:enumeration value="Special collections"/>
+			<xs:enumeration value="Being European"/>
+			<xs:enumeration value="History of European Television"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="countryType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="langType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Abkhazian"/>
+			<xs:enumeration value="Afar"/>
+			<xs:enumeration value="Afrikaans"/>
+			<xs:enumeration value="Akan"/>
+			<xs:enumeration value="Albanian"/>
+			<xs:enumeration value="Amharic"/>
+			<xs:enumeration value="Arabic"/>
+			<xs:enumeration value="Aragonese"/>
+			<xs:enumeration value="Armenian"/>
+			<xs:enumeration value="Assamese"/>
+			<xs:enumeration value="Avaric"/>
+			<xs:enumeration value="Avestan"/>
+			<xs:enumeration value="Aymara"/>
+			<xs:enumeration value="Azerbaijani"/>
+			<xs:enumeration value="Bambara"/>
+			<xs:enumeration value="Bashkir"/>
+			<xs:enumeration value="Basque"/>
+			<xs:enumeration value="Belarusian"/>
+			<xs:enumeration value="Bengali"/>
+			<xs:enumeration value="Bihari"/>
+			<xs:enumeration value="Bislama"/>
+			<xs:enumeration value="Bokmal, Norwegian; Norwegian Bokmal"/>
+			<xs:enumeration value="Bosnian"/>
+			<xs:enumeration value="Breton"/>
+			<xs:enumeration value="Bulgarian"/>
+			<xs:enumeration value="Burmese"/>
+			<xs:enumeration value="Catalan; Valencian"/>
+			<xs:enumeration value="Central Khmer"/>
+			<xs:enumeration value="Chamorro"/>
+			<xs:enumeration value="Chechen"/>
+			<xs:enumeration value="Chichewa; Chewa; Nyanja"/>
+			<xs:enumeration value="Chinese"/>
+			<xs:enumeration value="Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"/>
+			<xs:enumeration value="Chuvash"/>
+			<xs:enumeration value="Cornish"/>
+			<xs:enumeration value="Corsican"/>
+			<xs:enumeration value="Cree"/>
+			<xs:enumeration value="Croatian"/>
+			<xs:enumeration value="Czech"/>
+			<xs:enumeration value="Danish"/>
+			<xs:enumeration value="Divehi; Dhivehi; Maldivian"/>
+			<xs:enumeration value="Dutch; Flemish"/>
+			<xs:enumeration value="Dzongkha"/>
+			<xs:enumeration value="English"/>
+			<xs:enumeration value="Esperanto"/>
+			<xs:enumeration value="Estonian"/>
+			<xs:enumeration value="Ewe"/>
+			<xs:enumeration value="Faroese"/>
+			<xs:enumeration value="Fijian"/>
+			<xs:enumeration value="Finnish"/>
+			<xs:enumeration value="French"/>
+			<xs:enumeration value="Fulah"/>
+			<xs:enumeration value="Gaelic; Scottish Gaelic"/>
+			<xs:enumeration value="Galician"/>
+			<xs:enumeration value="Ganda"/>
+			<xs:enumeration value="Georgian"/>
+			<xs:enumeration value="German"/>
+			<xs:enumeration value="Greek, Modern (1453-)"/>
+			<xs:enumeration value="Guarani"/>
+			<xs:enumeration value="Gujarati"/>
+			<xs:enumeration value="Haitian; Haitian Creole"/>
+			<xs:enumeration value="Hausa"/>
+			<xs:enumeration value="Hebrew"/>
+			<xs:enumeration value="Herero"/>
+			<xs:enumeration value="Hindi"/>
+			<xs:enumeration value="Hiri Motu"/>
+			<xs:enumeration value="Hungarian"/>
+			<xs:enumeration value="Icelandic"/>
+			<xs:enumeration value="Ido"/>
+			<xs:enumeration value="Igbo"/>
+			<xs:enumeration value="Indonesian"/>
+			<xs:enumeration value="Interlingua (International Auxiliary Language Association)"/>
+			<xs:enumeration value="Interlingue"/>
+			<xs:enumeration value="Inuktitut"/>
+			<xs:enumeration value="Inupiaq"/>
+			<xs:enumeration value="Irish"/>
+			<xs:enumeration value="Italian"/>
+			<xs:enumeration value="Japanese"/>
+			<xs:enumeration value="Javanese"/>
+			<xs:enumeration value="Kalaallisut; Greenlandic"/>
+			<xs:enumeration value="Kannada"/>
+			<xs:enumeration value="Kanuri"/>
+			<xs:enumeration value="Kashmiri"/>
+			<xs:enumeration value="Kazakh"/>
+			<xs:enumeration value="Kikuyu; Gikuyu"/>
+			<xs:enumeration value="Kinyarwanda"/>
+			<xs:enumeration value="Kirghiz; Kyrgyz"/>
+			<xs:enumeration value="Komi"/>
+			<xs:enumeration value="Kongo"/>
+			<xs:enumeration value="Korean"/>
+			<xs:enumeration value="Kuanyama; Kwanyama"/>
+			<xs:enumeration value="Kurdish"/>
+			<xs:enumeration value="Lao"/>
+			<xs:enumeration value="Latin"/>
+			<xs:enumeration value="Latvian"/>
+			<xs:enumeration value="Limburgan; Limburger; Limburgish"/>
+			<xs:enumeration value="Lingala"/>
+			<xs:enumeration value="Lithuanian"/>
+			<xs:enumeration value="Luba-Katanga"/>
+			<xs:enumeration value="Luxembourgish; Letzeburgesch"/>
+			<xs:enumeration value="Macedonian"/>
+			<xs:enumeration value="Malagasy"/>
+			<xs:enumeration value="Malay"/>
+			<xs:enumeration value="Malayalam"/>
+			<xs:enumeration value="Maltese"/>
+			<xs:enumeration value="Manx"/>
+			<xs:enumeration value="Maori"/>
+			<xs:enumeration value="Marathi"/>
+			<xs:enumeration value="Marshallese"/>
+			<xs:enumeration value="Moldavian"/>
+			<xs:enumeration value="Mongolian"/>
+			<xs:enumeration value="Nauru"/>
+			<xs:enumeration value="Navajo; Navaho"/>
+			<xs:enumeration value="Ndebele, North; North Ndebele"/>
+			<xs:enumeration value="Ndebele, South; South Ndebele"/>
+			<xs:enumeration value="Ndonga"/>
+			<xs:enumeration value="Nepali"/>
+			<xs:enumeration value="Northern Sami"/>
+			<xs:enumeration value="Norwegian"/>
+			<xs:enumeration value="Norwegian Nynorsk; Nynorsk, Norwegian"/>
+			<xs:enumeration value="Occitan (post 1500); ProvenÃ§al"/>
+			<xs:enumeration value="Ojibwa"/>
+			<xs:enumeration value="Oriya"/>
+			<xs:enumeration value="Oromo"/>
+			<xs:enumeration value="Ossetian; Ossetic"/>
+			<xs:enumeration value="Pali"/>
+			<xs:enumeration value="Panjabi; Punjabi"/>
+			<xs:enumeration value="Persian"/>
+			<xs:enumeration value="Polish"/>
+			<xs:enumeration value="Portuguese"/>
+			<xs:enumeration value="Pushto"/>
+			<xs:enumeration value="Quechua"/>
+			<xs:enumeration value="Romanian"/>
+			<xs:enumeration value="Romansh"/>
+			<xs:enumeration value="Rundi"/>
+			<xs:enumeration value="Russian"/>
+			<xs:enumeration value="Samoan"/>
+			<xs:enumeration value="Sango"/>
+			<xs:enumeration value="Sanskrit"/>
+			<xs:enumeration value="Sardinian"/>
+			<xs:enumeration value="Serbian"/>
+			<xs:enumeration value="Shona"/>
+			<xs:enumeration value="Sichuan Yi"/>
+			<xs:enumeration value="Sindhi"/>
+			<xs:enumeration value="Sinhala; Sinhalese"/>
+			<xs:enumeration value="Slovak"/>
+			<xs:enumeration value="Slovenian"/>
+			<xs:enumeration value="Somali"/>
+			<xs:enumeration value="Sotho"/>
+			<xs:enumeration value="Spanish; Castilian, Southern"/>
+			<xs:enumeration value="Sundanese"/>
+			<xs:enumeration value="Swahili"/>
+			<xs:enumeration value="Swati"/>
+			<xs:enumeration value="Swedish"/>
+			<xs:enumeration value="Tagalog"/>
+			<xs:enumeration value="Tahitian"/>
+			<xs:enumeration value="Tajik"/>
+			<xs:enumeration value="Tamil"/>
+			<xs:enumeration value="Tatar"/>
+			<xs:enumeration value="Telugu"/>
+			<xs:enumeration value="Thai"/>
+			<xs:enumeration value="Tibetan"/>
+			<xs:enumeration value="Tigrinya"/>
+			<xs:enumeration value="Tonga (Tonga Islands)"/>
+			<xs:enumeration value="Tsonga"/>
+			<xs:enumeration value="Tswana"/>
+			<xs:enumeration value="Turkish"/>
+			<xs:enumeration value="Turkmen"/>
+			<xs:enumeration value="Twi"/>
+			<xs:enumeration value="Uighur; Uyghur"/>
+			<xs:enumeration value="Ukrainian"/>
+			<xs:enumeration value="Urdu"/>
+			<xs:enumeration value="Uzbek"/>
+			<xs:enumeration value="Venda"/>
+			<xs:enumeration value="Vietnamese"/>
+			<xs:enumeration value="Volapuk"/>
+			<xs:enumeration value="Welsh"/>
+			<xs:enumeration value="Western Frisian"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="aspectRatioType">
+		<xs:annotation>
+			<xs:documentation>Aspect ratio of the item</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="4:3"/>
+			<xs:enumeration value="14:9"/>
+			<xs:enumeration value="16:9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="itemColourType">
+		<xs:annotation>
+			<xs:documentation>Information about colour reproduction of the item</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Black &amp; White"/>
+			<xs:enumeration value="Colour"/>
+			<xs:enumeration value="Mixed"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="itemSoundType">
+		<xs:annotation>
+			<xs:documentation>Information about the audio reproduction of the item</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Mute"/>
+			<xs:enumeration value="Mono"/>
+			<xs:enumeration value="Stereo"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="itemTypeType">
+		<xs:annotation>
+			<xs:documentation>Information about the type of record, i.e. is it a series/collection entry, a whole pro-gramme/film, or an extract </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SERIES/COLLECTION"/>
+			<xs:enumeration value="ITEM"/>
+			<xs:enumeration value="CLIP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="materialType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="VIDEO"/>
+			<xs:enumeration value="IMAGE"/>
+			<xs:enumeration value="SOUND"/>
+			<xs:enumeration value="TEXT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="providersType">
+		<xs:annotation>
+			<xs:documentation>The name of the content provider for the given item. It will be automatically assigned by the EUscreen import and annotation tool. </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CT"/>
+			<xs:enumeration value="DR"/>
+			<xs:enumeration value="DW"/>
+			<xs:enumeration value="INA"/>
+			<xs:enumeration value="KB"/>
+			<xs:enumeration value="LCVA"/>
+			<xs:enumeration value="LUCE"/>
+			<xs:enumeration value="Memoriav"/>
+			<xs:enumeration value="NAVA"/>
+			<xs:enumeration value="NINA"/>
+			<xs:enumeration value="NISV"/>
+			<xs:enumeration value="ORF"/>
+			<xs:enumeration value="RTBF"/>
+			<xs:enumeration value="RTE"/>
+			<xs:enumeration value="RTP"/>
+			<xs:enumeration value="RTV SLO"/>
+			<xs:enumeration value="SASE"/>
+			<xs:enumeration value="TVC"/>
+			<xs:enumeration value="TVP"/>
+			<xs:enumeration value="TVR"/>
+			<xs:enumeration value="BUFVC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="iprRestrictionsType">
+		<xs:annotation>
+			<xs:documentation>Statement about the f IPR status of the item. The value of this element corresponds to one of the values listed in the Europeana rights statement</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Rights Reserved - Free Access"/>
+			<xs:enumeration value="Rights Reserved - Paid Access"/>
+			<xs:enumeration value="Rights Reserved - Restricted Access"/>
+			<xs:enumeration value="Creative Commons - Zero (CC0)"/>
+			<xs:enumeration value="Creative Commons - Attribution (BY)"/>
+			<xs:enumeration value="Creative Commons - Attribution, Share Alike (BY-SA)"/>
+			<xs:enumeration value="Creative Commons - Attribution, No derivatives (BY-ND)"/>
+			<xs:enumeration value="Creative Commons - Attribution, Non-commercial (BY-NC)"/>
+			<xs:enumeration value="Creative Commons - Attribution, Non-commercial, Share Alike (BY-NC-SA)"/>
+			<xs:enumeration value="Creative Commons - Attribution, Non-commercial, No derivatives (BY-NC-ND)"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="relationTypeType">
+		<xs:annotation>
+			<xs:documentation>Reference to an item to which the current item is related at production level. (See Relation Type for the kinds of relations that this specifies.) This reference of the related item can be the 'Identifier' (EUscreen unique identifier)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="hasPart"/>
+			<xs:enumeration value="hasVersion"/>
+			<xs:enumeration value="hasEpisodes"/>
+			<xs:enumeration value="isEpisodeOf"/>
+			<xs:enumeration value="isVersionOf"/>
+			<xs:enumeration value="isPartOf"/>
+			<xs:enumeration value="isReferencedBy"/>
+			<xs:enumeration value="isRelatedTo"/>
+			<xs:enumeration value="references"/>
+			<!--sample -->
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

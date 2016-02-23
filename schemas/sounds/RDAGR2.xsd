@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2007-2012 The Europeana Foundation
+ 
+   Licenced under the EUPL, Version 1.1 (the "Licence") and subsequent versions as approved
+   by the European Commission;
+   You may not use this work except in compliance with the Licence.
+  
+   You may obtain a copy of the Licence at:
+   http://joinup.ec.europa.eu/software/page/eupl
+ 
+   Unless required by applicable law or agreed to in writing, software distributed under
+   the Licence is distributed on an "AS IS" basis, without warranties or conditions of
+   any kind, either express or implied.
+   See the Licence for the specific language governing permissions and limitations under
+   the Licence.
+-->
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    targetNamespace="http://rdvocab.info/ElementsGr2/">
+
+    <annotation>
+        <documentation> Europeana representation of the RDA Group 2 Element Vocabulary</documentation>
+    </annotation>
+
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+    <element name="biographicalInformation" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+Information pertaining to the life or history of the agent.
+<rdaGr2:biographicalInformation>Courtois neveu aîné started a company of the same name manufacturing brass instruments in Paris in 1803</rdaGr2:biographicalInformation>
+]]></documentation>
+        </annotation>
+    </element>
+    <element name="dateOfBirth" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The date the agent (person) was born. 
+<rdaGr2:dateOfBirth>1795</rdaGr2:dateOfBirth>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="dateOfDeath" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The date the agent (person) died.
+<rdaGr2:dateOfDeath>1895</rdaGr2:dateOfDeath>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="placeOfBirth" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The town, city, province, state, and/or country in which a person was born.
+<rdaGr2:placeOfBirth>Lusaka, Northern Rhodesia</rdaGr2:placeOfBirth>
+<rdaGr2:placeOfBirth rdf:resource=”http://sws.geonames.org/909137/”/>
+]]></documentation>
+        </annotation>
+    </element>
+    <element name="placeOfDeath" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The town, city, province, state, and/or country in which a person died.
+<rdaGr2:placeOfDeath>London, United Kingdom</rdaGr2:placeOfDeath>
+<rdaGr2:placeOfDeath rdf:resource=“http://sws.geonames.org/2635167/”/>
+]]></documentation>
+        </annotation>
+    </element>
+    <element name="dateOfEstablishment" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The date on which the agent (corporate body) was established or founded.
+<rdaGr2:dateOfEstablishment>1795</rdaGr2:dateOfEstablishment>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="dateOfTermination" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The date on which the agent (corporate body) was terminated or dissolved.
+<rdaGr2:dateOfTermination>1895</rdaGr2:dateOfTermination>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="gender" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The gender with which the agent identifies.
+< rdaGr2:gender>Female</rdaGr2:gender>
+]]></documentation>
+        </annotation>
+    </element>
+    <element name="professionOrOccupation" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The profession or occupation in which the agent works or has worked.
+<rdaGr2:professionOrOccupation>Instrument Maker</rdaGr2:professionOrOccupation>
+]]></documentation>
+        </annotation>
+    </element>
+</schema>

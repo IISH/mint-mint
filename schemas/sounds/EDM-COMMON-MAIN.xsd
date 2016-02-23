@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2007-2012 The Europeana Foundation
+ 
+   Licenced under the EUPL, Version 1.1 (the "Licence") and subsequent versions as approved
+   by the European Commission;
+   You may not use this work except in compliance with the Licence.
+  
+   You may obtain a copy of the Licence at:
+   http://joinup.ec.europa.eu/software/page/eupl
+ 
+   Unless required by applicable law or agreed to in writing, software distributed under
+   the Licence is distributed on an "AS IS" basis, without warranties or conditions of
+   any kind, either express or implied.
+   See the Licence for the specific language governing permissions and limitations under
+   the Licence.
+-->  
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.europeana.eu/schemas/edm/"
+    xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dcterms="http://purl.org/dc/terms/" xmlns:wgs84="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:enrichment="http://www.europeana.eu/schemas/edm/enrichment/"
+    xmlns:ore="http://www.openarchives.org/ore/terms/"
+    xmlns:rdaGr2="http://rdvocab.info/ElementsGr2/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:wgs84_pos="http://www.w3.org/2003/01/geo/wgs84_pos#" elementFormDefault="qualified">
+
+    <import namespace="http://purl.org/dc/elements/1.1/" schemaLocation="DC.xsd"/>
+    <import namespace="http://www.w3.org/2004/02/skos/core#" schemaLocation="SKOS.xsd"/>
+    <import namespace="http://purl.org/dc/terms/" schemaLocation="DCTERMS.xsd"/>
+    <import namespace="http://www.w3.org/2003/01/geo/wgs84_pos#" schemaLocation="WGS84.xsd"/>
+    <import namespace="http://rdvocab.info/ElementsGr2/" schemaLocation="RDAGR2.xsd"/>
+    <import namespace="http://xmlns.com/foaf/0.1/" schemaLocation="FOAF.xsd"/>
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+    <import namespace="http://www.w3.org/2002/07/owl#" schemaLocation="OWL.xsd"/>
+
+    <annotation>
+        <documentation> EDM First Implementation Schema: Main schema in the EDM namespace, to be
+            wrapped up in RDF </documentation>
+    </annotation>
+
+
+    <!--  Base EDM Entities Declaration-->
+
+    <complexType name="BaseProvidedCHOType">
+        <annotation>
+            <documentation>Base class for ProvidedCHO implementations</documentation>
+        </annotation>
+        <complexContent>
+            <extension base="edm:EuropeanaType">
+                <sequence minOccurs="1" maxOccurs="1">
+                    <!-- EDM SPECIFIC ELEMENTS -->
+                    <element ref="edm:currentLocation" maxOccurs="1" minOccurs="0"/>
+                    <element ref="edm:hasMet" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:hasType" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:incorporates" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:isDerivativeOf" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:isNextInSequence" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:isRelatedTo" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:isRepresentationOf" maxOccurs="1" minOccurs="0"/>
+                    <element maxOccurs="unbounded" minOccurs="0" ref="edm:isGatheredInto"/>
+                    <element ref="edm:isSimilarTo" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:isSuccessorOf" maxOccurs="unbounded" minOccurs="0"/>
+                    <element ref="edm:realizes" maxOccurs="unbounded" minOccurs="0"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="EuropeanaType">
+        <annotation>
+            <documentation> EuropeanaType contains the DC &amp; DCTERMS elements. </documentation>
+        </annotation>
+        <complexContent>
+            <extension base="rdf:AboutType">
+                <sequence minOccurs="0" maxOccurs="unbounded">
+                    <choice>
+                        <!-- DC -->
+                        <element ref="dc:contributor"/>
+                        <element ref="dc:coverage"/>
+                        <element ref="dc:creator"/>
+                        <element ref="dc:date"/>
+                        <element ref="dc:description"/>
+                        <element ref="dc:format"/>
+                        <element ref="dc:identifier"/>
+                        <element ref="dc:language"/>
+                        <element ref="dc:publisher"/>
+                        <element ref="dc:relation"/>
+                        <element ref="dc:rights"/>
+                        <element ref="dc:source"/>
+                        <element ref="dc:subject"/>
+                        <element ref="dc:title"/>
+                        <element ref="dc:type"/>
+
+                        <!-- DCTerms -->
+                        <element ref="dcterms:alternative"/>
+                        <element ref="dcterms:conformsTo"/>
+                        <element ref="dcterms:created"/>
+                        <element ref="dcterms:dateCopyrighted"/>
+                        <element ref="dcterms:extent"/>
+                        <element ref="dcterms:hasFormat"/>
+                        <element ref="dcterms:hasPart"/>
+                        <element ref="dcterms:hasVersion"/>
+                        <element ref="dcterms:isVersionOf"/>
+                        <element ref="dcterms:isFormatOf"/>
+                        <element ref="dcterms:isPartOf"/>
+                        <element ref="dcterms:isReferencedBy"/>
+                        <element ref="dcterms:isReplacedBy"/>
+                        <element ref="dcterms:isRequiredBy"/>
+                        <element ref="dcterms:issued"/>
+                        <element ref="dcterms:modified"/>
+                        <element ref="dcterms:medium"/>
+                        <element ref="dcterms:provenance"/>
+                        <element ref="dcterms:references"/>
+                        <element ref="dcterms:replaces"/>
+                        <element ref="dcterms:requires"/>
+                        <element ref="dcterms:spatial"/>
+                        <element ref="dcterms:tableOfContents"/>
+                        <element ref="dcterms:temporal"/>
+                    </choice>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+
+
+    <simpleType name="EdmType">
+        <restriction base="string">
+            <enumeration value="TEXT"/>
+            <enumeration value="VIDEO"/>
+            <enumeration value="IMAGE"/>
+            <enumeration value="SOUND"/>
+            <enumeration value="3D"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="UGCType">
+        <restriction base="string">
+            <enumeration value="true"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="CountryCodes">
+        <restriction base="string">
+            <enumeration value="Albania"/>
+            <enumeration value="Andorra"/>
+            <enumeration value="Armenia"/>
+            <enumeration value="Austria"/>
+            <enumeration value="Belarus"/>
+            <enumeration value="Belgium"/>
+            <enumeration value="Bosnia and Herzegovina"/>
+            <enumeration value="Bulgaria"/>
+            <enumeration value="Croatia"/>
+            <enumeration value="Cyprus"/>
+            <enumeration value="Czech Republic"/>
+            <enumeration value="Denmark"/>
+            <enumeration value="Estonia"/>
+            <enumeration value="Europe"/>
+            <enumeration value="Finland"/>
+            <enumeration value="France"/>
+            <enumeration value="Georgia"/>
+            <enumeration value="Germany"/>
+            <enumeration value="Greece"/>
+            <enumeration value="Hungary"/>
+            <enumeration value="Iceland"/>
+            <enumeration value="Ireland"/>
+            <enumeration value="Italy"/>
+            <enumeration value="Latvia"/>
+            <enumeration value="Liechtenstein"/>
+            <enumeration value="Lithuania"/>
+            <enumeration value="Luxembourg"/>
+            <enumeration value="Macedonia"/>
+            <enumeration value="Malta"/>
+            <enumeration value="Moldova"/>
+            <enumeration value="Monaco"/>
+            <enumeration value="Montenegro"/>
+            <enumeration value="Netherlands"/>
+            <enumeration value="Norway"/>
+            <enumeration value="Poland"/>
+            <enumeration value="Portugal"/>
+            <enumeration value="Romania"/>
+            <enumeration value="Russia"/>
+            <enumeration value="San Marino"/>
+            <enumeration value="Serbia"/>
+            <enumeration value="Slovakia"/>
+            <enumeration value="Slovenia"/>
+            <enumeration value="Spain"/>
+            <enumeration value="Sweden"/>
+            <enumeration value="Switzerland"/>
+            <enumeration value="Turkey"/>
+            <enumeration value="Ukraine"/>
+            <enumeration value="United Kingdom"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="LanguageCodes">
+        <restriction base="string">
+            <enumeration value="bg"/>
+            <enumeration value="ca"/>
+            <enumeration value="cs"/>
+            <enumeration value="da"/>
+            <enumeration value="de"/>
+            <enumeration value="el"/>
+            <enumeration value="en"/>
+            <enumeration value="es"/>
+            <enumeration value="et"/>
+            <enumeration value="fi"/>
+            <enumeration value="fr"/>
+            <enumeration value="hu"/>
+            <enumeration value="ie"/>
+            <enumeration value="is"/>
+            <enumeration value="it"/>
+            <enumeration value="lt"/>
+            <enumeration value="lv"/>
+            <enumeration value="mt"/>
+            <enumeration value="mul"/>
+            <enumeration value="nl"/>
+            <enumeration value="no"/>
+            <enumeration value="pl"/>
+            <enumeration value="ro"/>
+            <enumeration value="ru"/>
+            <enumeration value="sk"/>
+            <enumeration value="sl"/>
+            <enumeration value="sr"/>
+            <enumeration value="sv"/>
+            <enumeration value="tr"/>
+            <enumeration value="yi"/>
+            <enumeration value="cy"/>
+        </restriction>
+    </simpleType>
+
+
+
+    <element name="aggregatedCHO" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of the source object e.g. the Mona Lisa itself. This could be a full linked open data URI or an internal identifier.
+<edm:aggregatedCHO rdf resource=“#UEDIN:214”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="begin" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The beginning of a temporal period
+
+Under edm:Agent:
+The date the agent was born/established.
+<edm:begin>1795</edm:begin>
+
+Under edm:TimeSpan:
+The date the timespan started.
+<edm:begin>27 BC</edm:begin>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="country" type="edm:CountryCodes">
+        <annotation>
+            <documentation>This is the name of the country in which the Provider is based or
+                "Europe" in the case of Europe-wide projects. Example:
+                &lt;edm:country&gt;AL&lt;/edm:country&gt; </documentation>
+        </annotation>
+    </element>
+
+    <element name="collectionName" type="rdf:LiteralType">
+        <annotation>
+            <documentation>A literal indicating the name of the collection</documentation>
+        </annotation>
+    </element>
+
+    <element name="currentLocation" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The geographic location whose boundaries presently include the CHO. If the name of a repository, building, site, or other entity is used then it should include an indication of its geographic location. ref 0….119/46
+<edm:currentLocation rdf:resource=“http://sws.geonames.org/2950159”/> (Identifier for Berlin)
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="dataProvider" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The name or identifier of the data provider of the object (i.e. the organisation providing data to an aggregator). Identifiers will not be available until Europeana has implemented its Organisation profile.
+<edm:dataProvider>Palais des Beaux Arts de Lille</edm:dataProvider>
+Or as a link to a resource
+<edm:dataProvider rdf:resource=“http://www.pba-lille.fr/"/>
+]]>
+</documentation>
+        </annotation>
+    </element>
+
+    <element name="end" type="rdf:LiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The ending of a temporal period
+
+Under edm:Agent:
+The date the agent died/terminated.
+<edm:end>1885</edm:end>
+
+Under edm:TimeSpan:
+The date the timespan finished.
+<edm:end>476 AD</edm:end>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="type" type="edm:EdmType">
+        <annotation>
+            <documentation><![CDATA[
+The value must be one of the types accepted by Europeana as it will support portal functionality:
+TEXT, VIDEO, SOUND, IMAGE, 3D. (For 3D, when applicable, use the value “3D-PDF” in dc:format) 
+<edm:type>IMAGE</edm:type> (upper-case)
+<edm:type>3D</edm:type> (upper-case)
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="wasPresentAt" type="rdf:ResourceType">
+        <annotation>
+            <documentation>This property associates the people, things or information resources with an event role.</documentation>
+        </annotation>
+    </element>
+
+    <element name="hasMet" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+edm:hasMet relates a resource with the objects or phenomena that have happened to or have happened together with the resource under consideration. We can abstractly think of history and the present as a series of "meetings" between people and other things in space-time. Therefore we name this relationship as the things the object "has met" in the course of its existence. These meetings are events in the proper sense, in which other people and things participate in any role. Example:The location of an object may be due to a transport, move to a place, or because it has been created at that spot.
+
+Under edm:ProvidedCHO:
+The identifier of an agent, a place, a time period or any other identifiable entity that the CHO may have “met” in its life. 
+<edm:hasMet rdf:resource=“http://viaf.org/viaf/96994048”/> (Identifier for William Shakespeare)
+<edm:hasMet rdf:resource=“http://sws.geonames.org/6620265”/> (location identifier for Shakespeare’s 
+Globe theatre.)
+
+Under edm:Agent:
+Reference to another entity which the agent has “met” in a broad sense. For example a reference to a Place class
+<edm:hasMet rdf:resource=“http://sws.geonames.org/6620265/”>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="hasType" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of a concept, or a word or phrase from a controlled vocabulary (thesaurus etc) giving the type of the CHO. <edm:hasType>Sound</edm:hasType>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="hasView" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The URL of a web resource which is a digital representation of the CHO. This may be the source object itself in the case of a born digital cultural heritage object. edm:hasView should only be used where there are several views of the CHO and one (or both) of the mandatory edm:isShownAt or edm:isShownBy properties have already been used. It is for cases where one CHO has several views of the same object. (e.g. a shoe and a detail of the label of the shoe) 
+<edm:hasView>rdf:resource="http://www.mimo-db.eu/media/UEDIN/VIDEO/0032195v.mpg"/>
+<edm:hasView rdf:resource="http://www.mimo-db.eu/media/UEDIN/AUDIO/0032195s.mp3"/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="incorporates" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of another resource that is incorporated in the described CHO. E.g. the movie “A Clockwork Orange” incorporates Rossini’s La Gazza Ladra” in its soundtrack.
+<edm:incorporates rdf:resource=“http://www.identifier/IncorporatedResource”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="isDerivativeOf" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+This property captures a narrower notion of derivation than edm:isSimilarTo, in the sense that it relates a resource to another one, obtained by reworking, reducing, expanding, parts or the whole contents of the former, and possibly adding some minor parts. Versions have an even narrower meaning, in that it requires common identity between the related resources. Translations, summaries, abstractions etc. do not qualify as versions, but do qualify as derivatives. Example:The Italian translation of Moby Dick is a derivation of the original work.
+
+Under edm:ProvidedCHO:
+The identifier of another resource from which the described CHO has been derived. E.g. the identifier of Moby Dick when the Italian translation is the described CHO. 
+<edm:isDerivativeOf rdf:resource=“http://www.identifier/SourceResource”/>.
+
+Under edm:WebResource:
+The identifier of a WebResource from which another WebResource has been derived, Used to indicate the master version.
+]]>            </documentation>
+        </annotation>
+    </element>
+
+    <element name="isNextInSequence" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+edm:isNextInSequence relates two resources S and R that are ordered parts of the same resource A, and such that S comes immediately after R in the order created by their being parts of A. Example: Page 34 of the Gutenberg Bible is next in sequence to page 33 of the same title.
+
+Under edm:ProvidedCHO:
+The identifier of the preceding object where both objects are part of the same overall resource. Use this for objects that are part of a hierarchy or sequence to ensure correct display in the portal.
+<edm:isNextInSequence rdf:resource=“http://www.identifier/PrecedingResource”/>
+
+Under edm:WebResource:
+Where one CHO has several web resources, shown by multiple instances of the edm:hasView property on the ore:Aggregation this property can be used to show the sequence of the objects. Each web resource (apart ref 0….n23/46 from the first in the sequence) should use this property to give the URI of the preceding resource in the sequence.
+<edm:isNextInSequence rdf:resource=“http://data.europeana.eu/item
+2020601/9A3907CB46B651DE91621933ECC31EC1DC52B33C”/> links to the WebResource for page 2 of a digitised diary from the WebResource for page 3.
+
+Under edm:Place:
+Can be used to represent a sequence of Place entities over time e.g. the historical layers of the city of Troy. Use this for objects that are part of a hierarchy or sequence to ensure correct display in the portal.
+
+Under edm:TimeSpan:
+Can be used to represent a sequence of Time periods. Use this for objects that are part of a hierarchy or sequence to ensure correct display in the portal.
+<edm:isNextInSequence rdf:resource=“http://semium.org/time/roman_republic”/> (The Roman Empire 
+was preceded by the Roman Republic)
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="highlight" type="rdf:ResourceType">
+        <annotation>
+            <documentation>A ‘key object' from the collection be it a masterpiece, or a good exemplar. (This is a subproperty of the inverse of the isGatheredInto collection membership property)
+</documentation>
+        </annotation>
+    </element>
+    <element name="isGatheredInto" type="rdf:ResourceType">
+        <annotation>
+            <documentation>Sub-property of dcterms:isPartOf</documentation>
+        </annotation>
+    </element>
+    <element name="isRelatedTo" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+edm:isRelatedTo is the most general contextual property in EDM. Contextual properties have typically to do either with the things that have happened to or together with the object under consideration, or what the object refers to by its shape, form or features in a figural or encoded form. For sake of simplicity, we include in the contextual relationships also the scholarly classification, which may have either to do with the role and cultural connections of the object in the past, or its kind of structure, substance or contents as it can be verified at present. Example:Moby Dick is related to XIX century literature. Mona Lisa is related to Renaissance Art.
+
+Under edm:ProvidedCHO:
+The identifier or name of a concept or other resource to which the described CHO is related. E.g. Moby Dick is related to XIX Century literature. Cf dc:relation.
+<edm:isRelatedTo>Literature</edm:isRelatedTo >
+Or link to resource
+<edm:isRelatedTo rdf:resource=“http://www.eionet.europa.eu/gemet/concept?cp=4850”/>
+
+Under edm:Agent:
+Reference to other entities, particularly other agents, with whom the agent is related in a generic sense.
+<edm:isRelatedTo rdf:resource=“http://identifier/relatedAgent/”>
+
+Under edm:Collection:
+Additional materials included alongside the collection that explain, incorporate, or otherwise make use of the collection. For example, may be used for finding aids, or material that describes a collection.
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="itemGenre" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+Genre of objects or resources in the collection.
+
+edm:itemGenre (Vocabulary) is Mandatory.
+Select a concept from the Europeana Sounds Genre Thesaurus provided here.
+Double-click on “unmapped (thesaurus)” in @rdf:resource box to view possible values.
+
+edm:itemGenre is used for additional or more specific genre concepts.
+Any concepts may be used. Prefer concepts from an established thesaurus, e.g.
+	LC Genre/Form (http://id.loc.gov/authorities/genreForms.html)
+	FAST (http://fast.oclc.org/searchfast/)
+	EBU (http://www.ebu.ch/metadata/cs/web/ebu_ContentGenreCS_Mapping_p.xml.html)
+]]></documentation>
+        </annotation>
+    </element>
+    <element name="isRepresentationOf" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of another object of which the described CHO is a representation. E.g. the identifier of the music score when the CHO being described is a sound recording of the same work.
+<edm:isRepresentativeOf rdf:resource=“http://www.identifier/RepresentedResource”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="isShownAt" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The URL of a web view of the object in full information context. Either edm:isShownAt or edm:isShownBy is mandatory.
+<edm:isShownAt rdf:resource="http://www.mimo-db.eu/UEDIN/214"/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="isShownBy" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The URL of a web view of the object. Either edm:isShownAt or edm:isShownBy is mandatory. 
+<edm:isShownBy rdf:resource="http://www.mimo-db.eu/media/UEDIN/IMAGE/0032195c.jpg"/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="isSimilarTo" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of another resource to which the described CHO is similar.
+<edm:isSimilarTo rdf:resource=“http://www.identifier/SimilarResource”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="isSuccessorOf" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The identifier of a resource to which the described CHO is a successor. E.g. “The Two Towers” is a successor of “Fellowship of the Ring”. 
+<edm:isSuccessorOf rdf:resource=“http://dbpedia.org/resource/The_Fellowship_of_the_Ring”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="landingPage" type="rdf:ResourceType">
+        <annotation>
+            <documentation>This property captures the relation between an aggregation representing a
+                cultural heritage object and the Web resource representing that object on the
+                provider's web site. Example: Mona Lisa, represented by the Europeana aggregation
+                europeana:ea-monalisa, has landing page
+                http://www.culture.gouv.fr/public/mistral/joconde_fr?ACTION=CHERCHER&amp;FIELD_1=REF&amp;VALUE_1=000PE025604</documentation>
+        </annotation>
+    </element>
+
+    <element name="language" type="edm:LanguageCodes">
+        <annotation>
+            <documentation>A language assigned to the resource with reference to the Provider.
+                Example:&lt;edm:language&gt;ro&lt;/edm:language&gt; </documentation>
+        </annotation>
+    </element>
+
+    <element name="object" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+The URL of a representation of the CHO which will be used for generating previews for use in the Europeana portal. This may be the same URL as edm:isShownBy. See Europeana Portal Image Guidelines (http://pro.europeana.eu/technical-requirements) for information regarding the specifications of previews.
+<edm:object rdf:resource="http://www.mimo-db.eu/media/UEDIN/IMAGE/0032195c.jpg"/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="preview" type="rdf:ResourceType">
+        <annotation>
+            <documentation>
+                A reference to the Europeana cached thumbnail.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="provider" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+The name or identifier of the provider of the object (i.e. the organisation providing data directly to Europeana). Identifiers will not be available until Europeana has implemented its Organisation profile. 
+<edm:provider>Geheugen van Nederland</edm:provider>
+or link to a resource
+<edm:provider rdf:resource=“http://www.geheugenvannederland.nl/”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="realizes" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+If the CHO described is of type edm:PhysicalThing it may realize an information object. E.g. a copy of the Gutenberg publication realizes the Bible.
+<edm:realizes rdf:resource=“http://www.identifier/PhysicalThing”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="rights" type="rdf:ResourceType">
+        <annotation>
+            <documentation><![CDATA[
+This is a mandatory property and the value given here should be the rights statement that applies to the digital representation as given (for example) in edm:object or edm:isShownAt/By, when these resources are not provided with their own edm:rights (see edm:rights documentation). The value for the rights statement in this element is a URI taken from the set of those defined for use in Europeana at http://pro.europeana.eu/available-rights-statements 
+The rights statement given in this property will also by default apply to the previews used in the portal and will support portal search and display functionality. Where there are several web resources attached to one edm:ProvidedCHO the rights statement given here will be regarded as the “reference” value for all the web resources. Therefore a suitable value should be chosen with care if the rights statements vary between different resources. In fact in such cases Europeana encourages the provision of separate rights statements for each individual web resource. For example, a low-resolution of a JPEG file could be CC-BY, while the high resolution version or a video showing the object would be CC-BY-NC. In such cases the rights statements given for the individual web resources would ‘override’ the one specified at the ore:Aggregation level. Any other associated web resources would still be governed by the edm:rights of the ore:Aggregation.
+<edm:rights rdf:resource=“http://creativecommons.org/publicdomain/mark/1.0/”/>
+<edm:rights rdf:resource=“http://www.europeana.eu/rights/rr-f/”/>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="ugc" type="edm:UGCType">
+        <annotation>
+            <documentation><![CDATA[
+This is a mandatory property for objects that are user generated or user created that have been collected by crowdsourcing or project activity. The property is used to identify such content and can only take the value “true” (lower case). 
+<edm:ugc>true<edm:ugc>
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="userTag" type="rdf:LiteralType">
+        <annotation>
+            <documentation>This is a tag created by a user through the Europeana interface.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="year" type="rdf:LiteralType">
+        <annotation>
+            <documentation>A point of time associated with an event in the life of the original
+                analog or born digital object. Example:&lt;edm:year &gt;1523&lt;/edm:year&gt;
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="europeanaProxy" type="boolean">
+        <annotation>
+            <documentation>A flag indicating that the specific Proxy can be used as a europeanaProxy
+            </documentation>
+        </annotation>
+    </element>
+
+</schema>

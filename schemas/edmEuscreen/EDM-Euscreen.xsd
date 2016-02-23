@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.edm-euscreen.eu/0.1/"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:edm="http://www.europeana.eu/schemas/edm/" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:dm2e="http://onto.dm2e.eu/schemas/dm2e/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:void="http://rdfs.org/ns/void#" elementFormDefault="qualified"
+	xmlns:eus="http://www.edm-euscreen.eu/0.1/">
+
+	<annotation>
+		<documentation>
+			EDM-Euscreen
+		</documentation>
+	</annotation>
+
+
+	<import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+	<element name="provider" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of contributor
+			</documentation>
+		</annotation>
+	</element>
+	<element name="actor" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of contributor
+			</documentation>
+		</annotation>
+	</element>
+	<element name="producer" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of contributor
+			</documentation>
+		</annotation>
+	</element>
+	<element name="summary" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of description
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="summaryInEnglish" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of description
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="additionalInformation" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of description
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="countryOfProduction" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of description
+			</documentation>
+		</annotation>
+	</element>
+	<element name="originalLanguage" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of language
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="captioning" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of language
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="subtitling" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+			Subproperty of language
+		</documentation>
+		</annotation>
+	</element>
+	<element name="broadcastChannel" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+			Subproperty of publisher
+		</documentation>
+		</annotation>
+	</element>
+	<element name="IPRRestrictions" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+			Subproperty of rights
+		</documentation>
+		</annotation>
+	</element>
+	<element name="keywords" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of subject
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="thesaurusTerm" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of subject
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="topic" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of subject
+			</documentation>
+		</annotation>
+	</element>
+	<element name="genre" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of type
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="workType" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of type
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="itemType" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of type
+			</documentation>
+		</annotation>
+	</element>
+	<element name="seriesTitle" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of alternative
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="collectionTitle" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of alternative
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="clipTitle" type="rdf:LiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of alternative
+			</documentation>
+		</annotation>
+	</element>
+	<element name="hasMember" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of hasPart
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="hasEpisode" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of hasPart
+			</documentation>
+		</annotation>
+	</element>
+	<element name="isEpisodeOf" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of isPartOf
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="isMemberOf" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of isPartOf
+			</documentation>
+		</annotation>
+	</element>
+	<element name="videoEncoding" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="audioEncoding" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="aspectRatio" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="container" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+	<element name="colour" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+
+	<element name="sound" type="rdf:ResourceOrLiteralType">
+		<annotation>
+			<documentation>
+				Subproperty of format
+			</documentation>
+		</annotation>
+	</element>
+</schema>

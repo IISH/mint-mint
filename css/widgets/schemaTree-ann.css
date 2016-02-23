@@ -1,0 +1,63 @@
+.schema-tree-ann-container {
+	border-radius: 10px;
+	background: #D6EBFF;
+	border: 1px solid silver;
+	z-index: 2;
+	overflow: hidden !important;
+	padding: 0px !important;
+	height: 100%;
+}
+
+.schema-tree-ann-newDelMode-container {
+	border-radius: 10px;
+	background: #FFFFCC;
+	border: 1px solid silver;
+	z-index: 2;
+	overflow: hidden !important;
+	padding: 0px !important;
+	height: 100%;
+}
+
+
+.schema-tree-ann {
+	height: 150%;
+	overflow: auto;
+	background: none !important;
+	padding: 10px;
+}
+
+
+
+.schema-tree-ann .jstree-search {
+	background: #55d !important;
+	color: white !important;
+	font-weight: bold;
+}
+	
+.schema-tree-search {
+	background: #ddd;
+	border-radius: 10px 10px 0px 0px;
+	height: 30px;
+	padding: 10px;
+	box-shadow: 0 0 4px 0 black;
+}
+
+.schema-tree-ann  a .jstree-icon {
+	/*background: #eee;
+	 width: 0px;
+     height: 0px;
+     padding-top: 0px;*/
+     background:url(../../images/buttons/info.png) 0px 0px no-repeat !important;
+}
+
+.schema-tree-ann li > a {
+	color: blue;
+	text-decoration:normal;
+	font-size:14px;
+}
+
+
+.schema-tree-ann a .jstree-icon:hover {
+	background:url(../../images/buttons/info_hover.png) 0px 0px no-repeat !important;
+}
+

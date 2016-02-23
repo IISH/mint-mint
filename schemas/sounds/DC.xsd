@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2007-2012 The Europeana Foundation
+ 
+   Licenced under the EUPL, Version 1.1 (the "Licence") and subsequent versions as approved
+   by the European Commission;
+   You may not use this work except in compliance with the Licence.
+  
+   You may obtain a copy of the Licence at:
+   http://joinup.ec.europa.eu/software/page/eupl
+ 
+   Unless required by applicable law or agreed to in writing, software distributed under
+   the Licence is distributed on an "AS IS" basis, without warranties or conditions of
+   any kind, either express or implied.
+   See the Licence for the specific language governing permissions and limitations under
+   the Licence.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://purl.org/dc/elements/1.1/"
+  xmlns:dcterms="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/" elementFormDefault="qualified">
+  <annotation>
+    <documentation>
+      EDM First Implementation Schema: DC
+    </documentation>
+  </annotation>
+  <import namespace="http://purl.org/dc/terms/" schemaLocation="DCTERMS.xsd"/>
+  <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+  <element name="contributor" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Use for contributors to the CHO. If possible supply the identifier of the contributor from an authority source.
+<dc:contributor>Maria Callas</dc:contributor>
+or create a reference to an instance of the Agent class
+<dc:contributor rdf:resource=“http://www.example.com/MariaCallas”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="coverage" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The spatial or temporal topic of the CHO. Use the more precise dcterms:spatial or dcterms:temporal properties if the data will support it. One of dc:coverage or dc:subject or dc:type or dcterms:spatial must be provided. 
+<dc:coverage>1995-1996</dc:coverage> or <dc:coverage>Berlin</dc:coverage>
+or create a reference to an instance of a contextual class, for example, a Place class
+<dc:coverage rdf:resource=“http://sws.geonames.org/2950159”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="creator" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+An entity primarily responsible for making the resource. This may be a person, organisation or a service. Example:
+<creator>Shakespeare, William</creator>
+
+Under edm:ProvidedCHO:
+For the creator of the CHO. If possible supply the identifier of the creator from an authority source. Repeat for multiple creators.
+
+Under edm:Collection:
+Entity that gathers objects together following implicit or explicit criteria or accrual policy.
+
+Under edm:WebResource:
+For the creator of the WebResource. If possible supply the identifier of the creator from an authority source. Repeat for multiple creators.
+<dc:creator xml:lang=“es”>Biblicoteca Nacional de España</dc:creator>
+or create a reference to an instance of the Agent class
+<dc:creator rdf:resource=“http://viaf.org/viaf/147143794/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="date" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A point or period of time associated with an event in the lifecycle of the resource. Example:
+<date>17th century</date>
+(For example the date when an object was repaired)
+
+Under edm:ProvidedCHO:
+Use for a significant date in the life of the CHO. Consider using the sub-properties of dcterms:created or dcterms:issued.
+<dc:date>Early 20th century</dc:date> or <dc:date>1919</dc:date>
+or create a reference to an instance of the TimeSpan class
+<dc:date rdf:resource=“http://semium.org/time/19xx_1_third”/>
+
+Under edm:Agent:
+A significant date associated with the Agent.
+<dc:date>1803</dc:date/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="description" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+An account of the resource. Example:
+<description>Illustrated guide to airport markings and lighting signals, with particular reference to SMGCS (Surface Movement Guidance and Control System) for airports with low visibility conditions.</description>
+
+Under edm:ProvidedCHO:
+A description of the CHO. Either dc:description or dc:title must be provided.
+<dc:description> Dubbing of brown wax cylinder recording made in the late 1890s or early 1900s. The first cylinder of Paganini's Violin Concerto No. 1 is missing, but the remaining four contain the first movement of this work with piano accompaniment, played perhaps in D major.</dc:description>
+
+Under edm:WebResource:
+Use for an account or description of this digital representation.
+<dc:description>Performance with Buccin trombone/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="format" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The file format, physical medium or dimensions of the resource. Example:
+<format>image/jpeg</format>
+
+Under edm:ProvidedCHO:
+Use for the terms generally applied to indicate the format of the cultural heritage object or the file format of a born digital object. Use the value “3D-PDF” if appropriate.
+<dc:format>vinyl</dc:format>
+
+Under edm:WebResource:
+Use for the format of this digital representation. (Use the value “3D-PDF” if appropriate.)
+<dc:format>image/jpeg</dc:format>
+It is recommended to use reference from the following vocabularies:
+LC format descriptions 
+RDA encoding formats
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="identifier" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+An identifier of the original CHO.
+<dc:identifier>urn:isbn:9780387097466</dc:identifier>
+
+Under edm:Collection:
+Unique key for collection
+
+Under edm:Agent
+An identifier of the agent.
+<dc:creator>http://viaf.org/viaf/96994048</dc:creator>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="language" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+The language of text CHOs and also for other types of CHO if there is a language aspect. Mandatory for TEXT objects, strongly recommended for other object types with a language element. Best practice is to use ISO 639 two- or three-letter primary language tags3. Repeat for multiple languages. 
+<dc:language>it</dc:language>
+
+Under edm:Collection:
+If text, the language(s)of the items in the collection
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="publisher" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The name of the publisher of the CHO. If possible supply the identifier of the publisher from an authority source. 
+<dc:publisher>Oxford University Press</dc:publisher>
+or create a reference to an instance of the Agent class
+<dc:publisher rdf:resource=“http://www.oup.com/”/>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="relation" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:ProvidedCHO:
+The name or identifier of a related resource, generally used for other related CHOs. Cf edm:isRelatedTo. 
+<dc:relation>maps.crace.1/33</dc:relation> (Shelf mark)
+Or to provide a link to another object:
+<dc:relation rdf:resource=“http://www.identifier/relatedObject”/>
+
+Under edm:Collection:
+This is the most general relationship property and can be used to indicate any other collection(s) associated with or that complement the current collection. It can also be used for additional materials included alongside the collection that explain, incorporate, or otherwise make use of the collection: for example, finding aids, or material that describes a collection. For these examples and similar materials, consider the more specialised properties of edm:isRelatedTo, dcterms:isReferencedBy and edm:isSimilarTo.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="rights" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Information about copyright of the original object. Example:
+<rights>Creative Commons Attribution 3.0 License</rights>
+
+Under edm:ProvidedCHO:
+Use to give the name of the rights holder of the CHO if possible or for more general rights information. (Note that the controlled edm:rights property relates to the digital objects and applies to the edm:WebResource and/or edm:Aggregation).
+<dc:rights>Copyright British Library Board</dc:rights>
+
+Under edm:Collection:
+Information about rights held in and over the collection which cannot be captured by the edm:rights property.
+
+Under edm:WebResource:
+Use for the name of the rights holder of this digital representation if possible or for more general rights information. Note the difference between this property and the mandatory, controlled edm:rights property below.
+<dc:rights> Copyright British Library Board</dc:rights>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="source" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A related resource from which the described resource is derived in whole or in part. Example:
+<source>Security Magazine pp 3-12</source>
+<source>BAM portal</source>
+        
+Under edm:ProvidedCHO:
+A related resource from which the described resource is derived in whole or in part i.e. the source of the original CHO. (Not the name of the content holder: for this see edm:dataProvider.)
+<dc:source>Security Magazine pp 3-12</dc:source>
+
+Under edm:WebResource:
+A related resource from which the web resource is derived in whole or in part. 
+<dc:source>The name of the source video tape <dc:source>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="subject" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The topic of the resource. Example:
+<subject>submarine</subject>
+
+Under edm:ProvidedCHO:
+The subject of the CHO. One of dc:subject or dc:coverage or dc:type or dcterms:spatial must be provided
+<dc:subject>trombone</dc:subject>
+or create a reference to an instance of the Concept class
+<dc :subject rdf:resource=“http://id.loc.gov/authorities/subjects/sh85137992"/>.
+It is recommended to use reference from the following vocabularies:
+LCSH
+FAST 
+RAMEAU
+
+Under edm:Collection:
+Terms that describe the overall topical content of the objects in the collection.
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="title" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+A name given to the resource. Typically, a Title will be a name by which the resource is formally known. Example:
+<title>Taal vitaal</title>
+
+Under edm:ProvidedCHO:
+The title of the CHO. Either dc:title or dc:description must be provided. Exact translations of the title can be provided using appropriate xml language attributes
+<dc:title xml:lang=“en”>Concerto for Violin and Orchestra, no.1, op.6 / Paganini</dc:title>
+
+Under edm:Collection:
+Name of collection. Note that either dc:title or dc:description is mandatory.
+]]>      </documentation>
+    </annotation>
+  </element>
+
+  <element name="type" type="rdf:ResourceOrLiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The nature of the CHO. Ideally the term(s) will be taken from a controlled vocabulary. One of dc:type or dc:subject or dc:coverage or dcterms:spatial must be provided.
+<dc:type>Book</dc:type> or <dc:type>trombone</dc:type>
+or create a reference to an instance of the Concept class
+<dc:type rdf:about=“http://www.mimo-db.eu/HornbostelAndSachs/356/”>
+]]></documentation>
+    </annotation>
+  </element>
+</schema>

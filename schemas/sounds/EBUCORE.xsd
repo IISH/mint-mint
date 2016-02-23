@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+    <element name="hasGenre" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation><![CDATA[
+Genre of the Sound CHO.
+
+ebucore:hasGenre (Vocabulary) is Mandatory.
+Select a concept from the Europeana Sounds Genre Thesaurus provided here.
+Double-click on “unmapped (thesaurus)” in @rdf:resource box to view possible values.
+
+ebucore:hasGenre is used for additional or more specific genre concepts.
+Any concepts may be used. Prefer concepts from an established thesaurus, e.g.
+	LC Genre/Form (http://id.loc.gov/authorities/genreForms.html)
+	FAST (http://fast.oclc.org/searchfast/)
+	EBU (http://www.ebu.ch/metadata/cs/web/ebu_ContentGenreCS_Mapping_p.xml.html)
+]]></documentation>
+        </annotation>
+    </element>
+
+    <element name="dateDigitised" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>The date when the resource was digitised
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="duration" type="rdf:LiteralType">
+        <annotation>
+            <documentation>The duration of the resource or part of a resource. The duration should be provided in the syntax recommended by ISO 8601: hh:mm:ss
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="audioChannelNumber" type="rdf:LiteralType">
+        <annotation>
+            <documentation>The total number of audio channels.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="audioTrackConfiguration" type="rdf:LiteralType">
+        <annotation>
+            <documentation>To define the audio track configuration. Used to express the arrangement or audio tracks e.g. 'stereo', '2+1', 'surround', 'surround (7+1)'
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="bitRate" type="rdf:LiteralType">
+        <annotation>
+            <documentation>The audio bit rate in bits per second
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="fileSize" type="rdf:LiteralType">
+        <annotation>
+            <documentation>To indicate the storage requirements or file size of a digital resource. The file size is expressed in bytes.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="hasAudioEncodingFormat" type="rdf:LiteralType">
+        <annotation>
+            <documentation>To define the audio compression format of the resource e.g. AAC for an audio channel.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="hasMimeType" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>Define the main MIME type as defined by IANA: e.g. audio, video, text, application, or a container MIME type
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="sampleRate" type="rdf:LiteralType">
+        <annotation>
+            <documentation>The frequency at which audio is sampled per second. Also called sampling rate.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="sampleSize" type="rdf:LiteralType">
+        <annotation>
+            <documentation>To provide the audio encoding bit depth. Also called bit depth.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="hasRole" type="rdf:ResourceType">
+        <annotation>
+            <documentation>A role is the function of an entity or agent with respect to an activity, in the context of a usage, generation, invalidation, association, start, and end.
+            	</documentation>
+        </annotation>
+    </element>
+
+</schema>

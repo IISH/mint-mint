@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:mets ID="idvalue0" LABEL="" OBJID="" PROFILE="" TYPE="" xmlns:p="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/METS/ METS.xsd ">
+  <p:metsHdr ADMID="idvalue0" CREATEDATE="2001-12-31T12:00:00" ID="idvalue1" LASTMODDATE="2001-12-31T12:00:00" RECORDSTATUS="">
+    <p:agent ID="idvalue2" OTHERROLE="" OTHERTYPE="" ROLE="CREATOR" TYPE="INDIVIDUAL">
+      <p:name>p:name</p:name>
+    </p:agent>
+    <p:altRecordID ID="idvalue3" TYPE="">p:altRecordID</p:altRecordID>
+    <p:metsDocumentID ID="idvalue4" TYPE="">p:metsDocumentID</p:metsDocumentID>
+  </p:metsHdr>
+  <p:dmdSec ADMID="idvalue0" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue5" STATUS="">
+    <p:mdRef CHECKSUM="" CHECKSUMTYPE="Adler-32" CREATED="2001-12-31T12:00:00" ID="idvalue6" LABEL="" LOCTYPE="ARK" MDTYPE="MARC" MDTYPEVERSION="" MIMETYPE="" OTHERLOCTYPE="" OTHERMDTYPE="" SIZE="0" XPTR="" xlink:actuate="onLoad" xlink:arcrole="" xlink:href="http://tempuri.org" xlink:role="" xlink:show="new" xlink:title="" xlink:type="simple"/>
+    <p:mdWrap CHECKSUM="" CHECKSUMTYPE="Adler-32" CREATED="2001-12-31T12:00:00" ID="idvalue7" LABEL="" MDTYPE="MARC" MDTYPEVERSION="" MIMETYPE="" OTHERMDTYPE="" SIZE="0"/>
+  </p:dmdSec>
+  <p:amdSec ID="idvalue8">
+    <p:techMD ADMID="idvalue0" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue9" STATUS=""/>
+    <p:rightsMD ADMID="idvalue0" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue10" STATUS=""/>
+    <p:sourceMD ADMID="idvalue0" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue11" STATUS=""/>
+    <p:digiprovMD ADMID="idvalue0" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue12" STATUS=""/>
+  </p:amdSec>
+  <p:fileSec ID="idvalue13">
+    <p:fileGrp ADMID="idvalue0" ID="idvalue14" USE="" VERSDATE="2001-12-31T12:00:00"/>
+  </p:fileSec>
+  <p:structMap ID="idvalue15" LABEL="" TYPE="">
+    <p:div ADMID="idvalue0" CONTENTIDS="" DMDID="idvalue0" ID="idvalue16" LABEL="" ORDER="0" ORDERLABEL="" TYPE="" p:label=""/>
+  </p:structMap>
+  <p:structLink ID="idvalue17">
+    <p:smLink ID="idvalue18" p:actuate="onLoad" p:arcrole="" p:from="" p:show="new" p:title="" p:to=""/>
+  </p:structLink>
+  <p:behaviorSec CREATED="2001-12-31T12:00:00" ID="idvalue19" LABEL="">
+    <p:behaviorSec CREATED="2001-12-31T12:00:00" ID="idvalue20" LABEL=""/>
+    <p:behavior ADMID="idvalue0" BTYPE="" CREATED="2001-12-31T12:00:00" GROUPID="" ID="idvalue21" LABEL="" STRUCTID="idvalue0">
+      <p:mechanism ID="idvalue22" LABEL="" LOCTYPE="ARK" OTHERLOCTYPE="" xlink:actuate="onLoad" xlink:arcrole="" xlink:href="http://tempuri.org" xlink:role="" xlink:show="new" xlink:title="" xlink:type="simple"/>
+    </p:behavior>
+  </p:behaviorSec>
+</p:mets>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    targetNamespace="http://www.cidoc-crm.org/cidoc-crm/" elementFormDefault="qualified"
+    attributeFormDefault="qualified" xmlns:crm="http://www.cidoc-crm.org/cidoc-crm/">
+
+    <annotation>
+        <documentation>
+            EDM+ v 1: VOID
+        </documentation>
+    </annotation>
+
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+    <element name="P79F.beginning_is_qualified_by" type="rdf:LiteralType">
+        <annotation>
+            <documentation>This property is used to indicate the certainty of a timespan, in this case its beginning. Use “uncertainty_data” or uncertainty_granularity” to indicate the type of uncertainty.
+More information can be found in the “Recommendations for the RDF
+representation of DM2E metadata”.
+</documentation>
+        </annotation>
+    </element>
+    <element name="P80F.end_is_qualified_by" type="rdf:LiteralType">
+        <annotation>
+            <documentation>This property is used to indicate the certainty of a timespan, in this case its beginning. Use “uncertainty_data” or uncertainty_granularity” to indicate the type of uncertainty.
+More information can be found in the “Recommendations for the RDF
+representation of DM2E metadata”.
+</documentation>
+        </annotation>
+    </element>
+</schema>

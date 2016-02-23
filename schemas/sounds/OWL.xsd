@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2007-2012 The Europeana Foundation
+ 
+   Licenced under the EUPL, Version 1.1 (the "Licence") and subsequent versions as approved
+   by the European Commission;
+   You may not use this work except in compliance with the Licence.
+  
+   You may obtain a copy of the Licence at:
+   http://joinup.ec.europa.eu/software/page/eupl
+ 
+   Unless required by applicable law or agreed to in writing, software distributed under
+   the Licence is distributed on an "AS IS" basis, without warranties or conditions of
+   any kind, either express or implied.
+   See the Licence for the specific language governing permissions and limitations under
+   the Licence.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/2002/07/owl#"
+  elementFormDefault="qualified" attributeFormDefault="qualified"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <annotation>
+    <documentation>
+      EDM First Implementation Schema: OWL
+    </documentation>
+  </annotation>
+
+  <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+  <element name="sameAs" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The built-in OWL property owl:sameAs links an individual to an individual. Such an owl:sameAs statement indicates that two URI references actually refer to the same thing: the individuals have the same "identity".
+
+Under edm:ProvidedCHO and edm:WebResource:
+Use to point to your own (linked data) representation of the object, if you have already minted a URI identifier for it. It is also possible to provide URIs minted by third-parties for the object.5 <owl:sameAs rdf:resource=“http://www.identifier/SameResourceElsewhere”/>
+
+Under edm:Agent:
+Another URI of the same agent. 
+<owl:sameAs rdf:resource=“http://www.identifier/sameResourceElsewhere”/>
+
+Under edm:Place:
+URI of a Place
+<owl:sameAs rdf:resource=“http://sws.geonames.org/2635167/”/>(London)
+
+Under edm:TimeSpan:
+owl:sameAs The URI of a timespan
+<owl:sameAs rdf:resource=“http://semium.org/time/roman_empire”/> 
+]]></documentation>
+    </annotation>
+  </element>
+
+</schema>

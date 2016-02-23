@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2007 EDL FOUNDATION
+
+  Licensed under the EUPL, Version 1.1 or - as soon they
+  will be approved by the European Commission - subsequent
+  versions of the EUPL (the "Licence");
+  you may not use this work except in compliance with the
+  Licence.
+  You may obtain a copy of the Licence at:
+
+  http://ec.europa.eu/idabc/eupl
+
+  Unless required by applicable law or agreed to in
+  writing, software distributed under the Licence is
+  distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  express or implied.
+  See the Licence for the specific language governing
+  permissions and limitations under the Licence.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:edm="http://www.europeana.eu/schemas/edm/"
+  xmlns:xml="http://www.w3.org/XML/1998/namespace"
+  targetNamespace="http://www.w3.org/2004/02/skos/core#" elementFormDefault="qualified"
+  attributeFormDefault="qualified">
+
+  <annotation>
+    <documentation>
+      EDM First Implementation Schema: SKOS
+    </documentation>
+  </annotation>
+
+
+  <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+  <element name="Concept">
+    <complexType>
+      <complexContent>
+        <extension base="rdf:AboutType">
+          <sequence minOccurs="0" maxOccurs="unbounded">
+            <choice>
+              <element ref="skos:prefLabel"/>
+              <element ref="skos:altLabel"/>
+              <element ref="skos:hiddenLabel"/>
+              <element ref="skos:broader"/>
+              <element ref="skos:narrower"/>
+              <element ref="skos:related"/>
+              <element ref="skos:broadMatch"/>
+              <element ref="skos:narrowMatch"/>
+              <element ref="skos:relatedMatch"/>
+              <element ref="skos:exactMatch"/>
+              <element ref="skos:closeMatch"/>
+              <element ref="skos:note"/>
+              <element ref="skos:notation"/>
+              <element ref="skos:inScheme"/>
+            </choice>
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+
+
+  <element name="broadMatch" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related matching concepts from other concept schemes. 
+<skos:broadMatch rdf:resource=“http://broadMatch.term/”/>
+<skos:narrowMatch rdf:resource=“http://narrowMatch.term/”/>
+<skos:relatedMatch rdf:resource=“http://relatedMatch.term/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="narrowMatch" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related matching concepts from other concept schemes. 
+<skos:broadMatch rdf:resource=“http://broadMatch.term/”/>
+<skos:narrowMatch rdf:resource=“http://narrowMatch.term/”/>
+<skos:relatedMatch rdf:resource=“http://relatedMatch.term/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="relatedMatch" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related matching concepts from other concept schemes. 
+<skos:broadMatch rdf:resource=“http://broadMatch.term/”/>
+<skos:narrowMatch rdf:resource=“http://narrowMatch.term/”/>
+<skos:relatedMatch rdf:resource=“http://relatedMatch.term/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="exactMatch" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of close or exactly matching concepts from other concept schemes.
+<skos:exactMatch rdf:resource=“http://exactMatch.term/”/>
+<skos:closeMatch rdf:resource=“http://closeMatch.term/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="closeMatch" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of close or exactly matching concepts from other concept schemes.
+<skos:exactMatch rdf:resource=“http://exactMatch.term/”/>
+<skos:closeMatch rdf:resource=“http://closeMatch.term/”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="notation" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+The notation in which the concept is represented. This may not be words in natural language for some knowledge organisation systems e.g. algebra <skos:notation rdf:datatype=“http://www.w3.org/2001/XMLSchema#int”>123</skos:notation>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="prefLabel" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:Agent:
+The preferred form of the name of the agent. Although the maximum number of occurences is set at 1, it can be interpreted as 1 per language tag.
+<skos:prefLabel xml:lang="fr">Courtois neveu aîné</skos:prefLabel>
+<skos:prefLabel xml:lang="en">Courtois’eldest nephew</skos:prefLabel>
+
+Under edm:Place:
+The preferred form of the name of the place. Although the maximum number is stated as 1, this can be interpreted as 1 per language tag. 
+<skos:prefLabel xml:lang="en">London</skos:prefLabel>
+
+Under edm:TimeSpan:
+The preferred form of the name of the timespan or period. Although the maximum number of occurrences is set at 1, it can be interpreted as 1 per language tag.
+<skos:prefLabel xml:lang=“en”>Roman Empire</skos:prefLabel>
+
+Under skos:Concept:
+The preferred form of the name of the concept. Although the maximum number of occurences is set at 1, it can be interpreted as 1 per language tag.
+<skos:prefLabel xml:lang="fr">Buccin</skos:prefLabel>
+<skos:prefLabel xml:lang="de">Buccin</skos:prefLabel>
+<skos:prefLabel xml:lang="nl">Buccin</skos:prefLabel>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="altLabel" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:Agent:
+Alternative forms of the name of the agent.
+<skos:altLabel xml:lang="en">Courtois</skos:altLabel>
+<skos:altLabel xml:lang="fr">Augte. Courtois aîné</skos:altLabel>
+
+Under edm:Place:
+Alternative forms of the name of the place.
+<skos:altLabel xml:lang="en">Greater London</skos:altLabel>
+
+Under edm:TimeSpan:
+Alternative forms of the name of the timespan or period.
+<skos:altLabel xml:lang=“fr”>Empire romain (27 avant J.-C.-476 après J.-C.)</skos:altLabel>
+
+Under skos:Concept:
+Alternative forms of the name of the concept.
+<skos:altLabel xml:lang="en">Buccin</skos:altLabel>
+]]>
+
+</documentation>
+    </annotation>
+  </element>
+  <element name="broader" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related concept in the same thesaurus or controlled vocabulary.
+<skos:broader rdf:resource=“http://www.mimo-db.eu/InstrumentsKeywords/4369_1”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="narrower" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related concept in the same thesaurus or controlled vocabulary.
+<skos:broader rdf:resource=“http://www.mimo-db.eu/InstrumentsKeywords/4369_1”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="related" type="rdf:ResourceType">
+    <annotation>
+      <documentation><![CDATA[
+The identifier of a broader, narrower or related concept in the same thesaurus or controlled vocabulary.
+<skos:broader rdf:resource=“http://www.mimo-db.eu/InstrumentsKeywords/4369_1”/>
+]]></documentation>
+    </annotation>
+  </element>
+  <element name="inScheme" type="rdf:ResourceType">
+    <annotation>
+      <documentation>The URI of a concept scheme</documentation>
+    </annotation>
+  </element>
+
+  <element name="note" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+To be used as a refinement of dc:coverage to capture context information.
+
+Under edm:ProvidedCHO:
+To be used as a refinement of dc:coverage to capture context information.
+
+Under edm:Agent:
+A note about the agent e.g. biographical notes.
+<skos:note> Courtois neveu aîné started a company of the same name manufacturing brass instruments in Paris in 1803</skos:note>
+
+Under edm:Place:
+Information relating to the place.
+<skos:note xml:lang="en">Pop. 21m</skos:note>
+
+Under edm:TimeSpan:
+Information relating to the timespan or period.
+<skos:note>The Roman Empire (Latin: Imperium Romanum) was the post-Republican period of the ancient Roman civilization, characterised by an autocratic form of government and large territorial holdings around the Mediterranean in Europe, Africa, and Asia.</skos:note>
+
+Under skos:Concept:
+Information relating to the concept.
+<skos:note>The buccin is a visually distinctive trombone popularized in military bands in France between 1810–1845 which subsequently faded into obscurity.</skos:note>
+]]></documentation>
+    </annotation>
+  </element>
+
+  <element name="hiddenLabel" type="rdf:LiteralType">
+    <annotation>
+      <documentation><![CDATA[
+Under edm:Agent:
+Alternative forms of the name of the agent.
+<skos:altLabel xml:lang="en">Courtois</skos:altLabel>
+<skos:altLabel xml:lang="fr">Augte. Courtois aîné</skos:altLabel>
+
+Under edm:Place:
+Alternative forms of the name of the place.
+<skos:altLabel xml:lang="en">Greater London</skos:altLabel>
+
+Under edm:TimeSpan:
+Alternative forms of the name of the timespan or period.
+<skos:altLabel xml:lang=“fr”>Empire romain (27 avant J.-C.-476 après J.-C.)</skos:altLabel>
+
+Under skos:Concept:
+Alternative forms of the name of the concept.
+<skos:altLabel xml:lang="en">Buccin</skos:altLabel>
+]]></documentation>
+    </annotation>
+  </element>
+</schema>

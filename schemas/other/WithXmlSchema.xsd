@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ntua.gr/WITH" xmlns:with="http://www.ntua.gr/WITH" elementFormDefault="qualified">
+ 
+    <element name="withJson" type="with:WithJson"></element>
+    
+    <complexType name="WithJson">
+	<sequence>
+		<element name="title" type="string" maxOccurs="1"></element>
+		<element name="description" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="externalId" type="string" minOccurs="1"
+			maxOccurs="1">
+		</element>
+		<element name="source" type="string" minOccurs="0" maxOccurs="1"
+			fixed="Mint">
+		</element>
+		<element name="sourceId" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="sourceUrl" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+
+		<element name="isShownAt" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="isShownBy" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+
+		<element name="thumbnailUrl" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="rights" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+
+		<element name="type" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="provider" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="dataProvider" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+		<element name="creator" type="string" minOccurs="0"
+			maxOccurs="1">
+		</element>
+
+
+
+		<element name="tags" type="string" minOccurs="0"
+			maxOccurs="1"></element>
+	</sequence>
+    </complexType>
+
+
+</schema>

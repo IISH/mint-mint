@@ -1,0 +1,19 @@
+import gr.ntua.ivml.mint.mapping.*
+import groovy.json.*
+
+map = DB.mappingDAO.simpleGet( "name like 'wienmuseum2'")
+
+template = map.mappings
+// Get all mappings from json
+mappings = template.getHandlerForPath("/RDF").getAllChildrenMappings() 
+mappings.each { //SimpleMappings
+    if(it.has("valuemap")) {
+        println JsonOutput.prettyPrint(it.getValueMappings().toString())
+        //it.trimValues()
+        //it.sortValues()
+        //it.removeDuplicates()
+        //println JsonOutput.prettyPrint(it.getValueMappings().toString())
+    }
+}
+//map.setJsonString( template.asJSONObject().toString())
+//println JsonOutput.prettyPrint( template.asJSONObject().toString())

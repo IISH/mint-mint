@@ -1,0 +1,1140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by cpard (EMBRACE) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:sch="http://purl.oclc.org/dsdl/schematron" 			
+		xmlns:eus="http://www.euscreen.eu/schemas/euscreen/" 
+		targetNamespace="http://www.euscreen.eu/schemas/euscreen/" 
+		elementFormDefault="qualified" attributeFormDefault="unqualified"
+		sch:queryBinding="xslt2" >
+	<element name="EUScreen">
+		<complexType>
+			<annotation>
+				<documentation> The root element declaration </documentation>
+				<!-- Declared namespaces for schematron validation -->
+				<appinfo>
+					<sch:title>Schematron validation</sch:title>
+					<sch:ns prefix="eus" uri="http://www.euscreen.eu/schemas/euscreen/" />
+				</appinfo>
+			</annotation>
+			<sequence>
+				<element name="metadata" type="eus:MetadataType" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="MetadataType">
+		<annotation>
+			<appinfo>
+				<sch:pattern name="Check metadata">
+					<sch:rule context="eus:metadata">
+						<sch:assert	test="( (eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:broadcastDate[matches(normalize-space(),'\d\d/\d\d/\d\d\d\d')] ) or 
+										    (eus:ObjectDescriptiveMetadata/eus:SpatioTemporalInformation/eus:TemporalInformation/eus:productionYear[matches(normalize-space(),'\d\d\d\d')] )
+										  )">One of broadcastDate (as dd/mm/yyyy) or productionYear (as YYYY) is required.</sch:assert>
+						<sch:assert test="eus:AdministrativeMetadata/eus:identifier[matches(normalize-space(),'EUS_[0-9A-F]{32}')]">There is no valid EUscreen identifier</sch:assert>
+					</sch:rule>
+				</sch:pattern>
+			</appinfo>
+		</annotation>
+		<sequence>
+			<element name="AdministrativeMetadata" type="eus:AdministrativeMetadataType"/>
+			<element name="ContentDescriptiveMetadata" type="eus:ContentDescriptiveMetadataType"/>
+			<element name="ObjectDescriptiveMetadata" type="eus:ObjectDescriptiveMetadataType"/>
+		</sequence>
+	</complexType>
+	<complexType name="ContentDescriptiveMetadataType">
+		<sequence>
+			<element name="TitleSet" type="eus:TitleSetType"
+				minOccurs="1" maxOccurs="1" />
+			<element name="originallanguage" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:langType">
+							<attribute name="olcode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="localKeyword" type="string" minOccurs="0"
+				maxOccurs="unbounded" />
+			<element name="clipTitle" type="string" minOccurs="0" />
+			<element name="summary" type="string" />
+			<element name="summaryInEnglish" type="string" />
+			<element name="ThesaurusTerm" minOccurs="1"
+				maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="string">
+							<attribute name="thestermCode"
+								type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="genre" minOccurs="1" maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:genreType">
+							<attribute name="genreCode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="topic" minOccurs="0" maxOccurs="1">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:topicType">
+							<attribute name="topicCode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="extendedDescription" type="string"
+				minOccurs="0" />
+			<element name="seriesSeasonNumber" type="string"
+				maxOccurs="1" minOccurs="0">
+			</element>
+			<element name="episodeNumber" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	<complexType name="ObjectDescriptiveMetadataType">
+		<sequence>
+			<element name="recordType">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:itemTypeType">
+							<attribute name="itemCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="information" type="string" minOccurs="0"/>
+			<element name="contributor" type="string" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="relationIdentifier" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="string">
+							<attribute name="relationtype" type="eus:relationTypeType"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="LanguageInformation" type="eus:LanguageInformationType" minOccurs="0" maxOccurs="1"/>
+			<element name="SpatioTemporalInformation" type="eus:SpatioTemporalInformationType" minOccurs="1" maxOccurs="1"/>
+			<element name="TechnicalInformation" type="eus:TechnicalInformationType" minOccurs="1"/>
+		</sequence>
+	</complexType>
+	<complexType name="AdministrativeMetadataType">
+		<sequence>
+			<element name="provider">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:providersType">
+							<attribute name="providerCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="publisherbroadcaster" type="string" maxOccurs="1" minOccurs="1"/>
+			<element name="iprRestrictions" minOccurs="1" maxOccurs="1">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:iprRestrictionsType">
+							<attribute name="iprRestrictionsCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="rightsTermsAndConditions" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="firstBroadcastChannel" type="string" minOccurs="0"/>
+			<element name="identifier" type="string"/>
+			<element name="originalIdentifier" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="filename" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="digitalItemURL" type="string" minOccurs="0"/>
+			<element name="landingPageURL" type="string" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="LanguageInformationType">
+		<sequence>
+            <element name="languageUsed" minOccurs="0" maxOccurs="unbounded">
+            	<complexType>
+					<simpleContent>
+						<extension base="eus:langType">
+							<attribute name="olcode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+            <element name="subtitleLanguage" minOccurs="0"
+				maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:langType">
+							<attribute name="slCode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="metadatalanguage" minOccurs="0">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:langType">
+							<attribute name="mlCode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="SpatialInformationType">
+		<sequence>
+            <element name="GeographicalCoverage" minOccurs="0" maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:geocovType">
+							<attribute name="geocovCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+            <element name="CountryofProduction" minOccurs="0"
+				maxOccurs="unbounded">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:countryType">
+							<attribute name="copCode" type="string" />
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="TemporalInformationType">
+		<sequence>
+			<element name="productionYear" type="string" minOccurs="0"/>
+			<element name="broadcastDate" type="string" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="SpatioTemporalInformationType">
+		<sequence>
+			<element name="SpatialInformation" type="eus:SpatialInformationType"
+	minOccurs="0" maxOccurs="1" />
+			<element name="TemporalInformation" type="eus:TemporalInformationType" minOccurs="0"/>
+		</sequence>
+	</complexType>
+	<complexType name="TechnicalInformationType">
+		<sequence>
+			<element name="materialType">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:materialType">
+							<attribute name="materialCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="itemDuration" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="aspectRatio" minOccurs="0">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:aspectRatioType">
+							<attribute name="ratioCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="itemColor" minOccurs="0">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:itemColourType">
+							<attribute name="colorCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+			<element name="itemSound" minOccurs="0">
+				<complexType>
+					<simpleContent>
+						<extension base="eus:itemSoundType">
+							<attribute name="soundCode" type="string"/>
+						</extension>
+					</simpleContent>
+				</complexType>
+			</element>
+		</sequence>
+	</complexType>
+	<complexType name="TitleSetInOriginalLanguageType">
+		<sequence>
+			<element name="title" type="string" minOccurs="1"
+				maxOccurs="1" />
+			<element name="seriesOrCollectionTitle" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	<complexType name="TitleSetInEnglishType">
+		<sequence>
+			<element name="title" type="string" minOccurs="1"
+				maxOccurs="1" />
+			<element name="seriesOrCollectionTitle" type="string" maxOccurs="1" minOccurs="0"></element>
+		</sequence>
+	</complexType>
+	<complexType name="TitleSetType">
+		<sequence>
+			<element name="TitleSetInOriginalLanguage" type="eus:TitleSetInOriginalLanguageType" minOccurs="1" maxOccurs="1"/>
+			<element name="TitleSetInEnglish" type="eus:TitleSetInEnglishType" minOccurs="1" maxOccurs="1"/>
+		</sequence>
+	</complexType>
+	<element name="ObjectDescriptiveMetadata" type="eus:ObjectDescriptiveMetadataType"/>
+	<element name="ContentDescriptiveMetadata" type="eus:ContentDescriptiveMetadataType"/>
+	<element name="AdministrativeMetadata" type="eus:AdministrativeMetadataType"/>
+	<element name="metadata" type="eus:MetadataType"/>
+	<!-- CL_Types HERE-->
+	<simpleType name="geocovType">
+		<restriction base="string"/>
+	</simpleType>
+	<simpleType name="genreType">
+		<annotation>
+			<documentation>Information about the genre of the resource (as defined in EUscreen)</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="News"/>
+			<enumeration value="Drama/Fiction"/>
+			<enumeration value="Entertainment and performing arts"/>
+			<enumeration value="Factual"/>
+			<enumeration value="Advertisements"/>
+			<enumeration value="Interstitials and trailers"/>
+			<enumeration value="Sport"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="topicType">
+		<annotation>
+			<documentation>Information about the topic of the resource (defined in EUscreen). Please assign each item to ONE historical topic ONLY.</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Wars and conflict"/>
+			<enumeration value="Society and social issues"/>
+			<enumeration value="Transportation, science and technology"/>
+			<enumeration value="Religion and belief"/>
+			<enumeration value="Politics and Economics"/>
+			<enumeration value="National holidays, festivals, anniversaries and annual events"/>
+			<enumeration value="The media"/>
+			<enumeration value="Lifestyle and consumerism"/>
+			<enumeration value="Health"/>
+			<enumeration value="Environment and Nature"/>
+			<enumeration value="Education"/>
+			<enumeration value="Disasters"/>
+			<enumeration value="Arts and culture"/>
+			<enumeration value="Work and production"/>
+			<enumeration value="Special collections"/>
+			<enumeration value="Being European"/>
+			<enumeration value="History of European Television"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="countryType">
+		<restriction base="string">
+			<enumeration value="AFGHANISTAN"/>
+			<enumeration value="ALAND ISLANDS"/>
+			<enumeration value="ALBANIA"/>
+			<enumeration value="ALGERIA"/>
+			<enumeration value="AMERICAN SAMOA"/>
+			<enumeration value="ANDORRA"/>
+			<enumeration value="ANGOLA"/>
+			<enumeration value="ANGUILLA"/>
+			<enumeration value="ANTARCTICA"/>
+			<enumeration value="ANTIGUA AND BARBUDA"/>
+			<enumeration value="ARGENTINA"/>
+			<enumeration value="ARMENIA"/>
+			<enumeration value="ARUBA"/>
+			<enumeration value="AUSTRALIA"/>
+			<enumeration value="AUSTRIA"/>
+			<enumeration value="AZERBAIJAN"/>
+			<enumeration value="BAHAMAS"/>
+			<enumeration value="BAHRAIN"/>
+			<enumeration value="BANGLADESH"/>
+			<enumeration value="BARBADOS"/>
+			<enumeration value="BELARUS"/>
+			<enumeration value="BELGIUM"/>
+			<enumeration value="BELIZE"/>
+			<enumeration value="BENIN"/>
+			<enumeration value="BERMUDA"/>
+			<enumeration value="BHUTAN"/>
+			<enumeration value="BOLIVIA"/>
+			<enumeration value="BOSNIA AND HERZEGOVINA"/>
+			<enumeration value="BOTSWANA"/>
+			<enumeration value="BOUVET ISLAND"/>
+			<enumeration value="BRAZIL"/>
+			<enumeration value="BRITISH INDIAN OCEAN TERRITORY"/>
+			<enumeration value="BRUNEI DARUSSALAM"/>
+			<enumeration value="BULGARIA"/>
+			<enumeration value="BURKINA FASO"/>
+			<enumeration value="BURUNDI"/>
+			<enumeration value="CAMBODIA"/>
+			<enumeration value="CAMEROON"/>
+			<enumeration value="CANADA"/>
+			<enumeration value="CAPEVERDE"/>
+			<enumeration value="CAYMAN ISLANDS"/>
+			<enumeration value="CENTRAL AFRICAN REPUBLIC"/>
+			<enumeration value="CHAD"/>
+			<enumeration value="CHILE"/>
+			<enumeration value="CHINA"/>
+			<enumeration value="CHRISTMAS ISLAND"/>
+			<enumeration value="COCOS (KEELING) ISLANDS"/>
+			<enumeration value="COLOMBIA"/>
+			<enumeration value="COMOROS"/>
+			<enumeration value="CONGO"/>
+			<enumeration value="CONGO,THE DEMOCRATIC REPUBLIC OF THE"/>
+			<enumeration value="COOK ISLANDS"/>
+			<enumeration value="COSTARICA"/>
+			<enumeration value="COTE D IVOIRE"/>
+			<enumeration value="CROATIA"/>
+			<enumeration value="CUBA"/>
+			<enumeration value="CYPRUS"/>
+			<enumeration value="CZECH REPUBLIC"/>
+			<enumeration value="DENMARK"/>
+			<enumeration value="DJIBOUTI"/>
+			<enumeration value="DOMINICA"/>
+			<enumeration value="DOMINICAN REPUBLIC"/>
+			<enumeration value="ECUADOR"/>
+			<enumeration value="EGYPT"/>
+			<enumeration value="EL SALVADOR"/>
+			<enumeration value="EQUATORIAL GUINEA"/>
+			<enumeration value="ERITREA"/>
+			<enumeration value="ESTONIA"/>
+			<enumeration value="ETHIOPIA"/>
+			<enumeration value="FALKLAND ISLANDS (MALVINAS)"/>
+			<enumeration value="FAROE ISLANDS"/>
+			<enumeration value="FIJI"/>
+			<enumeration value="FINLAND"/>
+			<enumeration value="FRANCE"/>
+			<enumeration value="FRENCH GUIANA"/>
+			<enumeration value="FRENCH POLYNESIA"/>
+			<enumeration value="FRENCH SOUTHERN TERRITORIES"/>
+			<enumeration value="GABON"/>
+			<enumeration value="GAMBIA"/>
+			<enumeration value="GEORGIA"/>
+			<enumeration value="GERMANY"/>
+			<enumeration value="GHANA"/>
+			<enumeration value="GIBRALTAR"/>
+			<enumeration value="GREECE"/>
+			<enumeration value="GREENLAND"/>
+			<enumeration value="GRENADA"/>
+			<enumeration value="GUADELOUPE"/>
+			<enumeration value="GUAM"/>
+			<enumeration value="GUATEMALA"/>
+			<enumeration value="GUERNSEY"/>
+			<enumeration value="GUINEA"/>
+			<enumeration value="GUINEA-BISSAU"/>
+			<enumeration value="GUYANA"/>
+			<enumeration value="HAITI"/>
+			<enumeration value="HEARD ISLAND AND MCDONALD ISLANDS"/>
+			<enumeration value="HOLY SEE (VATICAN CITY STATE)"/>
+			<enumeration value="HONDURAS"/>
+			<enumeration value="HONGKONG"/>
+			<enumeration value="HUNGARY"/>
+			<enumeration value="ICELAND"/>
+			<enumeration value="INDIA"/>
+			<enumeration value="INDONESIA"/>
+			<enumeration value="IRAN, ISLAMIC REPUBLIC OF"/>
+			<enumeration value="IRAQ"/>
+			<enumeration value="IRELAND"/>
+			<enumeration value="ISLEOFMAN"/>
+			<enumeration value="ISRAEL"/>
+			<enumeration value="ITALY"/>
+			<enumeration value="JAMAICA"/>
+			<enumeration value="JAPAN"/>
+			<enumeration value="JERSEY"/>
+			<enumeration value="JORDAN"/>
+			<enumeration value="KAZAKHSTAN"/>
+			<enumeration value="KENYA"/>
+			<enumeration value="KIRIBATI"/>
+			<enumeration value="KOREA, DEMOCRATIC PEOPLE S REPUBLIC OF"/>
+			<enumeration value="KOREA, REPUBLIC OF"/>
+			<enumeration value="KUWAIT"/>
+			<enumeration value="KYRGYZSTAN"/>
+			<enumeration value="LAO PEOPLE S DEMOCRATIC REPUBLIC"/>
+			<enumeration value="LATVIA"/>
+			<enumeration value="LEBANON"/>
+			<enumeration value="LESOTHO"/>
+			<enumeration value="LIBERIA"/>
+			<enumeration value="LIBYAN ARABJAMAHIRIYA"/>
+			<enumeration value="LIECHTENSTEIN"/>
+			<enumeration value="LITHUANIA"/>
+			<enumeration value="LUXEMBOURG"/>
+			<enumeration value="MACAO"/>
+			<enumeration value="MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF"/>
+			<enumeration value="MADAGASCAR"/>
+			<enumeration value="MALAWI"/>
+			<enumeration value="MALAYSIA"/>
+			<enumeration value="MALDIVES"/>
+			<enumeration value="MALI"/>
+			<enumeration value="MALTA"/>
+			<enumeration value="MARSHALLISLANDS"/>
+			<enumeration value="MARTINIQUE"/>
+			<enumeration value="MAURITANIA"/>
+			<enumeration value="MAURITIUS"/>
+			<enumeration value="MAYOTTE"/>
+			<enumeration value="MEXICO"/>
+			<enumeration value="MICRONESIA, FEDERATED STATES OF"/>
+			<enumeration value="MOLDOVA, REPUBLIC OF"/>
+			<enumeration value="MONACO"/>
+			<enumeration value="MONGOLIA"/>
+			<enumeration value="MONTENEGRO"/>
+			<enumeration value="MONTSERRAT"/>
+			<enumeration value="MOROCCO"/>
+			<enumeration value="MOZAMBIQUE"/>
+			<enumeration value="MYANMAR"/>
+			<enumeration value="NAMIBIA"/>
+			<enumeration value="NAURU"/>
+			<enumeration value="NEPAL"/>
+			<enumeration value="NETHERLANDS"/>
+			<enumeration value="NETHERLANDS ANTILLES"/>
+			<enumeration value="NEW ZEALAND"/>
+			<enumeration value="NEWCALEDONIA"/>
+			<enumeration value="NICARAGUA"/>
+			<enumeration value="NIGER"/>
+			<enumeration value="NIGERIA"/>
+			<enumeration value="NIUE"/>
+			<enumeration value="NORFOLK ISLAND"/>
+			<enumeration value="NORTHERN MARIANA ISLANDS"/>
+			<enumeration value="NORWAY"/>
+			<enumeration value="OMAN"/>
+			<enumeration value="PAKISTAN"/>
+			<enumeration value="PALAU"/>
+			<enumeration value="PALESTINIAN TERRITORY, OCCUPIED"/>
+			<enumeration value="PANAMA"/>
+			<enumeration value="PAPUA NEW GUINEA"/>
+			<enumeration value="PARAGUAY"/>
+			<enumeration value="PERU"/>
+			<enumeration value="PHILIPPINES"/>
+			<enumeration value="PITCAIRN"/>
+			<enumeration value="POLAND"/>
+			<enumeration value="PORTUGAL"/>
+			<enumeration value="PUERTORICO"/>
+			<enumeration value="QATAR"/>
+			<enumeration value="REUNION"/>
+			<enumeration value="ROMANIA"/>
+			<enumeration value="RUSSIAN FEDERATION"/>
+			<enumeration value="RWANDA"/>
+			<enumeration value="SAINT KITTS AND NEVIS"/>
+			<enumeration value="SAINT LUCIA"/>
+			<enumeration value="SAINT PIERRE AND MIQUELON"/>
+			<enumeration value="SAINT VINCENT AND THE GRENADINES"/>
+			<enumeration value="SAINTHELENA"/>
+			<enumeration value="SAMOA"/>
+			<enumeration value="SAN MARINO"/>
+			<enumeration value="SAOTOME AND PRINCIPE"/>
+			<enumeration value="SAUDIARABIA"/>
+			<enumeration value="SENEGAL"/>
+			<enumeration value="SERBIA"/>
+			<enumeration value="SEYCHELLES"/>
+			<enumeration value="SIERRA LEONE"/>
+			<enumeration value="SINGAPORE"/>
+			<enumeration value="SLOVAKIA"/>
+			<enumeration value="SLOVENIA"/>
+			<enumeration value="SOLOMON ISLANDS"/>
+			<enumeration value="SOMALIA"/>
+			<enumeration value="SOUTH AFRICA"/>
+			<enumeration value="SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS"/>
+			<enumeration value="SPAIN"/>
+			<enumeration value="SRI LANKA"/>
+			<enumeration value="SUDAN"/>
+			<enumeration value="SURINAME"/>
+			<enumeration value="SVALBARD AND JANMAYEN"/>
+			<enumeration value="SWAZILAND"/>
+			<enumeration value="SWEDEN"/>
+			<enumeration value="SWITZERLAND"/>
+			<enumeration value="SYRIAN ARAB REPUBLIC"/>
+			<enumeration value="TAIWAN, PROVINCE OF CHINA"/>
+			<enumeration value="TAJIKISTAN"/>
+			<enumeration value="TANZANIA, UNITED REPUBLIC OF"/>
+			<enumeration value="THAILAND"/>
+			<enumeration value="TIMOR-LESTE"/>
+			<enumeration value="TOGO"/>
+			<enumeration value="TOKELAU"/>
+			<enumeration value="TONGA"/>
+			<enumeration value="TRINIDAD AND TOBAGO"/>
+			<enumeration value="TUNISIA"/>
+			<enumeration value="TURKEY"/>
+			<enumeration value="TURKMENISTAN"/>
+			<enumeration value="TURKS AND CAICOS ISLANDS"/>
+			<enumeration value="TUVALU"/>
+			<enumeration value="UGANDA"/>
+			<enumeration value="UKRAINE"/>
+			<enumeration value="UNITED ARAB EMIRATES"/>
+			<enumeration value="UNITED KINGDOM"/>
+			<enumeration value="UNITED STATES"/>
+			<enumeration value="UNITED STATES MINOR OUTLYING ISLANDS"/>
+			<enumeration value="URUGUAY"/>
+			<enumeration value="UZBEKISTAN"/>
+			<enumeration value="VANUATU"/>
+			<enumeration value="VENEZUELA"/>
+			<enumeration value="VIETNAM"/>
+			<enumeration value="VIRGIN ISLANDS, BRITISH"/>
+			<enumeration value="VIRGIN ISLANDS, U.S."/>
+			<enumeration value="WALLIS AND FUTUNA"/>
+			<enumeration value="WESTERN SAHARA"/>
+			<enumeration value="YEMEN"/>
+			<enumeration value="ZAMBIA"/>
+			<enumeration value="ZIMBABWE"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="langType">
+		<restriction base="string">
+			<enumeration value="Abkhazian"/>
+			<enumeration value="Afar"/>
+			<enumeration value="Afrikaans"/>
+			<enumeration value="Akan"/>
+			<enumeration value="Albanian"/>
+			<enumeration value="Amharic"/>
+			<enumeration value="Arabic"/>
+			<enumeration value="Aragonese"/>
+			<enumeration value="Armenian"/>
+			<enumeration value="Assamese"/>
+			<enumeration value="Avaric"/>
+			<enumeration value="Avestan"/>
+			<enumeration value="Aymara"/>
+			<enumeration value="Azerbaijani"/>
+			<enumeration value="Bambara"/>
+			<enumeration value="Bashkir"/>
+			<enumeration value="Basque"/>
+			<enumeration value="Belarusian"/>
+			<enumeration value="Bengali"/>
+			<enumeration value="Bihari"/>
+			<enumeration value="Bislama"/>
+			<enumeration value="Bokmal, Norwegian; Norwegian Bokmal"/>
+			<enumeration value="Bosnian"/>
+			<enumeration value="Breton"/>
+			<enumeration value="Bulgarian"/>
+			<enumeration value="Burmese"/>
+			<enumeration value="Catalan; Valencian"/>
+			<enumeration value="Central Khmer"/>
+			<enumeration value="Chamorro"/>
+			<enumeration value="Chechen"/>
+			<enumeration value="Chichewa; Chewa; Nyanja"/>
+			<enumeration value="Chinese"/>
+			<enumeration value="Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"/>
+			<enumeration value="Chuvash"/>
+			<enumeration value="Cornish"/>
+			<enumeration value="Corsican"/>
+			<enumeration value="Cree"/>
+			<enumeration value="Croatian"/>
+			<enumeration value="Czech"/>
+			<enumeration value="Danish"/>
+			<enumeration value="Divehi; Dhivehi; Maldivian"/>
+			<enumeration value="Dutch; Flemish"/>
+			<enumeration value="Dzongkha"/>
+			<enumeration value="English"/>
+			<enumeration value="Esperanto"/>
+			<enumeration value="Estonian"/>
+			<enumeration value="Ewe"/>
+			<enumeration value="Faroese"/>
+			<enumeration value="Fijian"/>
+			<enumeration value="Finnish"/>
+			<enumeration value="French"/>
+			<enumeration value="Fulah"/>
+			<enumeration value="Gaelic; Scottish Gaelic"/>
+			<enumeration value="Galician"/>
+			<enumeration value="Ganda"/>
+			<enumeration value="Georgian"/>
+			<enumeration value="German"/>
+			<enumeration value="Greek, Modern (1453-)"/>
+			<enumeration value="Guarani"/>
+			<enumeration value="Gujarati"/>
+			<enumeration value="Haitian; Haitian Creole"/>
+			<enumeration value="Hausa"/>
+			<enumeration value="Hebrew"/>
+			<enumeration value="Herero"/>
+			<enumeration value="Hindi"/>
+			<enumeration value="Hiri Motu"/>
+			<enumeration value="Hungarian"/>
+			<enumeration value="Icelandic"/>
+			<enumeration value="Ido"/>
+			<enumeration value="Igbo"/>
+			<enumeration value="Indonesian"/>
+			<enumeration value="Interlingua (International Auxiliary Language Association)"/>
+			<enumeration value="Interlingue"/>
+			<enumeration value="Inuktitut"/>
+			<enumeration value="Inupiaq"/>
+			<enumeration value="Irish"/>
+			<enumeration value="Italian"/>
+			<enumeration value="Japanese"/>
+			<enumeration value="Javanese"/>
+			<enumeration value="Kalaallisut; Greenlandic"/>
+			<enumeration value="Kannada"/>
+			<enumeration value="Kanuri"/>
+			<enumeration value="Kashmiri"/>
+			<enumeration value="Kazakh"/>
+			<enumeration value="Kikuyu; Gikuyu"/>
+			<enumeration value="Kinyarwanda"/>
+			<enumeration value="Kirghiz; Kyrgyz"/>
+			<enumeration value="Komi"/>
+			<enumeration value="Kongo"/>
+			<enumeration value="Korean"/>
+			<enumeration value="Kuanyama; Kwanyama"/>
+			<enumeration value="Kurdish"/>
+			<enumeration value="Lao"/>
+			<enumeration value="Latin"/>
+			<enumeration value="Latvian"/>
+			<enumeration value="Limburgan; Limburger; Limburgish"/>
+			<enumeration value="Lingala"/>
+			<enumeration value="Lithuanian"/>
+			<enumeration value="Luba-Katanga"/>
+			<enumeration value="Luxembourgish; Letzeburgesch"/>
+			<enumeration value="Macedonian"/>
+			<enumeration value="Malagasy"/>
+			<enumeration value="Malay"/>
+			<enumeration value="Malayalam"/>
+			<enumeration value="Maltese"/>
+			<enumeration value="Manx"/>
+			<enumeration value="Maori"/>
+			<enumeration value="Marathi"/>
+			<enumeration value="Marshallese"/>
+			<enumeration value="Moldavian"/>
+			<enumeration value="Mongolian"/>
+			<enumeration value="Nauru"/>
+			<enumeration value="Navajo; Navaho"/>
+			<enumeration value="Ndebele, North; North Ndebele"/>
+			<enumeration value="Ndebele, South; South Ndebele"/>
+			<enumeration value="Ndonga"/>
+			<enumeration value="Nepali"/>
+			<enumeration value="Northern Sami"/>
+			<enumeration value="Norwegian"/>
+			<enumeration value="Norwegian Nynorsk; Nynorsk, Norwegian"/>
+			<enumeration value="Occitan (post 1500); ProvenÃ§al"/>
+			<enumeration value="Ojibwa"/>
+			<enumeration value="Oriya"/>
+			<enumeration value="Oromo"/>
+			<enumeration value="Ossetian; Ossetic"/>
+			<enumeration value="Pali"/>
+			<enumeration value="Panjabi; Punjabi"/>
+			<enumeration value="Persian"/>
+			<enumeration value="Polish"/>
+			<enumeration value="Portuguese"/>
+			<enumeration value="Pushto"/>
+			<enumeration value="Quechua"/>
+			<enumeration value="Romanian"/>
+			<enumeration value="Romansh"/>
+			<enumeration value="Rundi"/>
+			<enumeration value="Russian"/>
+			<enumeration value="Samoan"/>
+			<enumeration value="Sango"/>
+			<enumeration value="Sanskrit"/>
+			<enumeration value="Sardinian"/>
+			<enumeration value="Serbian"/>
+			<enumeration value="Shona"/>
+			<enumeration value="Sichuan Yi"/>
+			<enumeration value="Sindhi"/>
+			<enumeration value="Sinhala; Sinhalese"/>
+			<enumeration value="Slovak"/>
+			<enumeration value="Slovenian"/>
+			<enumeration value="Somali"/>
+			<enumeration value="Sotho"/>
+			<enumeration value="Spanish; Castilian, Southern"/>
+			<enumeration value="Sundanese"/>
+			<enumeration value="Swahili"/>
+			<enumeration value="Swati"/>
+			<enumeration value="Swedish"/>
+			<enumeration value="Tagalog"/>
+			<enumeration value="Tahitian"/>
+			<enumeration value="Tajik"/>
+			<enumeration value="Tamil"/>
+			<enumeration value="Tatar"/>
+			<enumeration value="Telugu"/>
+			<enumeration value="Thai"/>
+			<enumeration value="Tibetan"/>
+			<enumeration value="Tigrinya"/>
+			<enumeration value="Tonga (Tonga Islands)"/>
+			<enumeration value="Tsonga"/>
+			<enumeration value="Tswana"/>
+			<enumeration value="Turkish"/>
+			<enumeration value="Turkmen"/>
+			<enumeration value="Twi"/>
+			<enumeration value="Uighur; Uyghur"/>
+			<enumeration value="Ukrainian"/>
+			<enumeration value="Urdu"/>
+			<enumeration value="Uzbek"/>
+			<enumeration value="Venda"/>
+			<enumeration value="Vietnamese"/>
+			<enumeration value="Volapuk"/>
+			<enumeration value="Welsh"/>
+			<enumeration value="Western Frisian"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="aspectRatioType">
+		<annotation>
+			<documentation>Aspect ratio of the item</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="4:3"/>
+			<enumeration value="14:9"/>
+			<enumeration value="16:9"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="itemColourType">
+		<annotation>
+			<documentation>Information about colour reproduction of the item</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Black &amp; White"/>
+			<enumeration value="Colour"/>
+			<enumeration value="Mixed"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="itemSoundType">
+		<annotation>
+			<documentation>Information about the audio reproduction of the item</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Mute"/>
+			<enumeration value="Mono"/>
+			<enumeration value="Stereo"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="itemTypeType">
+		<annotation>
+			<documentation>Information about the type of record, i.e. is it a series/collection entry, a whole pro-gramme/film, or an extract </documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="ITEM"/>
+			<enumeration value="CLIP"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="materialType">
+		<restriction base="string">
+			<enumeration value="VIDEO"/>
+			<enumeration value="IMAGE"/>
+			<enumeration value="SOUND"/>
+			<enumeration value="TEXT"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="providersType">
+		<annotation>
+			<documentation>The name of the content provider for the given item. It will be automatically assigned by the EUscreen import and annotation tool. </documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="CT"/>
+			<enumeration value="DR"/>
+			<enumeration value="DW"/>
+			<enumeration value="INA"/>
+			<enumeration value="KB"/>
+			<enumeration value="LCVA"/>
+			<enumeration value="LUCE"/>
+			<enumeration value="NAVA"/>
+			<enumeration value="NINA"/>
+			<enumeration value="NISV"/>
+			<enumeration value="ORF"/>
+			<enumeration value="RTBF"/>
+			<enumeration value="RTÉ"/>
+			<enumeration value="RTP"/>
+			<enumeration value="RTV SLO"/>
+			<enumeration value="SASE"/>
+			<enumeration value="TVC"/>
+			<enumeration value="TVP"/>
+			<enumeration value="TVR"/>
+			<enumeration value="BUFVC"/>
+			<!--  need some old providers in here -->
+			<enumeration value="HeNAA"/>
+			<enumeration value="Memoriav-RTS"/>
+			<enumeration value="Memoriav-SRF"/>
+			<enumeration value="BBC"/>
+			<enumeration value="RAI"/>
+			<enumeration value="VRT"/>
+			<enumeration value="ERT"/>
+			<!--  changed values, we add them here -->
+			<enumeration value="ERT SA" />
+			<enumeration value="TV3 Televisió de Catalunya (TVC)"/>
+			<enumeration value="Deutsche Welle"/>
+			<enumeration value="Kungliga biblioteket"/>
+			<enumeration value="Narodowy Instytut Audiowizualny"/>
+			<enumeration value="Screen Archive South East"/>
+			<enumeration value="Netherlands Institute for Sound and Vision"/> 
+		</restriction>
+	</simpleType>
+	<simpleType name="iprRestrictionsType">
+		<annotation>
+			<documentation>Statement about the f IPR status of the item. The value of this element corresponds to one of the values listed in the Europeana rights statement</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="Rights Reserved - Free Access"/>
+			<enumeration value="Rights Reserved - Paid Access"/>
+			<enumeration value="Rights Reserved - Restricted Access"/>
+			<enumeration value="Creative Commons - Zero (CC0)"/>
+			<enumeration value="Creative Commons - Attribution (BY)"/>
+			<enumeration value="Creative Commons - Attribution, Share Alike (BY-SA)"/>
+			<enumeration value="Creative Commons - Attribution, No derivatives (BY-ND)"/>
+			<enumeration value="Creative Commons - Attribution, Non-commercial (BY-NC)"/>
+			<enumeration value="Creative Commons - Attribution, Non-commercial, Share Alike (BY-NC-SA)"/>
+			<enumeration value="Creative Commons - Attribution, Non-commercial, No derivatives (BY-NC-ND)"/>
+			<enumeration value="Unknown"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="relationTypeType">
+		<annotation>
+			<documentation>Reference to an item to which the current item is related at production level. (See Relation Type for the kinds of relations that this specifies.) This reference of the related item can be the 'Identifier' (EUscreen unique identifier)</documentation>
+		</annotation>
+		<restriction base="string">
+			<enumeration value="hasPart"/>
+			<enumeration value="hasVersion"/>
+			<enumeration value="hasEpisodes"/>
+			<enumeration value="isEpisodeOf"/>
+			<enumeration value="isVersionOf"/>
+			<enumeration value="isPartOf"/>
+			<enumeration value="isReferencedBy"/>
+			<enumeration value="isRelatedTo"/>
+			<enumeration value="references"/>
+			<!--sample -->
+		</restriction>
+	</simpleType>
+	
+	<simpleType name="countryValueType">
+		<restriction base="string">
+			<enumeration value="Afghanistan"/>
+			<enumeration value="Åland Islands"/>
+			<enumeration value="Albania"/>
+			<enumeration value="Algeria"/>
+			<enumeration value="American Samoa"/>
+			<enumeration value="Andorra"/>
+			<enumeration value="Angola"/>
+			<enumeration value="Anguilla"/>
+			<enumeration value="Antarctica"/>
+			<enumeration value="Antigua and Barbuda"/>
+			<enumeration value="Argentina"/>
+			<enumeration value="Armenia"/>
+			<enumeration value="Aruba"/>
+			<enumeration value="Australia"/>
+			<enumeration value="Austria"/>
+			<enumeration value="Azerbaijan"/>
+			<enumeration value="Bahamas"/>
+			<enumeration value="Bahrain"/>
+			<enumeration value="Bangladesh"/>
+			<enumeration value="Barbados"/>
+			<enumeration value="Belarus"/>
+			<enumeration value="Belgium"/>
+			<enumeration value="Belize"/>
+			<enumeration value="Benin"/>
+			<enumeration value="Bermuda"/>
+			<enumeration value="Bhutan"/>
+			<enumeration value="Bolivia, Plurinational State of"/>
+			<enumeration value="Bonaire, Sint Eustatius and Saba"/>
+			<enumeration value="Bosnia and Herzegovina"/>
+			<enumeration value="Botswana"/>
+			<enumeration value="Bouvet Island"/>
+			<enumeration value="Brazil"/>
+			<enumeration value="British Indian Ocean Territory"/>
+			<enumeration value="Brunei Darussalam"/>
+			<enumeration value="Bulgaria"/>
+			<enumeration value="Burkina Faso"/>
+			<enumeration value="Burundi"/>
+			<enumeration value="Cambodia"/>
+			<enumeration value="Cameroon"/>
+			<enumeration value="Canada"/>
+			<enumeration value="Cape Verde"/>
+			<enumeration value="Cayman Islands"/>
+			<enumeration value="Central African Republic"/>
+			<enumeration value="Chad"/>
+			<enumeration value="Chile"/>
+			<enumeration value="China"/>
+			<enumeration value="Christmas Island"/>
+			<enumeration value="Cocos (Keeling) Islands"/>
+			<enumeration value="Colombia"/>
+			<enumeration value="Comoros"/>
+			<enumeration value="Congo, the Democratic Republic of the"/>
+			<enumeration value="Congo"/>
+			<enumeration value="Cook Islands"/>
+			<enumeration value="Costa Rica"/>
+			<enumeration value="Côte d'Ivoire"/>
+			<enumeration value="Croatia"/>
+			<enumeration value="Cuba"/>
+			<enumeration value="Curaçao"/>
+			<enumeration value="Cyprus"/>
+			<enumeration value="Czech Republic"/>
+			<enumeration value="Denmark"/>
+			<enumeration value="Djibouti"/>
+			<enumeration value="Dominica"/>
+			<enumeration value="Dominican Republic"/>
+			<enumeration value="Ecuador"/>
+			<enumeration value="Egypt"/>
+			<enumeration value="El Salvador"/>
+			<enumeration value="Equatorial Guinea"/>
+			<enumeration value="Eritrea"/>
+			<enumeration value="Estonia"/>
+			<enumeration value="Ethiopia"/>
+			<enumeration value="Falkland Islands (Malvinas)"/>
+			<enumeration value="Faroe Islands"/>
+			<enumeration value="Fiji"/>
+			<enumeration value="Finland"/>
+			<enumeration value="France"/>
+			<enumeration value="French Guiana"/>
+			<enumeration value="French Polynesia"/>
+			<enumeration value="French Southern Territories"/>
+			<enumeration value="Gabon"/>
+			<enumeration value="Gambia"/>
+			<enumeration value="Georgia"/>
+			<enumeration value="Germany"/>
+			<enumeration value="Ghana"/>
+			<enumeration value="Gibraltar"/>
+			<enumeration value="Greece"/>
+			<enumeration value="Greenland"/>
+			<enumeration value="Grenada"/>
+			<enumeration value="Guadeloupe"/>
+			<enumeration value="Guam"/>
+			<enumeration value="Guatemala"/>
+			<enumeration value="Guernsey"/>
+			<enumeration value="Guinea-Bissau"/>
+			<enumeration value="Guinea"/>
+			<enumeration value="Guyana"/>
+			<enumeration value="Haiti"/>
+			<enumeration value="Heard Island and McDonald Islands"/>
+			<enumeration value="Holy See (Vatican City State)"/>
+			<enumeration value="Honduras"/>
+			<enumeration value="Hong Kong"/>
+			<enumeration value="Hungary"/>
+			<enumeration value="Iceland"/>
+			<enumeration value="India"/>
+			<enumeration value="Indonesia"/>
+			<enumeration value="Iran, Islamic Republic of"/>
+			<enumeration value="Iraq"/>
+			<enumeration value="Ireland"/>
+			<enumeration value="Isle of Man"/>
+			<enumeration value="Israel"/>
+			<enumeration value="Italy"/>
+			<enumeration value="Jamaica"/>
+			<enumeration value="Japan"/>
+			<enumeration value="Jersey"/>
+			<enumeration value="Jordan"/>
+			<enumeration value="Kazakhstan"/>
+			<enumeration value="Kenya"/>
+			<enumeration value="Kiribati"/>
+			<enumeration value="Korea, Democratic People's Republic of"/>
+			<enumeration value="Korea, Republic of"/>
+			<enumeration value="Kuwait"/>
+			<enumeration value="Kyrgyzstan"/>
+			<enumeration value="Lao People's Democratic Republic"/>
+			<enumeration value="Latvia"/>
+			<enumeration value="Lebanon"/>
+			<enumeration value="Lesotho"/>
+			<enumeration value="Liberia"/>
+			<enumeration value="Libya"/>
+			<enumeration value="Liechtenstein"/>
+			<enumeration value="Lithuania"/>
+			<enumeration value="Luxembourg"/>
+			<enumeration value="Macao"/>
+			<enumeration value="Macedonia, The Former Yugoslav Republic of"/>
+			<enumeration value="Madagascar"/>
+			<enumeration value="Malawi"/>
+			<enumeration value="Malaysia"/>
+			<enumeration value="Maldives"/>
+			<enumeration value="Mali"/>
+			<enumeration value="Malta"/>
+			<enumeration value="Marshall Islands"/>
+			<enumeration value="Martinique"/>
+			<enumeration value="Mauritania"/>
+			<enumeration value="Mauritius"/>
+			<enumeration value="Mayotte"/>
+			<enumeration value="Mexico"/>
+			<enumeration value="Micronesia, Federated States of"/>
+			<enumeration value="Moldova, Republic of"/>
+			<enumeration value="Monaco"/>
+			<enumeration value="Mongolia"/>
+			<enumeration value="Montenegro"/>
+			<enumeration value="Montserrat"/>
+			<enumeration value="Morocco"/>
+			<enumeration value="Mozambique"/>
+			<enumeration value="Myanmar"/>
+			<enumeration value="Namibia"/>
+			<enumeration value="Nauru"/>
+			<enumeration value="Nepal"/>
+			<enumeration value="Netherlands"/>
+			<enumeration value="New Caledonia"/>
+			<enumeration value="New Zealand"/>
+			<enumeration value="Nicaragua"/>
+			<enumeration value="Niger"/>
+			<enumeration value="Nigeria"/>
+			<enumeration value="Niue"/>
+			<enumeration value="Norfolk Island"/>
+			<enumeration value="Northern Mariana Islands"/>
+			<enumeration value="Norway"/>
+			<enumeration value="Oman"/>
+			<enumeration value="Pakistan"/>
+			<enumeration value="Palau"/>
+			<enumeration value="Palestine, State of"/>
+			<enumeration value="Panama"/>
+			<enumeration value="Papua New Guinea"/>
+			<enumeration value="Paraguay"/>
+			<enumeration value="Peru"/>
+			<enumeration value="Philippines"/>
+			<enumeration value="Pitcairn"/>
+			<enumeration value="Poland"/>
+			<enumeration value="Portugal"/>
+			<enumeration value="Puerto Rico"/>
+			<enumeration value="Qatar"/>
+			<enumeration value="Réunion"/>
+			<enumeration value="Romania"/>
+			<enumeration value="Russian Federation"/>
+			<enumeration value="Rwanda"/>
+			<enumeration value="Saint Barthélemy"/>
+			<enumeration value="Saint Helena, Ascension and Tristan da Cunha"/>
+			<enumeration value="Saint Kitts and Nevis"/>
+			<enumeration value="Saint Lucia"/>
+			<enumeration value="Saint Martin (French part)"/>
+			<enumeration value="Saint Pierre and Miquelon"/>
+			<enumeration value="Saint Vincent and the Grenadines"/>
+			<enumeration value="Samoa"/>
+			<enumeration value="San Marino"/>
+			<enumeration value="Sao Tome and Principe"/>
+			<enumeration value="Saudi Arabia"/>
+			<enumeration value="Senegal"/>
+			<enumeration value="Serbia"/>
+			<enumeration value="Seychelles"/>
+			<enumeration value="Sierra Leone"/>
+			<enumeration value="Singapore"/>
+			<enumeration value="Sint Maarten (Dutch part)"/>
+			<enumeration value="Slovakia"/>
+			<enumeration value="Slovenia"/>
+			<enumeration value="Solomon Islands"/>
+			<enumeration value="Somalia"/>
+			<enumeration value="South Africa"/>
+			<enumeration value="South Georgia and the South Sandwich Islands"/>
+			<enumeration value="South Sudan"/>
+			<enumeration value="Spain"/>
+			<enumeration value="Sri Lanka"/>
+			<enumeration value="Sudan"/>
+			<enumeration value="Suriname"/>
+			<enumeration value="Svalbard and Jan Mayen"/>
+			<enumeration value="Swaziland"/>
+			<enumeration value="Sweden"/>
+			<enumeration value="Switzerland"/>
+			<enumeration value="Syrian Arab Republic"/>
+			<enumeration value="Taiwan, Province of China"/>
+			<enumeration value="Tajikistan"/>
+			<enumeration value="Tanzania, United Republic of"/>
+			<enumeration value="Thailand"/>
+			<enumeration value="Timor-Leste"/>
+			<enumeration value="Togo"/>
+			<enumeration value="Tokelau"/>
+			<enumeration value="Tonga"/>
+			<enumeration value="Trinidad and Tobago"/>
+			<enumeration value="Tunisia"/>
+			<enumeration value="Turkey"/>
+			<enumeration value="Turkmenistan"/>
+			<enumeration value="Turks and Caicos Islands"/>
+			<enumeration value="Tuvalu"/>
+			<enumeration value="Uganda"/>
+			<enumeration value="Ukraine"/>
+			<enumeration value="United Arab Emirates"/>
+			<enumeration value="United Kingdom"/>
+			<enumeration value="United States Minor Outlying Islands"/>
+			<enumeration value="United States"/>
+			<enumeration value="Uruguay"/>
+			<enumeration value="Uzbekistan"/>
+			<enumeration value="Vanuatu"/>
+			<enumeration value="Venezuela, Bolivarian Republic of"/>
+			<enumeration value="Viet Nam"/>
+			<enumeration value="Virgin Islands, British"/>
+			<enumeration value="Virgin Islands, U.S."/>
+			<enumeration value="Wallis and Futuna"/>
+			<enumeration value="Western Sahara"/>
+			<enumeration value="Yemen"/>
+			<enumeration value="Zambia"/>
+			<enumeration value="Zimbabwe"/>
+			<!--sample -->
+		</restriction>
+	</simpleType>
+</schema>

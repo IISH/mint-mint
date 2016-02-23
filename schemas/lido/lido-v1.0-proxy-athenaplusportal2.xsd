@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lido="http://www.lido-schema.org" xmlns:sch="http://purl.oclc.org/dsdl/schematron" targetNamespace="http://www.lido-schema.org" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<redefine schemaLocation="lido-v1.0-museum.xsd">
+		<complexType name="eventComplexType">
+		<annotation>
+			<documentation>Definition: Complex type for one event associated with the object / work and its related information.</documentation>
+			<documentation>How to record: If there is more than one event repeat the Event Set element. </documentation>
+			<documentation>Notes: [none] </documentation>
+			<appinfo>
+            	<sch:pattern>
+                	<sch:rule context="lido:event">
+                    	<sch:assert test="lido:eventActor or lido:culture or lido:eventDate or lido:periodName or lido:eventPlace or lido:eventMaterialsTech"> 
+                            The use of lido:eventActor or lido:culture or lido:eventDate or lido:periodName or lido:eventPlace or lido:eventMaterialsTech is mandatory when using lido:event.
+                        </sch:assert>
+                    </sch:rule>
+                </sch:pattern>
+             </appinfo>	
+		</annotation>
+			<complexContent>
+				<restriction base="lido:eventComplexType">
+					<sequence>
+						<element name="eventID" type="lido:identifierComplexType" minOccurs="0" maxOccurs="unbounded"/>
+						<element name="eventType" type="lido:customConcept" maxOccurs="1" minOccurs="1"/>
+			<element name="roleInEvent" type="lido:conceptComplexType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: The role played within this event by the described entity. </documentation>
+					<documentation>How to record: Preferably taken from a published controlled vocabulary. </documentation>
+				</annotation>
+			</element>
+			<element name="eventName" type="lido:appellationComplexType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: An appellation for the event, e.g. a title, identifying phrase, or name given to it.</documentation>
+				</annotation>
+			</element>
+			<element name="eventActor" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: Wrapper for display and index elements for an actor with role information (participating or being present in the event).</documentation>
+					<documentation>How to record: For multiple actors repeat the element.</documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:actorInRoleSetComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="culture" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: Name of a culture, cultural context, people, or also a nationality. </documentation>
+					<documentation>How to record: Preferably using a controlled vocabuarly. </documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:conceptComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="eventDate" type="lido:dateSetComplexType" minOccurs="0">
+				<annotation>
+					<documentation>Definition: Date specification of the event.</documentation>
+				</annotation>
+			</element>
+			<element name="periodName" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: A period in which the event happened. </documentation>
+					<documentation>How to record: Preferably taken from a published controlled vocabulary. Repeat this element only for indicating an earliest and latest period delimiting the event. </documentation>
+					<documentation>Notes: Period concepts have delimiting character in time and space. </documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:conceptComplexType">
+							<attribute ref="lido:type">
+								<annotation>
+									<documentation>How to record: Data values may be: earliestPeriod, latestPeriod.</documentation>
+								</annotation>
+							</attribute>
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="eventPlace" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: Place specification of the event.</documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:placeSetComplexType">
+							<attribute ref="lido:type">
+								<annotation>
+									<documentation>How to record: Data values may be: moveFrom, moveTo, alternative.</documentation>
+								</annotation>
+							</attribute>
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="eventMethod" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: The method by which the event is carried out. </documentation>
+					<documentation>How to record: Preferably taken from a published controlled vocabulary.</documentation>
+					<documentation>Notes: Used e.g. for SPECTRUM Units of Information "field collection method", "acquisition method".</documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:conceptComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="eventMaterialsTech" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: Indicates the substances or materials used within the event (e.g. the creation of an object / work), as well as any implements, production or manufacturing techniques, processes, or methods incorporated.</documentation>
+					<documentation>How to record: Will be used most often within a production event, but also others such as excavation, restoration, etc. </documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:materialsTechSetComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="thingPresent" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: References another object that was present at this same event.</documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:objectSetComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="relatedEventSet" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: References an event which is linked in some way to this event, e.g. a field trip within which this object was collected. </documentation>
+				</annotation>
+				<complexType>
+					<complexContent>
+						<extension base="lido:relatedEventSetComplexType">
+							<attribute ref="lido:sortorder"/>
+						</extension>
+					</complexContent>
+				</complexType>
+			</element>
+			<element name="eventDescriptionSet" type="lido:descriptiveNoteComplexType" minOccurs="0" maxOccurs="unbounded">
+				<annotation>
+					<documentation>Definition: Wrapper for a description of the event, including description identifer, descriptive note of the event and its sources. </documentation>
+					<documentation>How to record: If there is more than one descriptive note, repeat this element.</documentation>
+				</annotation>
+			</element>
+			</sequence>
+				</restriction>
+			</complexContent>
+		</complexType>
+	</redefine>
+	<complexType name="customTerm">
+		<simpleContent>
+			<restriction base="lido:termComplexType">
+				<enumeration value="Acquisition"/>
+				<enumeration value="Collecting"/>
+				<enumeration value="Commissioning"/>
+				<enumeration value="Creation"/>
+				<enumeration value="Designing"/>
+				<enumeration value="Destruction"/>
+				<enumeration value="Excavation"/>
+				<enumeration value="Exhibition"/>
+				<enumeration value="Finding"/>
+				<enumeration value="Loss"/>
+				<enumeration value="Modification"/>
+				<enumeration value="Move"/>
+				<enumeration value="Part addition"/>
+				<enumeration value="Part removal"/>
+				<enumeration value="Performance"/>
+				<enumeration value="Planning"/>
+				<enumeration value="Production"/>
+				<enumeration value="Provenance"/>
+				<enumeration value="Publication"/>
+				<enumeration value="Restoration"/>
+				<enumeration value="Transformation"/>
+				<enumeration value="Type assignment"/>
+				<enumeration value="Type creation"/>
+				<enumeration value="Use"/>
+				<enumeration value="(Non-specified)"/>
+			</restriction>
+		</simpleContent>
+	</complexType>
+	<complexType name="customConcept">
+		<complexContent>
+			<restriction base="lido:conceptComplexType">
+				<sequence>
+					<element name="conceptID" type="lido:identifierComplexType" minOccurs="0"/>
+					<element name="term" type="lido:customTerm" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</restriction>
+		</complexContent>
+	</complexType>
+</schema>

@@ -1,0 +1,25 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://purl.org/cld/terms/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+
+
+    <element name="dateItemsCreated" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>A range of dates over which the individual objects within the collection were created.
+</documentation>
+        </annotation>
+    </element>
+    <element name="itemFormat" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>The format (media type, physical or digital) of the objects in the original collection. This may be information about a physical thing (for physical objects) or a digital media type (for born-digital objects). This property refers to the ProvidedCHO, not a web representation.
+</documentation>
+        </annotation>
+    </element>
+    <element name="itemType" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>Type or nature of objects or resources in the collection e.g. audio recordings.</documentation>
+        </annotation>
+    </element>
+</schema>

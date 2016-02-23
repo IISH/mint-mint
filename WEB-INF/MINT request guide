@@ -1,0 +1,95 @@
+Basic MINT through HTTP user guide
+
+MINT can be used as a service by emulating the browser and sending appropriate requests the 
+the server. If a full browser emulation is not desirable, it is sufficient to send the session 
+cookie with requests. Communication with the MINT service is generally statefull.
+
+In the following documentation, BASEURL stands for the URL of the MINT webapp.
+
+If MINT is configured to accept API request from a designated host, then all requests support the
+isAPI=true parameter, that automatically treats the request as an admin request.
+Otherwise it is necessary to obtain a logged in session via
+
+1. Login
+
+ - BASEURL/Login?username=xxxx&password=xxxx
+ Response code is either 302 for successful login (redirect to home page)
+ or 200 for unsuccessful login. The returned HTMl has to be evaluated for the reason
+
+Further there are other requests possible:
+
+2. List of available resource
+ - Possible resources_type: [Dataset, User, Organization, Mapping, DataUpload, Transformation]
+ - BASEURL/UrlApi?action=list&type=resource_type&maxResults=xxx&start=xxx
+ where start and maxResults are integer arguments to support paging.
+
+3. Upload of data
+  The simplest upload method is, to provide a URL to the data that you want to upload.
+  If you upload as a user with access to many organizations, you need to supply and organizationId
+  If you upload is in a pre specified schema, you need to specify isDirect=true and the schemaId
+   
+  - BASEURL/Import?
+    mth=urlupload&
+    uploadUrl=url&
+    uploaderOrg=orgId&
+    directSchema=schemaId&
+    isDirect=true
+ 
+4. Create a new user
+   BASEURL/Managment.action?
+	seluser.login= ;pass the desired login for the user to generate
+	password= ;the desired password 
+	passwordconf= ;and again (leftover from old web design)
+	seluser.firstName=  ;optional first name of user
+	seluser.lastName = ;optional last name for user
+	seluser.email= ;email, it needs to be different from other users
+	seluser.workTelephone=  ;optional tel number
+	seluser.jobRole= ;optional job role
+	orgid= ; the id of the org this user belongs to
+	seluser.mintRole= ;the role inside the project, one of ("data viewer", "superuser", "publisher", "annotator", "admin", "" )
+                      ;this will define the rights of the user inside the organization he belongs to
+	notice= ; ("true", "false") whether the user will receive email about this
+	uaction=saveuser ; to determine the action on this URL. Mandatory!
+
+	the response will be a json string with either
+
+	result: { a user object in json format }
+	error: { fieldname: problem, ... }
+	exception: { message: "" , stack: "" }
+	
+5. Many actions that typically make only sense from within a MINT browser session, can be invoked
+    directly. This is specifically usefull to go directly into the mapping editor to edit a 
+    mapping outside of the normal MINT session. 
+    
+    BASEURL/Single& ; provides a base framework to house a single MINT panel without a normal MINT session
+    action=DoMapping& ;others are possible
+    mapid=1071& ;the id of the mapping you want to edit
+    uploadId=1340& ;the dataset to use a preview base 
+    kTitle= ;Choose a window title here
+ 
+6. To Queue a transformation
+ - BASEURL/Transform?
+   uploadId= ; the dataset do be transformed
+   selectedMapping= ;the mapping to be used for it
+   organizationId= ;the organization this is done for (has to be the same as the owner of the daatset
+ 
+7. Create a new mapping
+  - BASEURL/NewMapping?
+   uploadId= ;the upload this is initially based on
+   orgId= ;for which organization
+   selaction=createschemanew& ;
+   and post the following!
+   mapName=YourNameForTheMapping ;a name for the new mapping
+   schemaSel= ;the schema Id for the mapping target
+   __checkbox_automatic=true ;needed from the UI part, just append it
+   
+   
+By similarly simulating web-browser-requests, the whole MINT system is completely usable as a service.
+
+        
+    
+    
+
+	
+
+   

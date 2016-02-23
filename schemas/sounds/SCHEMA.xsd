@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schema.org/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="RDF.xsd"/>
+
+    <element name="foundingLocation" type="rdf:ResourceOrLiteralType">
+        <annotation>
+            <documentation>
+            	The place where the Organization was founded.
+            </documentation>
+        </annotation>
+    </element>
+
+    <element name="version" type="rdf:LiteralType">
+        <annotation>
+            <documentation>Use to indicate which version is the master version. The default value for this property should be “master”.
+            </documentation>
+        </annotation>
+    </element>
+
+</schema>

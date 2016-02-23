@@ -1,0 +1,46 @@
+# Instructions to export FashionPublisher script as a jar and excetute it.
+# This script is used to publish records to OAI database.
+# 
+# 1. Export as a jar from eclipse environment
+#
+# Right click on WEB-INF/src/java folder and select export. Choose 'as JAR'
+# from the menu. On the pop up dialog choose only folder WEB-INF/sr/java. 
+# Give name of your jar file and press 'Finish'. The jar file will be created
+# at the directory you have specified.
+#
+# 2. Update the jar file
+#
+# Probably you will have to update some files (e.g. properties) inside the jara file.
+# Usually these are hibernate.properties (mint postgrss database) and
+# custom.properties (mysql source database). Edit your properties files, place the at
+# the same directory with the jar and excecute:
+#
+# jar uf <name_of_the_jar.jar> hibernate.properties custom.properties
+#
+# 3. Set up script environment
+#
+# Probably you will have to move the script to another machine and run it.
+# To run the script you need <name_of_the_jar.jar> and all jar files 
+# included in 'WEB-INF/lib/' directory.
+# You also need  directory 'schemas/' at the same path you excecute 
+# the script. You can copy this directory from the root folder of mint2/ folder.
+#
+# 4. Running the script
+#
+# As for the first argument you need to give the path of directory 'xsl'
+# as for the second one just make a new directory and use that path. If 
+# you are running the script more than once you can use the director you 
+# have created the previous time.
+# Thrird argument is boolean value (true/false) which specifies if the =
+# script will publish data apart from validate and transform.
+# Forth parameters specifies how many records you want to publish from
+# each organization. Use value -1 to publish all of them.
+# Every other parameter is used to specify which organizations you want to 
+# exclude from this process. Use oranization_id to sepcify the org.
+#
+# 5. Example of usage
+#
+# This will publish all records from all orgs except organization with org_id 1020
+#
+# java -cp fashionPublisher.jar:lib/* gr.ntua.ivml.mint.util.FashionPublisher xsl/
+# xml/ true -1 1020
