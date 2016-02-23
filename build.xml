@@ -34,7 +34,11 @@
 	</target>
 	
 	<target name="resolve" description="--> retrieve dependencies with ivy">
-	        <ivy:retrieve pattern="${lib}/[artifact]-[type]-[revision].[ext]"/>
+		<ivy:retrieve pattern="${lib}/[artifact]-[type]-[revision].[ext]"/>
+		<!-- copy unmanaged_libs into lib-->
+		<copy todir="${lib}">
+			<fileset dir="WEB-INF/unmanaged_lib" />
+		</copy>
 	 </target>
 		
 	<target name="compile" depends="init"
@@ -160,9 +164,11 @@ build-time=${NOW}</echo>
 
 	<target name="clean"
         description="clean up" >
-		<!-- Delete the ${build} and ${dist} directory trees -->
-		<delete dir="${build}"/>
-		<delete dir="${dist}"/>
+		<delete> 
+			<fileset dir="${lib}" /> 
+			<fileset dir="${build}" /> 
+			<fileset dir="${dist}" /> 
+		</delete>
 	</target>
 
 
