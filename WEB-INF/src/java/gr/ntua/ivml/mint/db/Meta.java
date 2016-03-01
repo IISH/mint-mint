@@ -19,7 +19,6 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.ParseException;
 
-import org.openjena.atlas.logging.Log;
 
 /**
  * Class to use a key value store table.

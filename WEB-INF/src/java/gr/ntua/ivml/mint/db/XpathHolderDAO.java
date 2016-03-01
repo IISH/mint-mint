@@ -5,8 +5,6 @@ import gr.ntua.ivml.mint.persistent.XpathHolder;
 
 import java.util.List;
 
-import org.compass.core.xml.XmlObject;
-
 public class XpathHolderDAO extends DAO<XpathHolder, Long> {
 
 	

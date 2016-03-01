@@ -1,11 +1,46 @@
 <ivy-module version="2.0">
     <info organisation="gr.ntua.ivml" module="mint25"/>
     <dependencies>
+    	<!-- Objects go to db via hibernate --> 
     	<dependency org="org.hibernate" name="hibernate-core" rev="4.3.11.Final"/>
+    	
+    	<!-- All our full text index needs --> 
 		<dependency org="org.apache.solr" name="solr-solrj" rev="5.4.1"/>
 		<dependency org="org.apache.solr" name="solr-core" rev="5.4.1"/>
+		
+		<!-- faster json operations -->
 		<dependency org="net.minidev" name="json-smart" rev="2.2.1"/>
 		<dependency org="org.apache.struts" name="struts2-core" rev="2.3.24.1"/>
 		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.24.1"/>
+		
+		<!-- Pooling of db connections -->
+		<dependency org="com.mchange" name="c3p0" rev="0.9.5.2"/>
+		
+		<!-- We use RabbitMQ with thrift messages for basic publication -->
+		<dependency org="org.apache.thrift" name="libthrift" rev="0.9.3"/>
+		<dependency org="com.rabbitmq" name="amqp-client" rev="3.6.0"/>
+		
+		<!-- Using compress to create tar archives -->
+		<dependency org="org.apache.commons" name="commons-compress" rev="1.10"/>
+		
+		<!-- XOM library for updateable DOMs of XML (among other things) -->
+		<dependency org="xom" name="xom" rev="1.2.5"/>
+		
+		<!-- XML schema parsing-->
+		<dependency org="com.sun.xsom" name="xsom" rev="20140925"/>
+		
+		<!-- 5 minutes ago, few moments ago, come from here -->
+		<dependency org="org.ocpsoft.prettytime" name="prettytime" rev="4.0.1.Final"/>
+		
+		<!-- Handling the ftp server  -->
+		<dependency org="commons-net" name="commons-net" rev="3.4"/>
+		
+		<!-- Groovy support -->
+		<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.6"/>
+		
+		<!-- Testing Jackson as JSON library -->
+		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.7.1"/>
+		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.7.1-1"/>
+		
     </dependencies>
 </ivy-module>

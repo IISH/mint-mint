@@ -1,14 +1,5 @@
 package gr.ntua.ivml.mint.concurrent;
 
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Dataset;
-import gr.ntua.ivml.mint.persistent.Item;
-import gr.ntua.ivml.mint.persistent.XmlSchema;
-import gr.ntua.ivml.mint.util.ApplyI;
-import gr.ntua.ivml.mint.util.StringUtils;
-import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
-import gr.ntua.ivml.mint.xsd.SchemaValidator;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,7 +15,16 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.ocpsoft.pretty.time.PrettyTime;
+import org.ocpsoft.prettytime.PrettyTime;
+
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.Item;
+import gr.ntua.ivml.mint.persistent.XmlSchema;
+import gr.ntua.ivml.mint.util.ApplyI;
+import gr.ntua.ivml.mint.util.StringUtils;
+import gr.ntua.ivml.mint.xsd.ReportErrorHandler;
+import gr.ntua.ivml.mint.xsd.SchemaValidator;
 
 
 public class Validator implements Runnable {

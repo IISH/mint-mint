@@ -1,22 +1,20 @@
 package gr.ntua.ivml.mint.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+
 import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.persistent.DataUpload;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.json.util.JSONUtils;
-
-import org.apache.log4j.Logger;
-import org.hibernate.Query;
 
 public class DataUploadDAO extends DAO<DataUpload, Long> {
 	public static final Logger log = Logger.getLogger(DataUploadDAO.class);
@@ -76,7 +74,7 @@ public class DataUploadDAO extends DAO<DataUpload, Long> {
 		ArrayList<String> likeParams = new ArrayList<String>();
 		int i =0;
 		for( String folder: folders ) {
-			String jsonFolder = "%" + JSONUtils.valueToString(folder) + "%";
+			String jsonFolder = "%" + StringEscapeUtils.escapeJson(folder) + "%";
 			sb.append( " and jsonFolders like :param" + i );
 			likeParams.add( jsonFolder);
 			i++;

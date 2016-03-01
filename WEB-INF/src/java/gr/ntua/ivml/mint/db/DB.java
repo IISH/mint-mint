@@ -1,21 +1,5 @@
 package gr.ntua.ivml.mint.db;
 
-import gr.ntua.ivml.mint.persistent.BlobWrap;
-import gr.ntua.ivml.mint.persistent.Crosswalk;
-import gr.ntua.ivml.mint.persistent.Dataset;
-import gr.ntua.ivml.mint.persistent.DatasetLog;
-import gr.ntua.ivml.mint.persistent.Item;
-import gr.ntua.ivml.mint.persistent.Lock;
-import gr.ntua.ivml.mint.persistent.Mapping;
-import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.persistent.PublicationRecord;
-import gr.ntua.ivml.mint.persistent.User;
-import gr.ntua.ivml.mint.persistent.ValueEdit;
-import gr.ntua.ivml.mint.persistent.XMLNode;
-import gr.ntua.ivml.mint.persistent.XmlSchema;
-import gr.ntua.ivml.mint.persistent.XpathStatsValues;
-import gr.ntua.ivml.mint.util.Config;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOError;
@@ -35,9 +19,27 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.internal.SessionImpl;
 import org.hibernate.jdbc.Work;
+
+import gr.ntua.ivml.mint.persistent.BlobWrap;
+import gr.ntua.ivml.mint.persistent.Crosswalk;
+import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.persistent.DatasetLog;
+import gr.ntua.ivml.mint.persistent.Item;
+import gr.ntua.ivml.mint.persistent.Lock;
+import gr.ntua.ivml.mint.persistent.Mapping;
+import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.persistent.PublicationRecord;
+import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.persistent.ValueEdit;
+import gr.ntua.ivml.mint.persistent.XMLNode;
+import gr.ntua.ivml.mint.persistent.XmlSchema;
+import gr.ntua.ivml.mint.persistent.XpathStatsValues;
+import gr.ntua.ivml.mint.util.Config;
 
 @SuppressWarnings("deprecation")
 public class DB {
@@ -62,8 +64,7 @@ public class DB {
 			Set<Class<?>> classSet = new HashSet<Class<?>>();
 			classSet.addAll( Arrays.asList( classes ));
 			
-		
-			AnnotationConfiguration ac = new AnnotationConfiguration();
+			Configuration ac = new Configuration();
 			String testDbUrl = Config.get( "hibernate.testdb");
 			if( testDbUrl != null ) {
 				ac.setProperty("hibernate.connection.url", testDbUrl );
@@ -72,7 +73,7 @@ public class DB {
 			// is there custom db stuff ?
 			try {
 				Class<?> customDB = Class.forName("gr.ntua.ivml.mint.db.CustomDB");
-				Method m = customDB.getMethod("init", AnnotationConfiguration.class, Set.class );
+				Method m = customDB.getMethod("init", Configuration.class, Set.class );
 				m.invoke(null, ac, classSet );
 			} catch( Exception e ) {
 				log.debug( "No CustomDB found" );
@@ -81,9 +82,8 @@ public class DB {
 			for( Class<?> c: classSet ) {
 				ac.addClass(c);
 			}
-
-			sf = ac.buildSessionFactory( );
-			
+			 StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(ac.getProperties());
+	         sf = ac.buildSessionFactory(ssrb.build());
 		} catch (Throwable ex) {
 			// Make sure you log the exception, as it might be swallowed
 			log.error("Initial SessionFactory creation failed." , ex);
@@ -199,7 +199,7 @@ public class DB {
 	
 	public static void logPid() {
 		Session s = getSession();
-		Connection c = s.connection();
+		Connection c = ((SessionImpl) s).connection();
 		logPid(c );
 	}
 	
@@ -342,11 +342,7 @@ public class DB {
 		};
 		s.doWork( w );
 		return sb.toString();
-	}
-	
-	public static void releaseAll() {
-		((SessionFactoryImpl) getSessionFactory()).getConnectionProvider().close();
-	}
+	}	
 }
 
 

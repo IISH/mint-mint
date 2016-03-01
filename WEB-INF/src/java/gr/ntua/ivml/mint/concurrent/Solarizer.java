@@ -1,5 +1,26 @@
 package gr.ntua.ivml.mint.concurrent;
 
+import java.io.StringReader;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.FacetField;
+import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.core.CoreContainer;
+import org.ocpsoft.prettytime.PrettyTime;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
 import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.persistent.Dataset;
@@ -13,28 +34,6 @@ import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.xml.util.SchemaExtractorHandler;
-
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.common.SolrException;
-import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.core.CoreContainer;
-import org.ocpsoft.pretty.time.PrettyTime;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 
 /**
@@ -62,7 +61,7 @@ public class Solarizer implements Runnable {
 	
 	private static final Logger log = Logger.getLogger(Solarizer.class );
 	public SolrInputDocument currentSid = null;
-	public static SolrServer solrServer = null;
+	public static SolrClient solrClient = null;
 
 	private int itemCounter = 0;
 	
@@ -287,22 +286,19 @@ public class Solarizer implements Runnable {
 		Solarizer.addDocument( currentSid );
 	}		
 
-	public static SolrServer getSolrServer() {
-		if (solrServer == null) {
+	public static SolrClient getSolrClient() {
+		if (solrClient == null) {
 			if( Config.get("solr.url") != null ) {
-				solrServer = new HttpSolrServer(Config.get("solr.url"));
+				solrClient = new HttpSolrClient(Config.get("solr.url"));
 			} else if( Config.get("solr.directory") != null ) {
 				// setup embedded access
 				// modify solr core config to point to the given data dir
 				System.setProperty("solr.data.dir", Config.get("solr.directory" ));
-				System.setProperty("solr.solr.home",
-						Config.getProjectFile("WEB-INF/solr_home").getAbsolutePath());
-				CoreContainer.Initializer initializer = new CoreContainer.Initializer();
-				CoreContainer coreContainer = initializer.initialize();
-				solrServer = new EmbeddedSolrServer(coreContainer, "mint2");
+				Path solrHome = Config.getProjectFile("WEB-INF/solr_home").toPath();
+				solrClient = new EmbeddedSolrServer(solrHome, "mint2");
 			}
 		}
-		return solrServer;
+		return solrClient;
 	}	
 	
 	/**
@@ -311,15 +307,15 @@ public class Solarizer implements Runnable {
 	 */
 	
 	public static synchronized void addDocument( SolrInputDocument sid) throws Exception {
-		getSolrServer().add( sid );
+		getSolrClient().add( sid );
 	}
 	
 	public static synchronized void commit() throws Exception {
-		getSolrServer().commit();
+		getSolrClient().commit();
 	}
 	
 	public static synchronized void delete(String query) throws Exception {
-		getSolrServer().deleteByQuery( query );
+		getSolrClient().deleteByQuery( query );
 	}
 	
 	/**
@@ -339,7 +335,7 @@ public class Solarizer implements Runnable {
 		q.setFacetMinCount(1);	//no zero counts
 		q.addFacetField(field);
 		try {
-			FacetField f = getSolrServer().query(q).getFacetField(field);
+			FacetField f = getSolrClient().query(q).getFacetField(field);
 			/* Create List with content/count pairs */
 			ArrayList<ValueStat> values = new ArrayList<XpathStatsValues.ValueStat>();
 			for (Count val : f.getValues()) {
@@ -349,14 +345,12 @@ public class Solarizer implements Runnable {
 			}
 			return values;
 
-		} catch (SolrException e) {
+		} catch (Exception e) {
 			/* In case the field dosen't exist 
 			 * return empty array */
+			log.error( "Solr error", e );
 			return new ArrayList<ValueStat>();
-		} catch (SolrServerException e) {
-			e.printStackTrace();
-			return null;	
-		}		
+		}	
 	}
 	
 	/**

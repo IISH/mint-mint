@@ -1,5 +1,13 @@
 package gr.ntua.ivml.mint.concurrent;
 
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.ocpsoft.prettytime.PrettyTime;
+
 import gr.ntua.ivml.mint.Custom;
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.db.LockManager;
@@ -10,12 +18,6 @@ import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
 import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.StringUtils;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.NodeFactory;
@@ -23,9 +25,6 @@ import nu.xom.Nodes;
 import nux.xom.io.StaxUtil;
 import nux.xom.xquery.StreamingPathFilter;
 import nux.xom.xquery.StreamingTransform;
-
-import org.apache.log4j.Logger;
-import org.ocpsoft.pretty.time.PrettyTime;
 
 public class XSLTransform implements Runnable {
 	public final Logger log = Logger.getLogger(XSLTransform.class );

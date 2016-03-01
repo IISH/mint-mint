@@ -1,17 +1,8 @@
 package gr.ntua.ivml.mint.concurrent;
 
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.XpathHolder;
-import gr.ntua.ivml.mint.persistent.XpathStatsValues;
-import gr.ntua.ivml.mint.persistent.XpathStatsValues.ValueStat;
-import gr.ntua.ivml.mint.util.Counter;
-import gr.ntua.ivml.mint.util.ExternalSort;
-import gr.ntua.ivml.mint.util.StringUtils;
-import gr.ntua.ivml.mint.util.TabbedStringComparator;
-import gr.ntua.ivml.mint.util.TabbedStringComparator.Sorter;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -26,7 +17,16 @@ import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
-import de.schlichtherle.io.FileInputStream;
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.XpathHolder;
+import gr.ntua.ivml.mint.persistent.XpathStatsValues;
+import gr.ntua.ivml.mint.persistent.XpathStatsValues.ValueStat;
+import gr.ntua.ivml.mint.util.Counter;
+import gr.ntua.ivml.mint.util.ExternalSort;
+import gr.ntua.ivml.mint.util.StringUtils;
+import gr.ntua.ivml.mint.util.TabbedStringComparator;
+import gr.ntua.ivml.mint.util.TabbedStringComparator.Sorter;
+
 
 
 public class ValueStatBuilder {

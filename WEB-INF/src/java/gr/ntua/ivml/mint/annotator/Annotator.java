@@ -1,6 +1,24 @@
 package gr.ntua.ivml.mint.annotator;
 
-import gr.ntua.ivml.mint.Custom;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+import org.xml.sax.SAXException;
+
 import gr.ntua.ivml.mint.concurrent.Queues;
 import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.db.DB;
@@ -18,40 +36,15 @@ import gr.ntua.ivml.mint.persistent.Item;
 import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.XmlSchema;
-import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Preferences;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.util.XMLUtils;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
-
-import org.apache.log4j.Logger;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrDocumentList;
-import org.ocpsoft.pretty.time.PrettyTime;
-import org.xml.sax.SAXException;
 
 public class Annotator {
 	public class AnnotationDocument {
@@ -361,7 +354,7 @@ public class Annotator {
 					result.add(itemId);
 				}
 			}
-		} catch(SolrServerException e) {
+		} catch(Exception e) {
 			log.error( "Solr query failed" ,e );
 		}
 		return result;

@@ -47,7 +47,7 @@
 		<!-- Compile the java code from ${src} into ${build} -->
 		<javac destdir="${build}" 
 			encoding = "utf-8"
-			source="1.6" debug="true" debuglevel="lines,vars,source" 
+			source="1.8" debug="true" debuglevel="lines,vars,source" 
 			includeAntRuntime="no" srcdir="${allSrc}" >
 			<classpath>
 				<pathelement path="${classpath}"/>

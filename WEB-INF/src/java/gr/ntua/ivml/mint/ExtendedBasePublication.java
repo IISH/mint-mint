@@ -1,5 +1,15 @@
 package gr.ntua.ivml.mint;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.opensymphony.xwork2.util.TextParseUtil;
+
 import gr.ntua.ivml.mint.concurrent.Queues;
 import gr.ntua.ivml.mint.concurrent.XSLTransform;
 import gr.ntua.ivml.mint.db.DB;
@@ -19,29 +29,6 @@ import gr.ntua.ivml.mint.util.ApplyI;
 import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.StringUtils;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import nu.xom.Attribute;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Nodes;
-import nu.xom.ValidityException;
-import nux.xom.pool.XOMUtil;
-import nux.xom.xquery.ResultSequence;
-import nux.xom.xquery.XQuery;
-import nux.xom.xquery.XQueryException;
-
-import com.opensymphony.xwork2.util.TextParseUtil;
-import com.sun.mail.iap.ParsingException;
 
 public class ExtendedBasePublication extends Publication {
 	

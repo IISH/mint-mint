@@ -1,27 +1,18 @@
 package gr.ntua.ivml.mint.actions;
-import gr.ntua.ivml.mint.concurrent.DownloadAnnotatedStreaming;
-import gr.ntua.ivml.mint.concurrent.Queues;
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.AnnotatedDataset;
-import gr.ntua.ivml.mint.persistent.Dataset;
-import gr.ntua.ivml.mint.persistent.Item;
-import gr.ntua.ivml.mint.util.StringUtils;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.ocpsoft.pretty.time.PrettyTime;
+
+import gr.ntua.ivml.mint.concurrent.DownloadAnnotatedStreaming;
+import gr.ntua.ivml.mint.concurrent.Queues;
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.util.StringUtils;
 
 /**
  * Action for download page.

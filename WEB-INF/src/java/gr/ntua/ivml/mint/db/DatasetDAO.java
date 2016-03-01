@@ -1,17 +1,16 @@
 package gr.ntua.ivml.mint.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
+import org.hibernate.Query;
+
 import gr.ntua.ivml.mint.concurrent.Solarizer;
 import gr.ntua.ivml.mint.persistent.Dataset;
 import gr.ntua.ivml.mint.persistent.Organization;
 import gr.ntua.ivml.mint.persistent.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.sf.json.util.JSONUtils;
-
-import org.apache.log4j.Logger;
-import org.hibernate.Query;
 
 public class DatasetDAO extends DAO<Dataset, Long> {
 	public static final Logger log = Logger.getLogger(DatasetDAO.class);
@@ -69,7 +68,7 @@ public class DatasetDAO extends DAO<Dataset, Long> {
 		ArrayList<String> likeParams = new ArrayList<String>();
 		int i =0;
 		for( String folder: folders ) {
-			String jsonFolder = "%" + JSONUtils.valueToString(folder) + "%";
+			String jsonFolder = "%" + StringEscapeUtils.escapeJson(folder) + "%";
 			sb.append( " and jsonFolders like :param" + i );
 			likeParams.add( jsonFolder);
 			i++;

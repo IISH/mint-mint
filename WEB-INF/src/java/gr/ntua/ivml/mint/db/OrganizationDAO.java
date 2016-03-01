@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.compass.core.xml.XmlObject;
 
 public class OrganizationDAO extends DAO<Organization, Long> {
 	private HashMap<Long, Long> xmlToOrgId = new HashMap<Long,Long>();

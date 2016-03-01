@@ -295,7 +295,7 @@ public class Dataset implements Lockable, SecurityEnabled {
 		// Delete this item from index
 		if(Solarizer.isEnabled()) {
 			try {
-				Solarizer.getSolrServer().deleteById(item.getDbID().toString());
+				Solarizer.getSolrClient().deleteById(item.getDbID().toString());
 			} catch (Exception e) {
 				log.error("Delete of item with id: " + item.getDbID().toString() + "failed!", e);
 				this.logEvent("Delete of item with id: " + item.getDbID().toString() + "failed!");
@@ -854,8 +854,8 @@ public class Dataset implements Lockable, SecurityEnabled {
 		// Delete this item from index
 		if(Solarizer.isEnabled()) {
 			try {
-				Solarizer.getSolrServer().deleteByQuery("dataset_id:"+getDbID().toString());
-				Solarizer.getSolrServer().commit();
+				Solarizer.getSolrClient().deleteByQuery("dataset_id:"+getDbID().toString());
+				Solarizer.getSolrClient().commit();
 			} catch (Exception e) {
 				log.error("Delete of items belong to dataset with id: " + getDbID().toString() + "failed!", e);
 				this.logEvent("Delete of items belong to dataset` with id: " + getDbID().toString() + "failed!");
