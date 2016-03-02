@@ -1,11 +1,6 @@
 package gr.ntua.ivml.mint.xsd;
 
-import gr.ntua.ivml.mint.mapping.MappingCache;
-import gr.ntua.ivml.mint.util.StringUtils;
-
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -20,9 +15,6 @@ import java.util.Set;
 
 import javax.xml.transform.TransformerException;
 
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,7 +24,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.hp.hpl.jena.rdf.model.Literal;
 import com.sun.xml.xsom.XSAttributeDecl;
 import com.sun.xml.xsom.XSAttributeUse;
 import com.sun.xml.xsom.XSComplexType;
@@ -50,6 +41,11 @@ import com.sun.xml.xsom.XSType;
 import com.sun.xml.xsom.XmlString;
 import com.sun.xml.xsom.parser.XSOMParser;
 import com.sun.xml.xsom.util.DomAnnotationParserFactory;
+
+import gr.ntua.ivml.mint.mapping.MappingCache;
+import gr.ntua.ivml.mint.util.StringUtils;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 public class XSDParser {
 	private int id = 0;

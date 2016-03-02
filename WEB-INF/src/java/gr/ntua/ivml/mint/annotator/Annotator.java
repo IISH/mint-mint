@@ -11,9 +11,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
@@ -344,7 +343,7 @@ public class Annotator {
 	
 	private List<Long> queryToList(SolrQuery sq) {
 		ArrayList<Long> result = new ArrayList<Long>();
-		SolrServer ss = Solarizer.getSolrServer();
+		SolrClient ss = Solarizer.getSolrClient();
 		try {
 			if( ss != null ) {
 				QueryResponse qr = ss.query(sq);

@@ -164,10 +164,10 @@ build-time=${NOW}</echo>
 
 	<target name="clean"
         description="clean up" >
-		<delete> 
-			<fileset dir="${lib}" /> 
-			<fileset dir="${build}" /> 
-			<fileset dir="${dist}" /> 
+		<delete  failonerror="false"> 
+			<fileset dir="${lib}" includes="*/**" erroronmissingdir="false" /> 
+			<fileset dir="${build}" includes="*/**"  erroronmissingdir="false"/> 
+			<fileset dir="${dist}" includes="*/**" erroronmissingdir="false"/> 
 		</delete>
 	</target>
 

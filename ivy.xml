@@ -1,8 +1,16 @@
-<ivy-module version="2.0">
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
     <info organisation="gr.ntua.ivml" module="mint25"/>
     <dependencies>
     	<!-- Objects go to db via hibernate --> 
     	<dependency org="org.hibernate" name="hibernate-core" rev="4.3.11.Final"/>
+    	
+    	<!-- XML processing power -->
+    	<dependency org="net.sf.saxon" name="Saxon-HE" rev="9.7.0-3">
+    		<exclude org="xom" />
+    	</dependency>
+	
+		<!-- postgres driver needs to be copied into tomcat lib dir -->
+		<dependency org="org.postgresql" name="postgresql" rev="9.4.1208.jre7"/>
     	
     	<!-- All our full text index needs --> 
 		<dependency org="org.apache.solr" name="solr-solrj" rev="5.4.1"/>
@@ -42,5 +50,21 @@
 		<dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.7.1"/>
 		<dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.7.1-1"/>
 		
+		<!-- this needs to go one day soon -->
+		<dependency org="net.sf.json-lib" name="json-lib" rev="2.4"> 
+		  <artifact name="json-lib" e:classifier="jdk15" type="jar" ext="jar"/> 
+		 </dependency>
+		 
+		<!-- semantic stuff --> 
+		<dependency org="org.apache.jena" name="jena-core" rev="3.0.1"/>
+		<dependency org="org.apache.jena" name="jena-arq" rev="3.0.1"/>
+		
+		<dependency org="net.sf.jasperreports" name="jasperreports" rev="6.2.0">
+			<exclude org="org.apache.xmlgraphics" />
+			<exclude org="com.lowagie" />
+			<exclude module="commons-javaflow"/>
+			<exclude module="mondrian"/>
+			<exclude org="org.olap4j" />
+		 </dependency>
     </dependencies>
 </ivy-module>

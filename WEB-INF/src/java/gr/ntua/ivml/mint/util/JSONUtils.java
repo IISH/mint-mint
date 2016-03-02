@@ -1,22 +1,18 @@
 package gr.ntua.ivml.mint.util;
 
-import gr.ntua.ivml.mint.mapping.JSONHandler;
-import gr.ntua.ivml.mint.mapping.model.Element;
-
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gr.ntua.ivml.mint.mapping.JSONHandler;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONStyle;
-import net.minidev.json.JSONStyler;
 import net.minidev.json.parser.JSONParser;
 
 /**
@@ -149,7 +145,7 @@ public class JSONUtils {
 	 * @return
 	 * @throws net.minidev.json.parser.ParseException 
 	 */
-	public static JSONObject parse(InputStream stream) throws net.minidev.json.parser.ParseException {
+	public static JSONObject parse(InputStream stream) throws Exception {
 		return (JSONObject) JSONUtils.getParser().parse(stream);
 	}
 	
@@ -170,7 +166,7 @@ public class JSONUtils {
 	 * @return
 	 * @throws net.minidev.json.parser.ParseException 
 	 */
-	public static JSONArray parseArray(InputStream stream) throws net.minidev.json.parser.ParseException {
+	public static JSONArray parseArray(InputStream stream) throws Exception {
 		return (JSONArray) JSONUtils.getParser().parse(stream);
 	}
 	
@@ -185,11 +181,11 @@ public class JSONUtils {
 		return (JSONArray) JSONUtils.getParser().parse(input);
 	}
 
-	private static JSONStyler defaultStyler = null;
+	private static JSONStyle defaultStyler = null;
 	public static JSONStyle getJSONStyler() {
 		if(defaultStyler == null) {
-			defaultStyler = new JSONStyler();
-			defaultStyler.setIdentLevel(2);
+			defaultStyler = new JSONStyle();
+			defaultStyler.indent();
 		}
 		return defaultStyler;
 	}

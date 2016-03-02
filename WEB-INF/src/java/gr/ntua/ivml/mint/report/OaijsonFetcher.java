@@ -1,7 +1,5 @@
 package gr.ntua.ivml.mint.report;
 
-import gr.ntua.ivml.mint.util.Config;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,11 +10,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 import org.apache.log4j.Logger;
-import org.openjena.atlas.json.JSON;
 
-import com.rabbitmq.tools.json.JSONSerializable;
-
-import net.sf.json.JSONArray;
+import gr.ntua.ivml.mint.util.Config;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;

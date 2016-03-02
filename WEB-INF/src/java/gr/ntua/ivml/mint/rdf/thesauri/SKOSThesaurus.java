@@ -1,16 +1,9 @@
 package gr.ntua.ivml.mint.rdf.thesauri;
 
-import gr.ntua.ivml.mint.rdf.Repository;
-import gr.ntua.ivml.mint.util.Config;
-
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFormatter;
+import gr.ntua.ivml.mint.rdf.Repository;
 
 public class SKOSThesaurus {
 	

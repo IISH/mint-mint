@@ -1,23 +1,29 @@
 package gr.ntua.ivml.mint.xml.transform;
 
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-
-import javax.xml.transform.stream.*;
-
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Map;
 
-
-import net.sf.saxon.FeatureKeys;
-
-
-import org.xml.sax.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.openjena.atlas.logging.Log;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+
+import net.sf.saxon.lib.FeatureKeys;
 
 public class XSLTransform implements ItemTransform {
 	private static final Logger log = Logger.getLogger(XSLTransform.class);
@@ -47,7 +53,7 @@ public class XSLTransform implements ItemTransform {
 			System.setProperty("javax.xml.parsers.SAXParserFactory", "org.apache.xerces.jaxp.SAXParserFactoryImpl");
 			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
 		    TransformerFactory tFactory = TransformerFactory.newInstance();
-		    tFactory.setAttribute( FeatureKeys.DTD_VALIDATION, false );
+		    tFactory.setAttribute(  FeatureKeys.DTD_VALIDATION, false );
 		    tFactory.setURIResolver(new XSLURIResolver());
 		    StreamSource xslSource = new StreamSource(new StringReader(xsl));
 		    try {

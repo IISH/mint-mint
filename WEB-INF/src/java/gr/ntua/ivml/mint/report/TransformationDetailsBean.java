@@ -1,15 +1,6 @@
 package gr.ntua.ivml.mint.report;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.beanutils.BeanComparator;
-
-import com.hp.hpl.jena.sparql.function.library.date;
 
 public class TransformationDetailsBean implements Comparable<TransformationDetailsBean> {
 	private String name;

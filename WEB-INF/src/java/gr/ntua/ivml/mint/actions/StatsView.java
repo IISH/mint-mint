@@ -1,19 +1,15 @@
 package gr.ntua.ivml.mint.actions;
 
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Dataset;
-import gr.ntua.ivml.mint.util.JSStatsTree;
-
-
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.compass.core.xml.XmlObject;
+
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.Dataset;
+import gr.ntua.ivml.mint.util.JSStatsTree;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Results({
 	  @Result(name="error", location="json.jsp"),

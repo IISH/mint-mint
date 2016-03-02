@@ -45,7 +45,7 @@ public class OutboundProducer {
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 			channel.queueDeclare(queueName, true, false, false, null);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -101,7 +101,7 @@ public class OutboundProducer {
 		try {
 			channel.close();
 			connection.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

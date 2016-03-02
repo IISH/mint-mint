@@ -1,19 +1,8 @@
 package gr.ntua.ivml.mint.actions;
 
-import gr.ntua.ivml.mint.concurrent.Solarizer;
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.persistent.User;
-import gr.ntua.ivml.mint.persistent.XpathHolder;
-import gr.ntua.ivml.mint.persistent.XpathStatsValues;
-import gr.ntua.ivml.mint.persistent.XpathStatsValues.ValueStat;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -24,7 +13,16 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.compass.core.xml.XmlObject;
+
+import gr.ntua.ivml.mint.concurrent.Solarizer;
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.persistent.XpathHolder;
+import gr.ntua.ivml.mint.persistent.XpathStatsValues;
+import gr.ntua.ivml.mint.persistent.XpathStatsValues.ValueStat;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Results({
 	@Result(name="error", location="json.jsp"),
@@ -166,10 +164,10 @@ public class ValueList extends GeneralAction {
 		QueryResponse resp;
 		FacetField ff;
 		try {
-			resp = Solarizer.getSolrServer().query(sq);
+			resp = Solarizer.getSolrClient().query(sq);
 			ff = resp.getFacetFields().get(0);
 			List<Count> counts = ff.getValues();
-		} catch (SolrServerException e) {
+		} catch (Exception e) {
 			log.debug("Cannot receive information from solr server!", e);
 		}
 		

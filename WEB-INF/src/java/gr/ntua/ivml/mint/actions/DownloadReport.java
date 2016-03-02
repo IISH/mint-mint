@@ -1,20 +1,11 @@
 package gr.ntua.ivml.mint.actions;
 
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Mapping;
-import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.util.Config;
-import gr.ntua.ivml.mint.util.Tuple;
-import gr.ntua.ivml.mint.report.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,12 +13,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 
-
-
-
-
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.Organization;
+import gr.ntua.ivml.mint.report.DataUploadDetailsBean;
+import gr.ntua.ivml.mint.report.DataUploadDetailsBeanFactory;
+import gr.ntua.ivml.mint.report.OaiPublicationDetailsBean;
+import gr.ntua.ivml.mint.report.OaiPublicationDetailsBeanFactory;
+import gr.ntua.ivml.mint.report.OrganizationDetailsBean;
+import gr.ntua.ivml.mint.report.OrganizationDetailsBeanFactory;
+import gr.ntua.ivml.mint.report.OrganizationProgressBeanFactory;
+import gr.ntua.ivml.mint.report.OrganizationProgressDetailsBean;
+import gr.ntua.ivml.mint.report.OrganizationStatisticsBean;
+import gr.ntua.ivml.mint.report.OrganizationStatisticsBeanFactory;
+import gr.ntua.ivml.mint.report.PublicationDetailsBean;
+import gr.ntua.ivml.mint.report.PublicationDetailsBeanFactory;
+import gr.ntua.ivml.mint.report.TransformationDetailsBean;
+import gr.ntua.ivml.mint.report.TransformationDetailsBeanFactory;
+import gr.ntua.ivml.mint.util.Config;
+import gr.ntua.ivml.mint.util.Tuple;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -39,15 +47,6 @@ import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRXhtmlExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
-
-import org.apache.log4j.Logger;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.ServletResponseAware;
-
-import com.rabbitmq.client.GetResponse;
-import com.sun.mail.iap.Response;
 
 
 

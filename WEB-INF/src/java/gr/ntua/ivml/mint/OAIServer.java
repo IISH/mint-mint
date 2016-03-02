@@ -988,15 +988,21 @@ public class OAIServer {
         super("createReport");
       }
 
-      protected createReport_args getEmptyArgsInstance() {
+      public createReport_args getEmptyArgsInstance() {
         return new createReport_args();
       }
 
-      protected createReport_result getResult(I iface, createReport_args args) throws org.apache.thrift.TException {
+      public createReport_result getResult(I iface, createReport_args args) throws org.apache.thrift.TException {
         createReport_result result = new createReport_result();
         result.success = iface.createReport(args.projectName, args.userId, args.orgId, args.datasets);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class fetchReport<I extends Iface> extends org.apache.thrift.ProcessFunction<I, fetchReport_args> {
@@ -1004,15 +1010,21 @@ public class OAIServer {
         super("fetchReport");
       }
 
-      protected fetchReport_args getEmptyArgsInstance() {
+      public fetchReport_args getEmptyArgsInstance() {
         return new fetchReport_args();
       }
 
-      protected fetchReport_result getResult(I iface, fetchReport_args args) throws org.apache.thrift.TException {
+     public fetchReport_result getResult(I iface, fetchReport_args args) throws org.apache.thrift.TException {
         fetchReport_result result = new fetchReport_result();
         result.success = iface.fetchReport(args.reportId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class closeReport<I extends Iface> extends org.apache.thrift.ProcessFunction<I, closeReport_args> {
@@ -1020,15 +1032,21 @@ public class OAIServer {
         super("closeReport");
       }
 
-      protected closeReport_args getEmptyArgsInstance() {
+      public closeReport_args getEmptyArgsInstance() {
         return new closeReport_args();
       }
 
-      protected closeReport_result getResult(I iface, closeReport_args args) throws org.apache.thrift.TException {
+      public closeReport_result getResult(I iface, closeReport_args args) throws org.apache.thrift.TException {
         closeReport_result result = new closeReport_result();
         iface.closeReport(args.reportId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class initIndex<I extends Iface> extends org.apache.thrift.ProcessFunction<I, initIndex_args> {
@@ -1036,15 +1054,21 @@ public class OAIServer {
         super("initIndex");
       }
 
-      protected initIndex_args getEmptyArgsInstance() {
+      public initIndex_args getEmptyArgsInstance() {
         return new initIndex_args();
       }
 
-      protected initIndex_result getResult(I iface, initIndex_args args) throws org.apache.thrift.TException {
+      public initIndex_result getResult(I iface, initIndex_args args) throws org.apache.thrift.TException {
         initIndex_result result = new initIndex_result();
         iface.initIndex(args.projectName);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class publishRecordByRecordId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, publishRecordByRecordId_args> {
@@ -1052,11 +1076,11 @@ public class OAIServer {
         super("publishRecordByRecordId");
       }
 
-      protected publishRecordByRecordId_args getEmptyArgsInstance() {
+      public publishRecordByRecordId_args getEmptyArgsInstance() {
         return new publishRecordByRecordId_args();
       }
 
-      protected publishRecordByRecordId_result getResult(I iface, publishRecordByRecordId_args args) throws org.apache.thrift.TException {
+      public publishRecordByRecordId_result getResult(I iface, publishRecordByRecordId_args args) throws org.apache.thrift.TException {
         publishRecordByRecordId_result result = new publishRecordByRecordId_result();
         try {
           iface.publishRecordByRecordId(args.recordId, args.projectName, args.userId, args.orgId);
@@ -1065,6 +1089,12 @@ public class OAIServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class unpublishRecordByRecordId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, unpublishRecordByRecordId_args> {
@@ -1072,11 +1102,11 @@ public class OAIServer {
         super("unpublishRecordByRecordId");
       }
 
-      protected unpublishRecordByRecordId_args getEmptyArgsInstance() {
+      public unpublishRecordByRecordId_args getEmptyArgsInstance() {
         return new unpublishRecordByRecordId_args();
       }
 
-      protected unpublishRecordByRecordId_result getResult(I iface, unpublishRecordByRecordId_args args) throws org.apache.thrift.TException {
+      public unpublishRecordByRecordId_result getResult(I iface, unpublishRecordByRecordId_args args) throws org.apache.thrift.TException {
         unpublishRecordByRecordId_result result = new unpublishRecordByRecordId_result();
         try {
           iface.unpublishRecordByRecordId(args.recordId, args.projectName, args.userId, args.orgId);
@@ -1085,6 +1115,12 @@ public class OAIServer {
         }
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class unpublishRecordsByOrgId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, unpublishRecordsByOrgId_args> {
@@ -1092,15 +1128,21 @@ public class OAIServer {
         super("unpublishRecordsByOrgId");
       }
 
-      protected unpublishRecordsByOrgId_args getEmptyArgsInstance() {
+      public unpublishRecordsByOrgId_args getEmptyArgsInstance() {
         return new unpublishRecordsByOrgId_args();
       }
 
-      protected unpublishRecordsByOrgId_result getResult(I iface, unpublishRecordsByOrgId_args args) throws org.apache.thrift.TException {
+      public unpublishRecordsByOrgId_result getResult(I iface, unpublishRecordsByOrgId_args args) throws org.apache.thrift.TException {
         unpublishRecordsByOrgId_result result = new unpublishRecordsByOrgId_result();
         iface.unpublishRecordsByOrgId(args.orgId, args.userId, args.projectName);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class unpublishRecordsByDatasetId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, unpublishRecordsByDatasetId_args> {
@@ -1108,15 +1150,21 @@ public class OAIServer {
         super("unpublishRecordsByDatasetId");
       }
 
-      protected unpublishRecordsByDatasetId_args getEmptyArgsInstance() {
+      public unpublishRecordsByDatasetId_args getEmptyArgsInstance() {
         return new unpublishRecordsByDatasetId_args();
       }
 
-      protected unpublishRecordsByDatasetId_result getResult(I iface, unpublishRecordsByDatasetId_args args) throws org.apache.thrift.TException {
+      public unpublishRecordsByDatasetId_result getResult(I iface, unpublishRecordsByDatasetId_args args) throws org.apache.thrift.TException {
         unpublishRecordsByDatasetId_result result = new unpublishRecordsByDatasetId_result();
         iface.unpublishRecordsByDatasetId(args.orgId, args.userId, args.projectName, args.datasetId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getReportsByOrgId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getReportsByOrgId_args> {
@@ -1124,15 +1172,21 @@ public class OAIServer {
         super("getReportsByOrgId");
       }
 
-      protected getReportsByOrgId_args getEmptyArgsInstance() {
+      public getReportsByOrgId_args getEmptyArgsInstance() {
         return new getReportsByOrgId_args();
       }
 
-      protected getReportsByOrgId_result getResult(I iface, getReportsByOrgId_args args) throws org.apache.thrift.TException {
+      public getReportsByOrgId_result getResult(I iface, getReportsByOrgId_args args) throws org.apache.thrift.TException {
         getReportsByOrgId_result result = new getReportsByOrgId_result();
         result.success = iface.getReportsByOrgId(args.orgId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getReportsByUserId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getReportsByUserId_args> {
@@ -1140,15 +1194,21 @@ public class OAIServer {
         super("getReportsByUserId");
       }
 
-      protected getReportsByUserId_args getEmptyArgsInstance() {
+      public getReportsByUserId_args getEmptyArgsInstance() {
         return new getReportsByUserId_args();
       }
 
-      protected getReportsByUserId_result getResult(I iface, getReportsByUserId_args args) throws org.apache.thrift.TException {
+      public getReportsByUserId_result getResult(I iface, getReportsByUserId_args args) throws org.apache.thrift.TException {
         getReportsByUserId_result result = new getReportsByUserId_result();
         result.success = iface.getReportsByUserId(args.userId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getReportsByDatasetId<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getReportsByDatasetId_args> {
@@ -1156,15 +1216,21 @@ public class OAIServer {
         super("getReportsByDatasetId");
       }
 
-      protected getReportsByDatasetId_args getEmptyArgsInstance() {
+      public getReportsByDatasetId_args getEmptyArgsInstance() {
         return new getReportsByDatasetId_args();
       }
 
-      protected getReportsByDatasetId_result getResult(I iface, getReportsByDatasetId_args args) throws org.apache.thrift.TException {
+      public getReportsByDatasetId_result getResult(I iface, getReportsByDatasetId_args args) throws org.apache.thrift.TException {
         getReportsByDatasetId_result result = new getReportsByDatasetId_result();
         result.success = iface.getReportsByDatasetId(args.datasetId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class isRecordPublished<I extends Iface> extends org.apache.thrift.ProcessFunction<I, isRecordPublished_args> {
@@ -1172,16 +1238,22 @@ public class OAIServer {
         super("isRecordPublished");
       }
 
-      protected isRecordPublished_args getEmptyArgsInstance() {
+      public isRecordPublished_args getEmptyArgsInstance() {
         return new isRecordPublished_args();
       }
 
-      protected isRecordPublished_result getResult(I iface, isRecordPublished_args args) throws org.apache.thrift.TException {
+      public isRecordPublished_result getResult(I iface, isRecordPublished_args args) throws org.apache.thrift.TException {
         isRecordPublished_result result = new isRecordPublished_result();
         result.success = iface.isRecordPublished(args.recordId, args.projectName);
         result.setSuccessIsSet(true);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class isDatasetPublished<I extends Iface> extends org.apache.thrift.ProcessFunction<I, isDatasetPublished_args> {
@@ -1189,16 +1261,22 @@ public class OAIServer {
         super("isDatasetPublished");
       }
 
-      protected isDatasetPublished_args getEmptyArgsInstance() {
+      public isDatasetPublished_args getEmptyArgsInstance() {
         return new isDatasetPublished_args();
       }
 
-      protected isDatasetPublished_result getResult(I iface, isDatasetPublished_args args) throws org.apache.thrift.TException {
+      public isDatasetPublished_result getResult(I iface, isDatasetPublished_args args) throws org.apache.thrift.TException {
         isDatasetPublished_result result = new isDatasetPublished_result();
         result.success = iface.isDatasetPublished(args.datasetId, args.projectName);
         result.setSuccessIsSet(true);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
     private static class getProgress<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getProgress_args> {
@@ -1206,15 +1284,21 @@ public class OAIServer {
         super("getProgress");
       }
 
-      protected getProgress_args getEmptyArgsInstance() {
+      public getProgress_args getEmptyArgsInstance() {
         return new getProgress_args();
       }
 
-      protected getProgress_result getResult(I iface, getProgress_args args) throws org.apache.thrift.TException {
+      public getProgress_result getResult(I iface, getProgress_args args) throws org.apache.thrift.TException {
         getProgress_result result = new getProgress_result();
         result.success = iface.getProgress(args.reportId);
         return result;
       }
+
+	@Override
+	protected boolean isOneway() {
+		// TODO Auto-generated method stub
+		return false;
+	}
     }
 
   }

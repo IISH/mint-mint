@@ -79,7 +79,7 @@ public class ItemSearch extends GeneralAction{
 			sq.setQuery(query);
 			addRightsFilter( sq );
 			// sq.setFields("*_s");
-			QueryResponse qr = Solarizer.getSolrServer().query(sq);
+			QueryResponse qr = Solarizer.getSolrClient().query(sq);
 			searchResponse( qr );
 		} catch (Exception e ) {
 			return error("Problem executing query." );

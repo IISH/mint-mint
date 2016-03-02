@@ -50,7 +50,7 @@ public class InboundConsumer implements Runnable{
 		    channel.basicQos(1);
 		    consumer = new QueueingConsumer(channel);
 		    channel.basicConsume(queueName, false, consumer);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -69,7 +69,7 @@ public class InboundConsumer implements Runnable{
 		try {
 			this.channel.close();
 			this.connection.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

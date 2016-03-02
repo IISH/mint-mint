@@ -23,11 +23,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.ocpsoft.prettytime.PrettyTime;
+import org.w3c.dom.Node;
+
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
-
-import org.ocpsoft.pretty.time.PrettyTime;
-import org.w3c.dom.Node;
 
 /**
  * Class with tools to construct Strings.

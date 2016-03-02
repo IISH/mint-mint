@@ -1,16 +1,10 @@
 package gr.ntua.ivml.mint.harvesting;
 
 
-import gr.ntua.ivml.mint.harvesting.xml.schema.HeaderType;
-import gr.ntua.ivml.mint.harvesting.xml.schema.ListIdentifiersType;
-import gr.ntua.ivml.mint.harvesting.xml.schema.ListMetadataFormatsType;
-import gr.ntua.ivml.mint.harvesting.xml.schema.OAIPMHtype;
-import gr.ntua.ivml.mint.harvesting.xml.schema.ObjectFactory;
-import gr.ntua.ivml.mint.persistent.ReportI;
-import gr.ntua.ivml.mint.util.Config;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,7 +28,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -44,9 +37,12 @@ import ORG.oclc.oai.harvester2.verb.GetRecord;
 import ORG.oclc.oai.harvester2.verb.ListIdentifiers;
 import ORG.oclc.oai.harvester2.verb.ListMetadataFormats;
 import ORG.oclc.oai.harvester2.verb.ListRecords;
-import de.schlichtherle.io.DefaultArchiveDetector;
-import de.schlichtherle.io.File;
-import de.schlichtherle.io.FileOutputStream;
+import gr.ntua.ivml.mint.harvesting.xml.schema.HeaderType;
+import gr.ntua.ivml.mint.harvesting.xml.schema.ListIdentifiersType;
+import gr.ntua.ivml.mint.harvesting.xml.schema.ListMetadataFormatsType;
+import gr.ntua.ivml.mint.harvesting.xml.schema.OAIPMHtype;
+import gr.ntua.ivml.mint.harvesting.xml.schema.ObjectFactory;
+import gr.ntua.ivml.mint.persistent.ReportI;
 
 public class SingleHarvester /*implements ServletContextAware*/ {
 	
@@ -93,7 +89,6 @@ public class SingleHarvester /*implements ServletContextAware*/ {
 		int counter = 0;
 		long lastReport = System.currentTimeMillis();
 		records = new ListRecords(this.baseURL, this.startDate, this.endDate, this.set, this.ns);
-		File file = new File(this.fileName, new DefaultArchiveDetector( "zip" ));
 
 		while(records != null){
 			NodeList errors = records.getErrors();
@@ -181,7 +176,6 @@ public class SingleHarvester /*implements ServletContextAware*/ {
 				records = new ListRecords(baseURL, resumptionToken);
 			}
 		}
-		File.umount();
 
 	}
 

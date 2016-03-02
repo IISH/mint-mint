@@ -1,5 +1,23 @@
 package gr.ntua.ivml.mint.actions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.Logger;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.util.ServletContextAware;
+
+import com.opensymphony.xwork2.Preparable;
+
 import gr.ntua.ivml.mint.db.DB;
 import gr.ntua.ivml.mint.mapping.MappingConverter;
 import gr.ntua.ivml.mint.mapping.TargetConfigurationFactory;
@@ -11,28 +29,8 @@ import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.JSONUtils;
 import gr.ntua.ivml.mint.util.StringUtils;
 import gr.ntua.ivml.mint.xsd.SchemaValidator;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-
 import net.minidev.json.JSONObject;
-import net.minidev.json.JSONStyler;
 import net.minidev.json.parser.ParseException;
-
-import org.apache.log4j.Logger;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.util.ServletContextAware;
-
-import com.opensymphony.xwork2.Preparable;
 
 
 @Results({
