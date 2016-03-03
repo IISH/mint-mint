@@ -34,7 +34,7 @@
 	</target>
 	
 	<target name="resolve" description="--> retrieve dependencies with ivy">
-		<ivy:retrieve pattern="${lib}/[artifact]-[type]-[revision].[ext]"/>
+		<ivy:retrieve pattern="${lib}/[artifact]-[type]-[revision].[ext]" type="jar,bundle,javadoc" />
 		<!-- copy unmanaged_libs into lib-->
 		<copy todir="${lib}">
 			<fileset dir="WEB-INF/unmanaged_lib" />
