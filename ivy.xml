@@ -1,9 +1,11 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
     <info organisation="gr.ntua.ivml" module="mint25"/>
+   
     <dependencies>
     	<!-- Objects go to db via hibernate --> 
     	<dependency org="org.hibernate" name="hibernate-core" rev="4.3.11.Final"/>
-    	
+    	<dependency org="org.hibernate" name="hibernate-c3p0" rev="4.3.11.Final"/>
+
     	<!-- XML processing power -->
     	<dependency org="net.sf.saxon" name="Saxon-HE" rev="9.7.0-3">
     		<exclude org="xom" />
@@ -18,11 +20,9 @@
 		
 		<!-- faster json operations -->
 		<dependency org="net.minidev" name="json-smart" rev="2.2.1"/>
-		<dependency org="org.apache.struts" name="struts2-core" rev="2.3.24.1"/>
-		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.24.1"/>
+		<dependency org="org.apache.struts" name="struts2-core"  rev="2.5-BETA3"/>
+		<dependency org="org.apache.struts" name="struts2-convention-plugin"  rev="2.5-BETA3"/>
 		
-		<!-- Pooling of db connections -->
-		<dependency org="com.mchange" name="c3p0" rev="0.9.5.2"/>
 		
 		<!-- We use RabbitMQ with thrift messages for basic publication -->
 		<dependency org="org.apache.thrift" name="libthrift" rev="0.9.3"/>
