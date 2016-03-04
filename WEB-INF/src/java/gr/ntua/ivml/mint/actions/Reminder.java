@@ -1,14 +1,6 @@
 package gr.ntua.ivml.mint.actions;
 
-import gr.ntua.ivml.mint.db.DB;
-import gr.ntua.ivml.mint.persistent.Organization;
-import gr.ntua.ivml.mint.persistent.User;
-import gr.ntua.ivml.mint.util.Config;
-import gr.ntua.ivml.mint.util.MailSender;
-
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +11,11 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
-import org.apache.struts2.interceptor.SessionAware;
+
+import gr.ntua.ivml.mint.db.DB;
+import gr.ntua.ivml.mint.persistent.User;
+import gr.ntua.ivml.mint.util.Config;
+import gr.ntua.ivml.mint.util.MailSender;
 
 @Results( {
 		@Result(name = "input", location = "reminder.jsp"),
