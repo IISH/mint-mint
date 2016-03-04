@@ -1,10 +1,13 @@
 -- just drop the table might not remove the BLOBs
 -- delete from carare.data_upload;
 
-drop schema if exists mint2 cascade;
-create schema mint2;
+create or replace function execute(TEXT) returns void as $$
+begin execute $1; end;
+$$ language plpgsql strict; 
 
-SET search_path TO mint2,public;
+select execute( 'drop schema if exists ' || current_user || ' cascade' );
+select execute( 'create schema ' || current_user );
+
 -- generally foreign key constraints are going to be managed in the
 -- application. So the ON DELETE case in the constraint should actually
 -- never have to be executed...
@@ -33,7 +36,7 @@ create table users (
 
 -- Super user has 31 lower bits set. I didnt want to touch the sign bit, scared of complications --
 insert into users( users_id, first_name, last_name, email, login, md5_password, active_account, rights , account_created ) values
- ( 1000, 'CARARE', 'Admin', 'stabenau@image.ntua.gr', 'admin', md5( 'admin' || 'm1st1k0' ), true, ~(1<<31), '20012-01-01' );
+ ( 1000, 'MINT2S', 'Admin', 'stabenau@image.ntua.gr', 'admin', md5( 'admin' || 's3cr37' ), true, ~(1<<31), '20016-03-01' );
 
 create sequence seq_organization_id start with 1001;
 create table organization (
@@ -83,19 +86,6 @@ create table mapping (
 	finished boolean not null,
 	json text,
 	xsl text
-);
-
-create sequence seq_activity_id start with 1000;
-create table activity(
-	activity_id int primary key,
-	created timestamp,
-	
-	-- java serialized activity object
-	-- is recreated, when cleanup is needed
-	serial bytea,
-	
-	class_name text,
-	description text
 );
 
 
@@ -180,6 +170,8 @@ create table publication_record (
 	status text,
 	published_item_count int
 );
+create index idx_publication_record_published_id on publication_record( published_dataset_id );
+
 
 create sequence seq_dataset_log_id start with 1000; 
 create table dataset_log (
@@ -405,6 +397,7 @@ create table item (
 
 create index idx_item_dataset_id on item( dataset_id, item_id);
 create index idx_item_source_item on item( source_item_id );
+create index idx_item_persistent_id on item( persistent_id );
 
 -- no foreign ref on xpath_summary
 -- xpath_summaries are not disappearing by themselves, only wiht datasets and there is already a cascade in place
@@ -420,17 +413,4 @@ create table xpath_stats_values (
 );
 create index idx_xpath_stats_values_summary on xpath_stats_values( xpath_summary_id, start );
 create index idx_xpath_stats_values_dataset on xpath_stats_values( dataset_id );
-
-create sequence seq_value_edit_id start with 1000;
-create table value_edit (
-	value_edit_id bigint primary key not null,
-	dataset_id int references dataset,
-	xpath_holder_id int,
-	match_string text,
-	replace_string text,
-	created timestamp
-);
-
-
-
 
