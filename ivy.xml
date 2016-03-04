@@ -2,6 +2,7 @@
     <info organisation="gr.ntua.ivml" module="mint25"/>
    
     <dependencies>
+    
     	<!-- Objects go to db via hibernate --> 
     	<dependency org="org.hibernate" name="hibernate-core" rev="4.3.11.Final"/>
     	<dependency org="org.hibernate" name="hibernate-c3p0" rev="4.3.11.Final"/>
@@ -20,8 +21,15 @@
 		
 		<!-- faster json operations -->
 		<dependency org="net.minidev" name="json-smart" rev="2.2.1"/>
-		<dependency org="org.apache.struts" name="struts2-core"  rev="2.5-BETA3"/>
-		<dependency org="org.apache.struts" name="struts2-convention-plugin"  rev="2.5-BETA3"/>
+		<dependency org="org.apache.struts" name="struts2-core"  rev="2.3.24.1">
+		    	<exclude org="asm" />
+		</dependency>
+		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.24.1">
+			<exclude org="asm" />
+		</dependency>
+		<dependency org="org.apache.struts" name="struts2-java8-support-plugin" rev="2.3.24.1"/>
+		
+		
 		
 		
 		<!-- We use RabbitMQ with thrift messages for basic publication -->
