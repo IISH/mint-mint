@@ -1,7 +1,7 @@
 <%@ include file="_include.jsp"%>
 <%@ page language="java" errorPage="error.jsp"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="gr.ntua.ivml.mint.persistent.Organization;"%>
+<%@page import="gr.ntua.ivml.mint.persistent.Organization"%>
 
 <%  String uaction=(String)request.getAttribute("uaction");
    if(uaction==null){uaction="";}
