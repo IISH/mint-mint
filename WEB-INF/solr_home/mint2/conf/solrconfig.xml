@@ -324,7 +324,7 @@
          have some sort of hard autoCommit to limit the log size.
       -->
     <autoCommit>
-      <maxTime>15000</maxTime>
+      <maxDocs>2000</maxDocs>
       <openSearcher>false</openSearcher>
     </autoCommit>
 
@@ -1365,14 +1365,14 @@
       </arr>
     </processor>
 
-
+	<!--  
     <processor class="solr.StatelessScriptUpdateProcessorFactory">
       <str name="script">update-script.js</str>
-      <!--<lst name="params">-->
-        <!--<str name="config_param">example config parameter</str>-->
-      <!--</lst>-->
+       <lst name="params">
+        <str name="config_param">example config parameter</str>
+      </lst>
     </processor>
-
+	-->
     <processor class="solr.RunUpdateProcessorFactory"/>
   </updateRequestProcessorChain>
 
