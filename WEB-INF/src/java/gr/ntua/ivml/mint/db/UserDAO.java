@@ -25,11 +25,9 @@ public class UserDAO extends DAO<User, Long> {
 			}
 		});
 		Session s = getSession();
-		Transaction t = s.beginTransaction();
 		u = (User) s.createCriteria(User.class)
 		.add( e )
 		.uniqueResult();
-		t.commit();
 		return u;
 	}
 	
