@@ -228,8 +228,12 @@ public class Solarizer implements Runnable {
 		String path = smoothXpathForSolr(node.getXpathWithPrefix());
 		if(( node.getNodeType() == XMLNode.TEXT) || 
 				( node.getNodeType() == XMLNode.ATTRIBUTE )) {
-			currentSid.addField( path+"_tg",node.getContent());
-			currentSid.addField( path+"_s",node.getContent());
+			String content = node.getContent();
+			currentSid.addField( path+"_tg",content);
+			// exact field without tokenize only for fields lower than 10k
+			// this is arbitrary, could be much shorter
+			if( content.length() < 10000 )
+				currentSid.addField( path+"_s",content);
 		}
 	}
 	
