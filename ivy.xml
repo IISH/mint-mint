@@ -23,6 +23,7 @@
 		<dependency org="net.minidev" name="json-smart" rev="2.2.1"/>
 		<dependency org="org.apache.struts" name="struts2-core"  rev="2.3.24.1">
 		    	<exclude org="asm" />
+		    	<exclude org="javassist" />
 		</dependency>
 		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.24.1">
 			<exclude org="asm" />
