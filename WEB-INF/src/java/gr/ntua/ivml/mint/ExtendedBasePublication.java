@@ -41,7 +41,6 @@ import nux.xom.xquery.XQuery;
 import nux.xom.xquery.XQueryException;
 
 import com.opensymphony.xwork2.util.TextParseUtil;
-import com.sun.mail.iap.ParsingException;
 
 public class ExtendedBasePublication extends Publication {
 	
