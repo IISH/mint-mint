@@ -41,6 +41,7 @@ import nux.xom.xquery.XQuery;
 import nux.xom.xquery.XQueryException;
 
 import com.opensymphony.xwork2.util.TextParseUtil;
+import com.sun.mail.iap.ParsingException;
 
 public class ExtendedBasePublication extends Publication {
 	
@@ -468,8 +469,8 @@ public class ExtendedBasePublication extends Publication {
 			 exchange  = Config.get("exchange");
 		}
 		try {
-			
-	//		log.debug("exchange is "+ exchange);
+			log.debug("queue host is:" + Config.get("queue.host"));
+			log.debug("exchange is "+ exchange);
 			final RecordMessageProducer rmp = new RecordMessageProducer(Config.get("queue.host"), exchange );
 			// this should be the derived Dataset with the right schema
 			final Namespace ns = new Namespace();
@@ -486,9 +487,9 @@ public class ExtendedBasePublication extends Publication {
 				throw new Exception( "No routing key");
 			}
 			
-			log.debug("routung key is  "+routingKeysConfig);
+			log.debug("routing key is  "+routingKeysConfig);
 			final Set<String> routingKeys =  TextParseUtil.commaDelimitedStringToSet(routingKeysConfig);
-
+			log.debug(routingKeys);
 			XpathHolder xmlRoot = theds.getRootHolder().getChildren().get(0);
 			
 			//ns.setPrefix( xmlRoot.getUriPrefix());
@@ -505,7 +506,8 @@ public class ExtendedBasePublication extends Publication {
 			
 			String projectName = "";
 			for( String s: routingKeys ) {
-				if( s.contains("oai")) projectName= s;
+				//if( s.contains("oai")) 
+				projectName= s;
 			}
 			
 			ArrayList<Integer> datasetIds = new ArrayList<Integer>();
@@ -543,11 +545,9 @@ public class ExtendedBasePublication extends Publication {
 						im.setXml(item.getXml());
 						im.setParams(params);
 						
-						for( String routingKey: routingKeys ){ 
+						for( String routingKey: routingKeys )
 							rmp.send(im, routingKey );
-					//		log.debug(routingKey);
-					//		log.debug(im.toString());
-						}
+						
 						itemCounter.inc();
 				}
 			};
@@ -556,7 +556,6 @@ public class ExtendedBasePublication extends Publication {
 			long lastChange = System.currentTimeMillis();
 			int lastTotal=0;
 			while( true ) {
-			
 				int currentTotal = osc.getProgress(reportId).getTotalRecords();
 				if(    currentTotal == check * itemCounter.get() ) {//==
 					log.info( "All items processed.");
@@ -613,7 +612,8 @@ public class ExtendedBasePublication extends Publication {
 		Set<String> routingKeys =  TextParseUtil.commaDelimitedStringToSet(routingKeysConfig);
 		String projectName = "";
 		for( String s: routingKeys ) {
-			if( s.contains("oai")) projectName= s;
+			//if( s.contains("oai"))
+				projectName= s;
 		}
 
 		osc.unpublishRecordsByDatasetId((int)ds.getOrganization().getDbID(), 
