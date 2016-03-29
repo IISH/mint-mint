@@ -1,4 +1,4 @@
-<img style="padding: 10px; width: 200px" src="custom/ialhi/images/logo.png"/>
+<img style="padding: 10px; width: 200px" src="custom/tutorial/images/logo.png"/>
 
 
 <hr/>
