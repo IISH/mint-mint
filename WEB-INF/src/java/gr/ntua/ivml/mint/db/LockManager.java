@@ -192,7 +192,7 @@ public class LockManager {
 	public Lock getByDbID( Long dbID ) {
 		Lock result = null;
 		StatelessSession s = getSession();
-		Transaction tx = s.beginTransaction();
+		Transaction tx = s.getTransaction();
 		try {
 			 result = (Lock) s.createQuery("from Lock where dbID = :id")
 			 .setLong("id", dbID)
