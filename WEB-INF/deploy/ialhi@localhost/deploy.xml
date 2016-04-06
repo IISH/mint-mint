@@ -1,0 +1,34 @@
+<!-- 
+Specify in deploy target what this has to do to get the build onto this platform
+Usually athena.properties have to be copied, hibernate.properties have to be modified.
+Maybe an rsync to the target tomcat??
+ -->
+<project name="mint-deploy" >
+
+<dirname property="deploydir" file="${ant.file.mint-deploy}" />
+
+<target name="modify-specific"  >
+	<!--  modify the distribution in ${dist}/${appname}-->
+		<echo message="deploydir=${deploydir} basename=${basename}" />
+		<copy overwrite="true" todir="${dist}/${appname}/WEB-INF/classes" >
+			<fileset dir="${deploydir}" includes="*.properties" />
+		</copy>
+		<copy overwrite="true" todir="${dist}/${appname}/WEB-INF/src/java" >
+			<fileset dir="${deploydir}" includes="*.properties" />
+		</copy>
+</target>
+
+
+<target name="deploy-specific" depends="deploy-local,deploy-rsync" />
+ 
+<target name="deploy-rsync" unless="deploy_local" >
+	<echo message="rsync deploy not supported" />
+</target>
+
+<target name="deploy-local"  if="deploy_local" >
+   <sync todir="/${tomcat.home}/webapps/${appname}">
+   		<fileset dir="${dist}/${appname}" />
+   </sync>
+</target>
+
+</project>
