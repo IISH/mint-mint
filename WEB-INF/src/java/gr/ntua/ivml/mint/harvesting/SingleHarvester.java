@@ -69,7 +69,7 @@ public class SingleHarvester /*implements ServletContextAware*/ {
 		String tmpDir = System.getProperty("java.io.tmpdir") + File.separator;
 		System.out.println(tmpDir);
 		Random generator = new Random();
-		this.fileName = tmpDir + "oai" + generator.nextInt()+".zip";
+		this.fileName = tmpDir + "oai" + generator.nextInt() + ".zip";
 		try {
 			jc = JAXBContext.newInstance( "gr.ntua.ivml.mint.harvesting.xml.schema" );
 			fact = new ObjectFactory();
@@ -159,7 +159,10 @@ public class SingleHarvester /*implements ServletContextAware*/ {
 					output = new StringWriter();
 					transformer.transform(new DOMSource(payload), new StreamResult(output));
 					String str = output.toString();//writer.writeToString(payload);
-					out = new FileOutputStream(fileName+"/"+counter++ +".xml");
+					String fname = fileName+"/" + counter++ + ".xml";
+                    File outfile = new File(fname);
+                    outfile.getParentFile().mkdirs();
+                    out = new FileOutputStream(outfile);
 					bout= new BufferedOutputStream(out);
 					out1 = new OutputStreamWriter(bout, "UTF-8");
 					out1.write(str);
