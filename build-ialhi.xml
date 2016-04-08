@@ -199,6 +199,10 @@ build-time=${NOW}</echo>
 		<copy todir="${dist}/${appname}/views">
 			<fileset dir="views" />
 		</copy>
+		<echo message="Copying plugins..."/>
+		<copy todir="${dist}/${appname}/plugins">
+			<fileset dir="plugins"/>
+		</copy>
 		<echo message="Copying WEB-INF..." />
 		<copy todir="${dist}/${appname}/WEB-INF">
 			<fileset dir="WEB-INF" />

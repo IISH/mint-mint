@@ -52,7 +52,7 @@ public class XSLTransform implements ItemTransform {
 		if( tr == null ) {
 			System.setProperty("javax.xml.parsers.SAXParserFactory", "org.apache.xerces.jaxp.SAXParserFactoryImpl");
 			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-		    TransformerFactory tFactory = TransformerFactory.newInstance();
+		    TransformerFactory tFactory = PluginLoader.getTransformerFactory();
 		    tFactory.setAttribute(  FeatureKeys.DTD_VALIDATION, false );
 		    tFactory.setURIResolver(new XSLURIResolver());
 		    StreamSource xslSource = new StreamSource(new StringReader(xsl));

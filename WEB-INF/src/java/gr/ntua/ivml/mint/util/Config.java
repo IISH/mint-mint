@@ -183,7 +183,11 @@ public class Config {
 	public static File getViewsDir() {
 		return getProjectFile( Config.getWithDefault("paths.views", "views") );
 	}
-	
+
+	public static File getPluginsDir() {
+		return getProjectFile( Config.getWithDefault("paths.plugins", "plugins") );
+	}
+
 	public static String getViewsPath(String file) {
 		return new File( getSchemaDir(), file ).getAbsolutePath();
 	}
