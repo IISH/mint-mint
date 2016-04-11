@@ -34,6 +34,9 @@ final class PluginLoader {
 	private static List<Class<ExtensionFunctionDefinition>> extensionFunctions = new ArrayList<>();
 	private static List<String> xmlnsList = new ArrayList<>();
 
+	static {
+		scan();
+	}
 
 	/**
 	 * scan
@@ -139,7 +142,11 @@ final class PluginLoader {
 			String className = je.getName().substring(0, je.getName().length() - 6).replace('/', '.');
 			final Class clazz = cl.loadClass(className);
 			if (ExtensionFunctionDefinition.class.isAssignableFrom(clazz)) {
+				final Constructor<ExtensionFunctionDefinition> constructor = clazz.getConstructor();
+				final ExtensionFunctionDefinition extensionFunctionDefinition = constructor.newInstance();
+
 				extensionFunctions.add(clazz);
+				addPrefix(extensionFunctionDefinition);
 			}
 		}
 	}
@@ -160,8 +167,6 @@ final class PluginLoader {
 		final Constructor<ExtensionFunctionDefinition> constructor = clazz.getConstructor();
 		final ExtensionFunctionDefinition extensionFunctionDefinition = constructor.newInstance();
 		saxonConfig.registerExtensionFunction(extensionFunctionDefinition);
-
-		addPrefix(extensionFunctionDefinition);
 	}
 
 	private static void addPrefix(ExtensionFunctionDefinition extensionFunctionDefinition) {

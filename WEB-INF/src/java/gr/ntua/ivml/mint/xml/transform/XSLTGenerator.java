@@ -147,7 +147,10 @@ public class XSLTGenerator {
 				
 				sb.append("xmlns:" + key + "=\"" + value + "\" ");
 			}
-			
+
+			for (String prefixNamespace : PluginLoader.getPrefixNamespace()) {
+				sb.append(prefixNamespace + " ");
+			}
 		}
 		
 		String excludeNamespaces = "";
