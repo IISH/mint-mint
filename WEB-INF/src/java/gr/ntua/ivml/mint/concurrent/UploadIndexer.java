@@ -256,15 +256,10 @@ public class UploadIndexer implements Runnable, ReportI {
 		du.setLoadingStatus(DataUpload.LOADING_HARVEST);
 		this.store();
 		SingleHarvester harvester = null;
-		if( ((this.from == null) || (this.to == null)) && (this.set == null) ){
-			harvester = new SingleHarvester(du.getSourceURL(), null, null, this.ns, null);
-		}else if((this.from == null) || (this.to == null)){
-			harvester = new SingleHarvester(du.getSourceURL(), null, null, this.ns, this.set);
-		}else{
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			
-			harvester = new SingleHarvester(du.getSourceURL(), format.format(this.from), format.format(this.to), this.ns, this.set);
-		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String sd = (this.from == null) ? null : format.format(this.from);
+        String ed = (this.to == null) ? null : format.format(this.to);
+        harvester = new SingleHarvester(du.getSourceURL(), sd, ed, this.ns, this.set);
 		harvester.setReporter(this);
 		du.setOriginalFilename(du.getSourceURL());
 		this.store();
