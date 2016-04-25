@@ -136,7 +136,8 @@ public class SingleHarvester /*implements ServletContextAware*/ {
 			Document doc = records.getDocument();
 			//parser.parse(is);
 			//Document doc = builder.parse(is);
-			NodeList nodList = doc.getElementsByTagName("metadata");
+			//NodeList nodList = doc.getElementsByTagName("metadata");
+			NodeList nodList = doc.getElementsByTagNameNS("*","metadata");
 			DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
 
 			//DOMImplementationLS impl = 
