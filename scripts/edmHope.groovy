@@ -69,13 +69,20 @@ edmProvider = template.findFirst("//edm:provider");
 edmProvider.addConstantMapping("Hope");
 edmProvider.setFixed(true);
 
+//Control subject by vocabularies
+subject = cache.duplicate(template.findFirst("//edm:ProvidedCHO/dc:subject").getId());
+subject.setLabel("subject (vocabulary)");
+subjectRes = itemGenre.getAttribute("@rdf:resource");
+subjectRes.setThesaurus(MappingPrimitives.thesaurus("http://www.socialhistoryportal.org/themes#HopeThemes"));
+
 
 mappings.addBookmarkForXpath("Title", "/RDF/ProvidedCHO/title");
 mappings.addBookmarkForXpath("Description", "/RDF/ProvidedCHO/description");
 mappings.addBookmarkForXpath("Language", "/RDF/ProvidedCHO/language");
 mappings.addBookmarkForXpath("Identifier", "/RDF/ProvidedCHO/identifier");
 mappings.addBookmarkForXpath("Type", "/RDF/ProvidedCHO/type");
-mappings.addBookmarkForXpath("Subject", "/RDF/ProvidedCHO/subject");
+mappings.addBookmark("Subject", template.find("//edm:ProvidedCHO/dc:subject").get(1));
+mappings.addBookmarkForXpath("Subject (Vocabulary)", "/RDF/ProvidedCHO/subject");
 mappings.addBookmarkForXpath("Coverage", "/RDF/ProvidedCHO/coverage");
 mappings.addBookmarkForXpath("Spatial", "/RDF/ProvidedCHO/spatial");
 mappings.addBookmarkForXpath("Creator", "/RDF/ProvidedCHO/creator");
