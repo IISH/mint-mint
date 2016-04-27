@@ -72,7 +72,7 @@ edmProvider.setFixed(true);
 //Control subject by vocabularies
 subject = cache.duplicate(template.findFirst("//edm:ProvidedCHO/dc:subject").getId());
 subject.setLabel("subject (vocabulary)");
-subjectRes = itemGenre.getAttribute("@rdf:resource");
+subjectRes = subject.getAttribute("@rdf:resource");
 subjectRes.setThesaurus(MappingPrimitives.thesaurus("http://www.socialhistoryportal.org/themes#HopeThemes"));
 
 
