@@ -1,6 +1,8 @@
 package gr.ntua.ivml.mint.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
@@ -79,22 +81,34 @@ public class Config {
 		return properties.getProperty( key, defaultValue );
 	}
 	
-		public static void readProps() {
-	    try {
-	    	InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(PROPS);
-	    	if(inputStream != null) properties.load(inputStream);
-	        
-	        inputStream = Config.class.getClassLoader().getResourceAsStream(CUSTOM);
-	        if( inputStream != null ) custom.load(inputStream);
-	        
-	        inputStream = Config.class.getClassLoader().getResourceAsStream(LOCAL);
-	        if( inputStream != null ) local.load(inputStream);
-	        
-	        System.currentTimeMillis();
-	    } catch( Exception e) {
-	    	log.error( "Can't read properties", e );
-	    	throw new Error( "Configuration file " + PROPS + " not found in CLASSPATH", e);
-	    }
+	public static void readProps() {
+
+		read(properties, PROPS);
+		read(custom, CUSTOM);
+		read(local, LOCAL);
+		System.currentTimeMillis();
+
+	}
+
+	private static void read(Properties properties, String resource) {
+		final String file = System.getProperty(resource);
+		if ( file == null ) {
+			InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(resource);
+			if (inputStream != null) try {
+				properties.load(inputStream);
+			} catch (IOException e) {
+				log.error( "Can't read properties", e );
+				throw new Error( "Configuration file " + PROPS + " not found in CLASSPATH", e);
+			}
+		} else {
+			final InputStream inputStream;
+			try {
+				inputStream = new FileInputStream(file);
+				properties.load(inputStream);
+			} catch (IOException e) {
+				throw new Error( "Configuration file " + file + " not loaded.", e);
+			}
+		}
 	}
 	
 	/** Set a live property in the database
