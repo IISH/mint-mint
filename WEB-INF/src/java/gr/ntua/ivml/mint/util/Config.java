@@ -92,8 +92,9 @@ public class Config {
 
 	private static void read(Properties properties, String resource) {
 		final String file = System.getProperty(resource);
+		final InputStream inputStream;
 		if ( file == null ) {
-			InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(resource);
+			inputStream = Config.class.getClassLoader().getResourceAsStream(resource);
 			if (inputStream != null) try {
 				properties.load(inputStream);
 			} catch (IOException e) {
@@ -101,7 +102,6 @@ public class Config {
 				throw new Error( "Configuration file " + PROPS + " not found in CLASSPATH", e);
 			}
 		} else {
-			final InputStream inputStream;
 			try {
 				inputStream = new FileInputStream(file);
 				properties.load(inputStream);
