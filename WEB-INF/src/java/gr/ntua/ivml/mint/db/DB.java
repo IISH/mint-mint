@@ -65,6 +65,11 @@ public class DB {
 			classSet.addAll( Arrays.asList( classes ));
 			
 			Configuration ac = new Configuration();
+			if (Config.get("hibernate.connection.url") != null) {
+				ac.configure("hibernate.cfg.xml").getProperties().clear();
+				ac.configure("hibernate.cfg.xml").addProperties(Config.custom);
+			}
+
 			String testDbUrl = Config.get( "hibernate.testdb");
 			if( testDbUrl != null ) {
 				ac.setProperty("hibernate.connection.url", testDbUrl );
