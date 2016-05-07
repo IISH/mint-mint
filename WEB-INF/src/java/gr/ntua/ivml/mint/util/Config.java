@@ -90,6 +90,12 @@ public class Config {
 
 	}
 
+	public static Properties read(String resource){
+        final Properties properties = new Properties();
+		read(properties, resource);
+		return properties;
+	}
+
 	private static void read(Properties properties, String resource) {
 		final String file = System.getProperty(resource);
 		final InputStream inputStream;

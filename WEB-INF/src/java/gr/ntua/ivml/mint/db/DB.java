@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -65,7 +66,7 @@ public class DB {
 			classSet.addAll( Arrays.asList( classes ));
 			
 			Configuration ac = new Configuration();
-			ac.addProperties(Config.custom);
+			ac.addProperties(Config.read("custom.properties"));
 
 			String testDbUrl = Config.get( "hibernate.testdb");
 			if( testDbUrl != null ) {
