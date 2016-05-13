@@ -16,7 +16,7 @@
 <script src="js/fileuploader.js" type="text/javascript"></script>
 
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
 
 
 <link rel="stylesheet" type="text/css" href="css/jquery/jquery.layout.default.css" />
@@ -60,7 +60,7 @@
 
 
 <script src="js/slickgrid/lib/jquery-1.11.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.0.0.js"></script>
 <script type="text/javascript" src="js/mint2/mint2.js"></script>
 <script type="text/javascript" src="js/jquery/jquery.tools.min.js"></script> 
 <script type="text/javascript" src="js/jquery/jquery-ui.min.js"> </script>
@@ -119,7 +119,7 @@
 <script type="text/javascript" src="js/mint2/publish/testWith.js"></script>
 
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
 
 <% if( Config.get("with.url") != null ) {  %>
 <script src="<%=Config.get( "with.url" ) %>/assets/js/app/withToken.js"></script>
