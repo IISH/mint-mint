@@ -66,7 +66,7 @@ public class MailSender {
 		final boolean mail_smtp_auth = Config.getBoolean("mail.smtp.auth");
 		if ( mail_smtp_auth ) {
 			l_props.put("mail.smtp.auth", "true");
-			l_props.put("mail.smtp.from", p_from);
+			l_props.put("mail.smtp.from", adminmail);
 			final Transport tr = l_session.getTransport("smtp");
 			tr.connect(p_from, Config.get("mail.smtp.password", "guest"));
 			l_msg.saveChanges();
