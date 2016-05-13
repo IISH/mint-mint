@@ -62,8 +62,19 @@ public class MailSender {
       // Set the Date: header
       l_msg.setSentDate(new Date());
 
-      // Send the message
-      Transport.send(l_msg);
+		// Send the message
+		final boolean mail_smtp_auth = Config.getBoolean("mail.smtp.auth");
+		if ( mail_smtp_auth ) {
+			l_props.put("mail.smtp.auth", "true");
+			final Transport tr = l_session.getTransport("smtp");
+			tr.connect(p_from, Config.get("password"), "guest");
+			l_msg.saveChanges();
+			tr.sendMessage(l_msg, l_msg.getAllRecipients());
+			tr.close();
+		} else {
+			Transport.send(l_msg);
+		}
+
       // If here, then message is successfully sent.
       // Display Success message
       l_result = l_result + "<B>Success!</B>"+
