@@ -67,7 +67,14 @@
 		<!-- semantic stuff --> 
 		<dependency org="org.apache.jena" name="jena-core" rev="3.0.1"/>
 		<dependency org="org.apache.jena" name="jena-arq" rev="3.0.1"/>
-		
+
+		<!-- For the mail provider need mail and activation -->
+		<!-- http://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency org="javax.mail" name="mail" rev="1.4.7"/>
+		<!-- http://mvnrepository.com/artifact/javax.activation/activation -->
+		<dependency org="javax.activation" name="activation" rev="1.1-rev-1"/>
+
+
 		<dependency org="net.sf.jasperreports" name="jasperreports" rev="6.2.0">
 			<exclude org="org.apache.xmlgraphics" />
 			<exclude org="com.lowagie" />
