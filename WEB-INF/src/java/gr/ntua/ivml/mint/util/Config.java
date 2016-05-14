@@ -82,12 +82,9 @@ public class Config {
 	}
 	
 	public static void readProps() {
-
 		read(properties, PROPS);
 		read(custom, CUSTOM);
 		read(local, LOCAL);
-		System.currentTimeMillis();
-
 	}
 
 	public static Properties read(String resource){
@@ -115,6 +112,7 @@ public class Config {
 				throw new Error( "Configuration file " + file + " not loaded.", e);
 			}
 		}
+		System.getProperties().putAll(properties);
 	}
 	
 	/** Set a live property in the database
