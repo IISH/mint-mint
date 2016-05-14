@@ -68,7 +68,8 @@ public class MailSender {
 			l_props.put("mail.smtp.auth", "true");
 			l_props.put("mail.smtp.from", adminmail);
 			final Transport tr = l_session.getTransport("smtp");
-			tr.connect(p_from, Config.get("mail.smtp.password"));
+			final String password = Config.get("mail.smtp.password");
+			tr.connect(host, p_from, password);
 			l_msg.saveChanges();
 			tr.sendMessage(l_msg, l_msg.getAllRecipients());
 			tr.close();
