@@ -49,6 +49,12 @@ public class Register extends GeneralAction implements SessionAware{
        
     @Action(value="Register",interceptorRefs=@InterceptorRef("defaultStack"))
     public String execute() throws Exception {
+
+		if ( ! Config.getBoolean("register")) {
+			addActionError("Online registration disabled.");
+			return ERROR;
+		}
+
     	try{
     	if(this.getOrgsel()==0 && Config.get("isMandatoryOrg")!=null && Config.getBoolean("isMandatoryOrg")==true){
         		addActionError("Please select the organization you want to join.");
