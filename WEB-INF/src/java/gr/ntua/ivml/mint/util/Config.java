@@ -41,10 +41,12 @@ public class Config {
 	public static String getWithDefault( String key, String defaultValue ) {
 
 		final String value;
-		if(properties.containsKey(key))
-			value = properties.getProperty(key);
+		if ( System.getProperties().containsKey(key))
+			value = System.getProperty(key);
 		else if(custom.containsKey(key))
 			value = custom.getProperty(key);
+		else if(properties.containsKey(key))
+		    value = properties.getProperty(key);
 		else if(local.containsKey(key))
 			value = local.getProperty(key);
 		else if(live.containsKey(key))
@@ -88,9 +90,9 @@ public class Config {
 	}
 	
 	public static void readProps() {
+		read(properties, PROPS);
 		read(local, LOCAL);
 		read(custom, CUSTOM);
-		read(properties, PROPS);
 	}
 
 	public static Properties read(String resource){
