@@ -46,7 +46,7 @@ public class UploadSchema extends GeneralAction {
 	private String upfile;
 
 	private String httpUp;
-	public String url="successschema";
+	public String url = Config.get("proxy.host") + "/successschema";
 
 	public boolean automatic = Config.getBoolean("ui.default.automaticMappings");
 	public boolean idmappings = Config.getBoolean("ui.default.idMappings");

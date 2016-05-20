@@ -50,7 +50,7 @@ public class NewMapping extends GeneralAction {
 	private String upfile;
 
 	private String httpUp;
-	public String url="successmaptool";
+	public String url = Config.get("proxy.host") + "/successmaptool";
 
 	public boolean automatic = Config.getBoolean("ui.default.automaticMappings");
 	public boolean idmappings = Config.getBoolean("ui.default.idMappings");
@@ -410,7 +410,7 @@ public class NewMapping extends GeneralAction {
 			DB.getMappingDAO().makePersistent(mp);
 			DB.commit();
 			this.setSelectedMapping(mp.getDbID());
-			this.url = "successxsl?selectedMapping="+this.selectedMapping+"&uploadId="+this.uploadId+"&orgId="+this.orgId+"&userId="+this.user.getDbID()+"&selaction="+this.getSelaction();
+			this.url = Config.get("proxy.host") + "/successxsl?selectedMapping="+this.selectedMapping+"&uploadId="+this.uploadId+"&orgId="+this.orgId+"&userId="+this.user.getDbID()+"&selaction="+this.getSelaction();
 
 			return "successxsl";
 		} else {
