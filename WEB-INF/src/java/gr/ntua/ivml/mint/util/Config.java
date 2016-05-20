@@ -38,17 +38,20 @@ public class Config {
 	}
 
 	public static String getWithDefault( String key, String defaultValue ) {
-		
+
+		String value = defaultValue;
 		if(live.containsKey(key))
-			return live.getProperty(key);
-		if(local.containsKey(key)) 
-			return local.getProperty(key);
-		if(custom.containsKey(key)) 
-			return custom.getProperty(key);
-		if(properties.containsKey(key)) 			
-			return properties.getProperty(key);
+			value = live.getProperty(key);
+		if(local.containsKey(key))
+			value = local.getProperty(key);
+		if(custom.containsKey(key))
+			value = custom.getProperty(key);
+		if(properties.containsKey(key))
+			value = properties.getProperty(key);
+
+        log.debug("Returning Config.getWithDefault('"+key+"')=" + value);
 				
-		return defaultValue;
+		return value;
 	}
 	
 	public static boolean debugEnabled()
@@ -97,6 +100,7 @@ public class Config {
 		final String file = System.getProperty(resource);
 		final InputStream inputStream;
 		if ( file == null ) {
+			log.info("Loading " + resource + " from CLASSPATH");
 			inputStream = Config.class.getClassLoader().getResourceAsStream(resource);
 			if (inputStream != null) try {
 				properties.load(inputStream);
@@ -106,6 +110,7 @@ public class Config {
 			}
 		} else {
 			try {
+				log.info("Loading " + resource + " from " + file);
 				inputStream = new FileInputStream(file);
 				properties.load(inputStream);
 			} catch (IOException e) {
