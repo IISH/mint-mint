@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 
-import gr.ntua.ivml.mint.util.Config;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Result;
@@ -30,7 +29,7 @@ public class Single extends GeneralAction  {
 	private static final String HOME_ACTION = "Home.action";
 	protected final Logger log = Logger.getLogger(getClass());
 
-	private String homeUrl = Config.get("proxy.host") + "/Home.action";
+	private String homeUrl = "Home.action";
 	
 	@Action(value="Single")
     public String execute() throws Exception {
@@ -40,7 +39,7 @@ public class Single extends GeneralAction  {
     }
 	
 	private String composeHomeUrl() {
-		String url = Config.get("proxy.host") + "/" + HOME_ACTION;
+		String url = HOME_ACTION;
 		
 		Map<String, Object> parameters = ActionContext.getContext().getParameters();
 		log.debug(parameters);

@@ -26,7 +26,6 @@ import gr.ntua.ivml.mint.persistent.Transformation;
 import gr.ntua.ivml.mint.persistent.User;
 import gr.ntua.ivml.mint.persistent.XpathHolder;
 
-import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.xml.transform.XMLFormatter;
 import gr.ntua.ivml.mint.xml.transform.XSLTGenerator;
 
@@ -64,7 +63,7 @@ public class MappingOptions extends GeneralAction {
     private InputStream stream;
 	private String filesize;
 	private String filename;
-	public String url = Config.get("proxy.host") + "/successmaptool";
+	public String url="successmaptool";
 	private boolean lockmap=false;
 	
 	public long getOrgId() {
@@ -320,7 +319,7 @@ public class MappingOptions extends GeneralAction {
 					
 				}*/
 				if (em.getXsl() != null && em.getXsl().length() > 0) {
-					url = Config.get("proxy.host") + "/successxsl?selectedMapping="+this.selectedMapping+"&uploadId="+uploadId+"&selaction="+this.getSelaction();
+					url = "successxsl?selectedMapping="+this.selectedMapping+"&uploadId="+uploadId+"&selaction="+this.getSelaction();
 					return "mappingtool";
 				} else if (missedMaps.size() == 0) {
 					url+="?selectedMapping="+this.selectedMapping+"&uploadId="+uploadId+"&selaction="+this.getSelaction();
