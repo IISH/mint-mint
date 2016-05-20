@@ -87,9 +87,9 @@ public class Config {
 	}
 	
 	public static void readProps() {
-		read(properties, PROPS);
-		read(custom, CUSTOM);
 		read(local, LOCAL);
+		read(custom, CUSTOM);
+		read(properties, PROPS);
 	}
 
 	public static Properties read(String resource){
