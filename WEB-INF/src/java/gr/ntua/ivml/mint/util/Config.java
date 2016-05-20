@@ -39,15 +39,17 @@ public class Config {
 
 	public static String getWithDefault( String key, String defaultValue ) {
 
-		String value = defaultValue;
+		final String value;
 		if(live.containsKey(key))
 			value = live.getProperty(key);
-		if(local.containsKey(key))
+		else if(local.containsKey(key))
 			value = local.getProperty(key);
-		if(custom.containsKey(key))
+		else if(custom.containsKey(key))
 			value = custom.getProperty(key);
-		if(properties.containsKey(key))
+		else if(properties.containsKey(key))
 			value = properties.getProperty(key);
+		else
+		    value = defaultValue;
 
         log.debug("Returning Config.getWithDefault('"+key+"')=" + value);
 				
