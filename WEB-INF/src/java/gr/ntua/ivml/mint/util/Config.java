@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
@@ -40,14 +41,14 @@ public class Config {
 	public static String getWithDefault( String key, String defaultValue ) {
 
 		final String value;
-		if(live.containsKey(key))
-			value = live.getProperty(key);
-		else if(local.containsKey(key))
-			value = local.getProperty(key);
+		if(properties.containsKey(key))
+			value = properties.getProperty(key);
 		else if(custom.containsKey(key))
 			value = custom.getProperty(key);
-		else if(properties.containsKey(key))
-			value = properties.getProperty(key);
+		else if(local.containsKey(key))
+			value = local.getProperty(key);
+		else if(live.containsKey(key))
+			value = live.getProperty(key);
 		else
 		    value = defaultValue;
 
@@ -119,7 +120,13 @@ public class Config {
 				throw new Error( "Configuration file " + file + " not loaded.", e);
 			}
 		}
-		System.getProperties().putAll(properties);
+
+		final Enumeration e = properties.propertyNames(); // Add property value to system only when that was not set.
+		while (e.hasMoreElements()) {
+			final String key = (String) e.nextElement();
+			 if ( !System.getProperties().containsKey(key))
+				 System.getProperties().put(key, properties.getProperty(key));
+		}
 	}
 	
 	/** Set a live property in the database
