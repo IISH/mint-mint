@@ -35,7 +35,7 @@
 		
 		<!-- We use RabbitMQ with thrift messages for basic publication -->
 		<dependency org="org.apache.thrift" name="libthrift" rev="0.9.3"/>
-		<dependency org="com.rabbitmq" name="amqp-client" rev="3.6.0"/>
+		<dependency org="com.rabbitmq" name="amqp-client" rev="3.6.1"/>
 		
 		<!-- Using compress to create tar archives -->
 		<dependency org="org.apache.commons" name="commons-compress" rev="1.10"/>

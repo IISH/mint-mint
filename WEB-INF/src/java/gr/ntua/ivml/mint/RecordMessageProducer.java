@@ -30,8 +30,7 @@ public class RecordMessageProducer {
 		
 		//builder = new Builder();
 		factory = new ConnectionFactory();
-		factory.setHost(hostName);
-		
+		factory.setUri(hostName);
 		
 			connection = factory.newConnection();
 			channel = connection.createChannel();
