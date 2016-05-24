@@ -323,12 +323,12 @@ public class DAO<T, ID extends Serializable> {
 		  t.rollback();
 		  getSession().close();
 		  DB.removeSession();
-		  DB.setSession( DB.newSession());
-		  if( !commit )
-			  getSession().beginTransaction();
-		  commit = false;
-	  } finally {
-		  // don't know, probably nothing
+		  DB.closeSession();
+		  DB.closeStatelessSession();
+		  //DB.setSession( DB.newSession());
+		  //if( !commit )
+			//  getSession().beginTransaction();
+		  //commit = false;
 	  }
 	  return result;
     }
