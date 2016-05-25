@@ -87,11 +87,8 @@ public class ExtendedBasePublication extends Publication {
 			} catch( Exception e ) {
 				log.error( "Publish has exception.", e );
 			} finally {
-				log.info("Call to DB.closeSession()");
 				DB.closeSession();
-				log.info("Call to DB.closeStatelessSession()");
 				DB.closeStatelessSession();
-				log.info("Done close.");
 			}
 		}
 	}
