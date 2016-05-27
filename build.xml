@@ -159,6 +159,15 @@ build-time=${NOW}</echo>
 		</copy>
 		<echo message="Copying index.html..." />
 		<copy tofile="${dist}/${appname}/index.html" file="index.html"/>
+
+		<echo message="Copying robots.txt" />
+		<copy tofile="${dist}/${appname}/robots.txt" file="robots.txt"/>
+
+		<echo message="Copying manual" />
+		<copy todir="${dist}/${appname}/manual">
+			<fileset dir="docs/manual" />
+		</copy>
+
 		<copy tofile="${dist}/${appname}/build.properties" file="build.properties"/>
 	</target>
 
@@ -191,7 +200,7 @@ build-time=${NOW}</echo>
 	</target>
 	
     <target name="doc">
-       <javadoc destdir="docs/mint2" 
+       <javadoc destdir="docs/manual/mint2"
                 sourcepath="WEB-INF/src/java"
                 packagenames="gr.ntua.ivml.mint.*"
                 windowtitle="Mint2 Javadoc" 
