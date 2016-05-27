@@ -20,6 +20,13 @@ public class LdapLogin extends Login {
     @Override
     @Action(value = "Login", interceptorRefs = @InterceptorRef("defaultStack"))
     public String execute() throws Exception {
+        if (Config.get("authentication", "database").equalsIgnoreCase("ldap")) {
+            return ldapExecute();
+        }
+        return super.execute();
+    }
+
+    private String ldapExecute() throws Exception {
         if (getUsername() == null || getUsername().length() == 0) {
             addFieldError("username", "Username is required");
         }
