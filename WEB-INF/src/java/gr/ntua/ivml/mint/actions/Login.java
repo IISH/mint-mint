@@ -28,7 +28,7 @@ public class Login extends GeneralAction implements SessionAware{
     private String username;
     private Map session;
     
-  @Action(value="Login",interceptorRefs=@InterceptorRef("defaultStack")) 
+  // @Action(value="Login",interceptorRefs=@InterceptorRef("defaultStack"))
     public String execute() throws Exception {
     	
     	User user;
