@@ -200,7 +200,7 @@ build-time=${NOW}</echo>
 	</target>
 	
     <target name="doc">
-       <javadoc destdir="docs/manual/mint2"
+       <javadoc destdir="docs/mint2"
                 sourcepath="WEB-INF/src/java"
                 packagenames="gr.ntua.ivml.mint.*"
                 windowtitle="Mint2 Javadoc" 
