@@ -28,7 +28,7 @@ import java.util.jar.JarFile;
  *
  * @author Lucien van Wouw <lwo@iisg.nl>
  */
-final class PluginLoader {
+final public class PluginLoader {
 	protected final static Logger log = Logger.getLogger("gr.ntua.ivml.mint.xml.transform.PluginLoader");
 
 	private static List<Class<ExtensionFunctionDefinition>> extensionFunctions = new ArrayList<>();
