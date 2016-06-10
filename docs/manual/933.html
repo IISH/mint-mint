@@ -87,12 +87,12 @@
           href="http://mint-wordpress.image.ntua.gr/xmlrpc.php?rsd"/>
     <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="wp-includes/wlwmanifest.xml"/>
     <meta name="generator" content="WordPress 4.3.1"/>
-    <link rel='canonical' href='922.html'/>
-    <link rel='shortlink' href='922.html'/>
+    <link rel='canonical' href='933.html'/>
+    <link rel='shortlink' href='933.html'/>
 
     <style>
         #bannercontainer {
-            background: #e8e8e8 url('922.html') repeat scroll top left;
+            background: #e8e8e8 url('933.html') repeat scroll top left;
         }
 
         #footercontainer {
@@ -123,7 +123,7 @@
 
 <div id="wrapper" class="hfeed site">
 
-    <div class="visuallyhidden skip-link"><a href="922.html#primary" title="Skip to main content">Skip to main
+    <div class="visuallyhidden skip-link"><a href="933.html#primary" title="Skip to main content">Skip to main
         content</a></div>
 
     <div id="headercontainer">
@@ -142,7 +142,7 @@
                 </div>
                 <nav id="site-navigation" class="main-navigation" role="navigation">
                     <h3 class="menu-toggle assistive-text">Menu</h3>
-                    <div class="assistive-text skip-link"><a href="922.html#content" title="Skip to content">Skip to
+                    <div class="assistive-text skip-link"><a href="933.html#content" title="Skip to content">Skip to
                         content</a></div>
                     <div class="menu-main-container">
                         <ul id="menu-main" class="nav-menu">
@@ -189,7 +189,7 @@
                                 <li id="menu-item-1052"
                                     class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-922 current_page_item menu-item-1052">
                                     <a href="922.html">Transform Items</a></li>
-                                <li id="menu-item-1051"
+                                <li id="menu-item-1052"
                                     class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-922 current_page_item menu-item-1052">
                                     <a href="933.html">Assign PIDs</a></li>
                             </ul>
@@ -203,32 +203,71 @@
 
                 <article id="post-922" class="post-922 page type-page status-publish hentry">
                     <header class="entry-header">
-                        <h1 class="entry-title">Transform Items</h1>
+                        <h1 class="entry-title">Assign PIDs</h1>
                     </header>
                     <div class="entry-content">
-                        <h2><span style="color: #006666;">TRANSFORMATION</span></h2>
-                        <p>After having performed a mapping from “Dataset options” select transform. The “Transform&#8221;
-                            pane appears that allow the user to select the mapping to be used for transformation.</p>
-                        <p><a href="wp-content/uploads/2014/12/image082.png"><img
-                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2014/12/image082.png"
+                        <h2><span style="color: #006666;">Generate pid with extension function</span></h2>
+                        <p>During the mapping phase you can assign a persistent identifier to an element, based on a
+                        naming authority, a local identifier and a resolve URL.</p>
+                        <p><a href="wp-content/uploads/2016/06/assign_pids_01.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/assign_pids_01.png"
                                 alt="image082" width="1365" height="511"/></a></p>
-                        <p>&nbsp;</p>
-                        <p>After that, the transformation icon  <a href="wp-content/uploads/2014/12/image083.png"><img
-                                class="alignnone size-full wp-image-1469" src="wp-content/uploads/2014/12/image083.png"
-                                alt="image083" width="17" height="17"/></a> appears next to the dataset and the derived
-                            dataset appears under the transformation.</p>
-                        <p><a href="wp-content/uploads/2014/12/image084.png"><img
-                                class="alignnone wp-image-1470 size-full" src="wp-content/uploads/2014/12/image084.png"
+                        <p>First, we drop the element which contains the resolve url to the place, where we want to create
+                            our persistent identifier. In the example above, we mapped the value of europeana:isShownAt,
+                            (which contains a URL pointing to a webpage) to the edm:isShownAt@rdf:resource target attribute.</p>
+                        <p>To register the pid now we can click on the function
+                            <img src="wp-content/uploads/2016/06/function_icon.png"></img> icon next to the mapped field.</p>
+                        <p><a href="wp-content/uploads/2016/06/assign_pids_02.png"><img
+                                class="alignnone wp-image-1470 size-full" src="wp-content/uploads/2016/06/assign_pids_02.png"
                                 alt="image084" width="1359" height="483"/></a></p>
-                        <p>&nbsp;</p>
-                        <h4><span style="color: #f29838;"><strong>Exercise 1: Transform Items</strong></span></h4>
-                        <p>Transform the elements in your initianl dataset (Euphoto &#8211; Extended.zip) based on the
-                            mapping you have created.</p>
-                        <p>VIDEO for <strong>EDM transformation</strong></p>
-                        <p>
-                            <iframe src="http://www.youtube.com/embed/tNL4bwUU-vQ?list=PL8Fbo8nQ5DDVaLLY04IjXGenxqzi9q-wB"
-                                    width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
-                        </p>
+                        <p>To use our custom function, first we should select 'Custom function' from the Function type selector
+                            dropdown. To register PIDs, we will use the 'getQuickPidReqest' xsl function from the 'ialhi' namespace.</p>
+                        <p>This function have three parameters:</p>
+                            <ol>
+                                <li>Naming Authority</li>
+                                <li>Local Identifier</li>
+                                <li>Resolve URL</li>
+                            </ol>
+                        <p>In the example above the values for this element are the following:</p>
+                            <ol>
+                                <li>Naming Authority: <strong>12345</strong></li>
+                                <li>Local Identifier: <strong>The dc:identifier element</strong></li>
+                                <li>Resolve URL: <strong>The actual edm:isShownAt link (the current element)</strong></li>
+                            </ol>
+                        <p>With these parameters in mind, you should call the extension function like this:
+                            ialhi:getQuickPidRequest('12345', //dc:identifier, .)</p>
+                        <p>Now every time a mapping will be invoked (upon preview or tranformation) this function ensures,
+                        that a pid will be written in the element text.</p>
+                        <h2><span style="color: #006666;">PIDs in EDM</span></h2>
+                        <p>Based on convention in the final EDM PID referring to isShownAt page will be used to generate
+                            the URI for the providedCHO and aggregation element. This (at the moment) can be achieved with
+                            a chained transformation.</p>
+                        <p>First let's transform our dataset with the basic mapping, which already contains the PID function
+                        call. (In the example this is called ASKI2EDM.)</p>
+                        <p><a href="wp-content/uploads/2016/06/chain_transform01.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/chain_transform01.png"
+                                alt="image082" width="1365" height="511"></a></p>
+                        <p>When the procedure is ready select the transformation.</p>
+                        <p><a href="wp-content/uploads/2016/06/chain_transform02.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/chain_transform02.png"
+                                alt="image082" width="1365" height="511"></a></p>
+                        <p>In the selected transformation, select the option to transform. This is how you can create a chained
+                        tranformation (when an already transformed dataset resultset will be transformed based on a different mapping.)</p>
+                        <p><a href="wp-content/uploads/2016/06/chain_transform03.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/chain_transform03.png"
+                                alt="image082" width="1365" height="511"></a></p>
+                        <p>There is an xsl based mapping available (in the example it is called edm2edm_pid) which copies the isShownAt element
+                        and puts its value (concatenated with '#cho' or '#aggregation') to providedCHOs and aggregations rdf:resource attribute.
+                        Select this mapping and run the transformation.</p>
+                        <p><a href="wp-content/uploads/2016/06/chain_transform04.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/chain_transform04.png"
+                                alt="image082" width="1365" height="511"></a></p>
+                        <p>Run the process and in the resultset window you can check the modified values.</p>
+                        <p><a href="wp-content/uploads/2016/06/chain_transform05.png"><img
+                                class="alignnone wp-image-1468 size-full" src="wp-content/uploads/2016/06/chain_transform05.png"
+                                alt="image082" width="1365" height="511"></a></p>
+                        <p>After this, all you have to do is publish your dataset. Upon publish it will go through the same
+                        chained transformation procedure.</p>
                     </div><!-- /.entry-content -->
                     <footer class="entry-meta">
                     </footer><!-- /.entry-meta -->
