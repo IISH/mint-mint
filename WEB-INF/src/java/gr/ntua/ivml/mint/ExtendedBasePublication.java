@@ -19,9 +19,6 @@ import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.StringUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -31,17 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import com.opensymphony.xwork2.util.TextParseUtil;
-import gr.ntua.ivml.mint.xml.transform.PluginLoader;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 
 public class ExtendedBasePublication extends Publication {
-
-	private Templates templates;
 
 	public class Publish implements Runnable {
 		private Dataset ds;
@@ -53,40 +42,31 @@ public class ExtendedBasePublication extends Publication {
 		public Publish( Dataset ds, User publisher ) {
 			this.ds = ds;
 			this.publisher = publisher;
-
-			if ( templates == null )
-				try {
-					PluginLoader.getTransformerFactory().newInstance().newTemplates(
-							new StreamSource(ExtendedBasePublication.class.getResourceAsStream("/pid.xsl"))
-					);
-				} catch (TransformerConfigurationException e) {
-					log.error(e);
-				}
 		}
-		
+
 		public void run() {
 			try {
 				DB.getSession().beginTransaction();
 				ds = DB.getDatasetDAO().getById(ds.getDbID(), false);
 				publisher = DB.getUserDAO().getById(publisher.getDbID(), false);
-				
-				
+
+
 				String oaiSchema = Config.get( "oai.schema" );
-				 if (ds.getBySchemaName(oaiSchema)!=null)
-					 derivedItemsDataset = ds.getBySchemaName(oaiSchema);
-					
-				 String oaiExtraSchema = Config.get( "oai.extraSchema" );
-				 log.debug("extra schema is" +oaiExtraSchema);
-				 if ((oaiExtraSchema!= null) && (ds.getBySchemaName(oaiExtraSchema)!=null))
-					 ExtraItemsDataset = ds.getBySchemaName(oaiExtraSchema);//LIDO v1.0
-						
-				 //2nd extra schema 
-				 String oaiExtraSchema2 = Config.get( "oai.extraSchema2" );
-				 log.debug("extra schema is" +oaiExtraSchema2);
-				 if ((oaiExtraSchema2!= null) && (ds.getBySchemaName(oaiExtraSchema2)!=null))
-					 ExtraItemsDataset2 = ds.getBySchemaName(oaiExtraSchema2);//LIDO v1.0
-				  
-				 Dataset originalDataset = ds.getOrigin();
+				if (ds.getBySchemaName(oaiSchema)!=null)
+					derivedItemsDataset = ds.getBySchemaName(oaiSchema);
+
+				String oaiExtraSchema = Config.get( "oai.extraSchema" );
+				log.debug("extra schema is" +oaiExtraSchema);
+				if ((oaiExtraSchema!= null) && (ds.getBySchemaName(oaiExtraSchema)!=null))
+					ExtraItemsDataset = ds.getBySchemaName(oaiExtraSchema);//LIDO v1.0
+
+				//2nd extra schema
+				String oaiExtraSchema2 = Config.get( "oai.extraSchema2" );
+				log.debug("extra schema is" +oaiExtraSchema2);
+				if ((oaiExtraSchema2!= null) && (ds.getBySchemaName(oaiExtraSchema2)!=null))
+					ExtraItemsDataset2 = ds.getBySchemaName(oaiExtraSchema2);//LIDO v1.0
+
+				Dataset originalDataset = ds.getOrigin();
 
 				if  (ds.getBySchemaName(oaiSchema)!= null){
 					originalDataset.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
@@ -113,56 +93,34 @@ public class ExtendedBasePublication extends Publication {
 		}
 	}
 
-	private String chain(Item item) {
-
-		final StreamSource xmlSource = new StreamSource(new ByteArrayInputStream(item.getXml().getBytes()));
-		final ByteArrayOutputStream os = new ByteArrayOutputStream();
-		final Result result = new StreamResult(os);
-
-		try {
-			templates.newTransformer().transform(xmlSource, result);
-		} catch (TransformerException e) {
-			log.error(e);
-			return item.getXml();
-		}
-
-		try {
-			return new String( os.toByteArray() , "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			log.error(e);
-		}
-
-		return item.getXml();
-	}
-	
 	public class UnPublish implements Runnable {
 		public UnPublish() {
-			
+
 		}
-		
+
 		public void run() {
-			
+
 		}
 	}
-	
+
 	public class Prepare implements Runnable {
 		private Dataset ds;
 		private Map<String, String> params;
 		private User user;
-		
+
 		public Prepare( Dataset ds, Map<String, String> params, User user) {
 			this.ds = ds;
 			this.params = params;
 			this.user = user;
 		}
-		
+
 		public void run() {
 			try {
 				DB.getSession().beginTransaction();
-				
+
 				ds = DB.getDatasetDAO().getById(ds.getDbID(), false);
 				user = DB.getUserDAO().getById(user.getDbID(), false);
-				
+
 				for( XmlSchema target: requiredTargetSchemas()) {
 					runTransforms(ds, params, target, user);
 				}
@@ -177,8 +135,8 @@ public class ExtendedBasePublication extends Publication {
 			}
 		}
 	}
-	
-	
+
+
 	public ExtendedBasePublication(Organization org) {
 		super(org);
 	}
@@ -193,14 +151,14 @@ public class ExtendedBasePublication extends Publication {
 	 * @param ds
 	 * @throws Exception
 	 */
-	
+
 	public void prepareForPublication( Dataset ds, Map<String, String> params, User user) throws Exception {
 		if( ! isPublishable(ds) ) throw new Exception( "Is not publishable!");
 		Prepare prep = new Prepare( ds, params, user );
 		Queues.queue( prep, "db" );
 	}
-	
-	
+
+
 	@Override
 	public boolean publish(Dataset ds, User publisher)  {
 		if( ! isDirectlyPublishable(ds)) return false;
@@ -214,21 +172,21 @@ public class ExtendedBasePublication extends Publication {
 		return hasRequiredSchemas(ds);
 	}
 
-//	@Override
+	//	@Override
 //	public boolean unpublish(Dataset ds) {
 //		// no dataset is removed for this
 //		// send the unpublish info to the export target
 //		boolean result = externalUnpublish( ds );
-//		
+//
 //		// get the oai schema dataset
-//		
+//
 //		Dataset publishedDs = ds.getBySchemaName(Config.get( "oai.schema"));
 //		if( publishedDs == null ) return false;
-//		
+//
 //		PublicationRecord pr = DB.getPublicationRecordDAO().getByPublishedDataset(publishedDs);
-//		
-//		
-//		
+//
+//
+//
 //		if( pr != null  ) {
 //				DB.getPublicationRecordDAO().makeTransient(pr);
 //			DB.commit();
@@ -242,40 +200,40 @@ public class ExtendedBasePublication extends Publication {
 	public boolean unpublish(Dataset ds) {
 		// no dataset is removed for this
 		// send the unpublish info to the export target
-		
+
 		boolean result = externalUnpublish( ds );
-		
+
 		// get the oai schema dataset
-		
-		
-		
-		
+
+
+
+
 		String oaiSchema = Config.get( "oai.schema" );
 		String oaiExtraSchema = Config.get( "oai.extraSchema" );
 		String oaiExtraSchema2 = Config.get( "oai.extraSchema2" );
 
 		Dataset derivedItemsDataset = null;
-		
+
 		Dataset ExtraItemsDataset = null;
-		
+
 		Dataset ExtraItemsDataset2 = null;
-		
+
 		if (ds.getBySchemaName(oaiSchema)!=null)
-			 derivedItemsDataset = ds.getBySchemaName(oaiSchema);
-			
-		 if ((oaiExtraSchema!= null) && (ds.getBySchemaName(oaiExtraSchema)!=null))
-			 ExtraItemsDataset = ds.getBySchemaName(oaiExtraSchema);//LIDO v1.0
-		 //2nd extra schema 
-		
-		 if ((oaiExtraSchema2!= null) && (ds.getBySchemaName(oaiExtraSchema2)!=null)){ 
-			   ExtraItemsDataset2 = ds.getBySchemaName(oaiExtraSchema2);//LIDO v1.0
-		 }
-		 		
+			derivedItemsDataset = ds.getBySchemaName(oaiSchema);
+
+		if ((oaiExtraSchema!= null) && (ds.getBySchemaName(oaiExtraSchema)!=null))
+			ExtraItemsDataset = ds.getBySchemaName(oaiExtraSchema);//LIDO v1.0
+		//2nd extra schema
+
+		if ((oaiExtraSchema2!= null) && (ds.getBySchemaName(oaiExtraSchema2)!=null)){
+			ExtraItemsDataset2 = ds.getBySchemaName(oaiExtraSchema2);//LIDO v1.0
+		}
+
 
 		PublicationRecord pr = null;
 		PublicationRecord pr2 = null;
 		PublicationRecord pr3 = null;
-		
+
 		if (derivedItemsDataset != null) {
 			pr = DB.getPublicationRecordDAO()
 					.getByPublishedDataset(derivedItemsDataset);
@@ -283,22 +241,22 @@ public class ExtendedBasePublication extends Publication {
 			// boolean result = externalUnpublish( publishedDs );
 		}
 		if (ExtraItemsDataset != null) {
-				pr2 = DB.getPublicationRecordDAO().getByPublishedDataset(
-						ExtraItemsDataset);
-				DB.getPublicationRecordDAO().makeTransient(pr2);
-				// result = externalUnpublish( publishedDs2 );
+			pr2 = DB.getPublicationRecordDAO().getByPublishedDataset(
+					ExtraItemsDataset);
+			DB.getPublicationRecordDAO().makeTransient(pr2);
+			// result = externalUnpublish( publishedDs2 );
 		}
 		if (ExtraItemsDataset2 != null) {
-				pr3 = DB.getPublicationRecordDAO().getByPublishedDataset(
-						ExtraItemsDataset2);
-				DB.getPublicationRecordDAO().makeTransient(pr3);
-				// result = externalUnpublish( publishedDs3 );
+			pr3 = DB.getPublicationRecordDAO().getByPublishedDataset(
+					ExtraItemsDataset2);
+			DB.getPublicationRecordDAO().makeTransient(pr3);
+			// result = externalUnpublish( publishedDs3 );
 		}
 
-			DB.commit();
-			return result;
+		DB.commit();
+		return result;
 
-		}
+	}
 		/* else {
 			log.info( "Unpublish " + ds.getDbID() + " failed.");
 			return false;
@@ -306,7 +264,7 @@ public class ExtendedBasePublication extends Publication {
 
 
 	/**
-	 * A dataset can be published when it has derived datasets with schema names listed in config. 
+	 * A dataset can be published when it has derived datasets with schema names listed in config.
 	 * @return
 	 */
 	public List<XmlSchema> requiredTargetSchemas() {
@@ -315,33 +273,33 @@ public class ExtendedBasePublication extends Publication {
 			log.warn( "No required Schema configured");
 			return Collections.emptyList();
 		}
-		
+
 		Set<String> schemaSet = TextParseUtil.commaDelimitedStringToSet(schemaNames);
 		ArrayList<XmlSchema> result = new ArrayList<XmlSchema>();
 		for( String name:schemaSet ) {
 			XmlSchema xs = DB.getXmlSchemaDAO().getByName(name);
 			if( xs != null ) result.add( xs );
 			else {
-			 	log.error("Configured target schema  ["+name+"] not in DB");
-			 	throw new Error( "Target schema ["+name+"] not in DB" );
+				log.error("Configured target schema  ["+name+"] not in DB");
+				throw new Error( "Target schema ["+name+"] not in DB" );
 			}
 		}
 		return result;
 	}
-	
 
-	
+
+
 	/**
 	 * Compares existing transformed datasets with required schemas from config
 	 * @param ds
 	 * @return
 	 */
 	public boolean hasRequiredSchemas( Dataset ds ) {
-		for( XmlSchema schema: requiredTargetSchemas()) 
+		for( XmlSchema schema: requiredTargetSchemas())
 			if( ds.getBySchemaName(schema.getName()) == null ) return false;
 		return true;
 	}
-	
+
 	/**
 	 * Compares existing transformed datasets with required schemas from config
 	 * @param ds
@@ -350,7 +308,7 @@ public class ExtendedBasePublication extends Publication {
 	public boolean hasRequiredSchemasAndValidItems( Dataset ds ) {
 		for( XmlSchema schema: requiredTargetSchemas()) {
 			Dataset dsDerived = ds.getBySchemaName(schema.getName());
-			if( dsDerived.getValidItemCount() == 0 ) return false; 
+			if( dsDerived.getValidItemCount() == 0 ) return false;
 		}
 		return true;
 	}
@@ -366,8 +324,8 @@ public class ExtendedBasePublication extends Publication {
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * How many crosswalks to reach target schema, check until max depth
 	 * depth 1 - direct conversion possible
@@ -383,26 +341,26 @@ public class ExtendedBasePublication extends Publication {
 			if( ds.getBySchemaName(target.getName()) != null ) return 0;
 		}
 		if( max == 0 ) return -1;
-		
+
 		HashMap<Long, XmlSchema> newTargets = new HashMap<Long, XmlSchema>();
-		
+
 		for( XmlSchema target: targets ) {
 			List<Crosswalk> potentialCrosswalks = DB.getCrosswalkDAO().findByTargetName(target.getName());
 			for( Crosswalk cw: potentialCrosswalks) {
 				newTargets.put( cw.getSourceSchema().getDbID(), cw.getSourceSchema());
 			}
 		}
-		
+
 		targets = newTargets.values().toArray(new XmlSchema[0]);
 		int result = pathlenSchema( max-1, ds, targets );
 		if( result == -1 ) return -1;
 		else return result+1;
 	}
-	
-	
-	
+
+
+
 	public Dataset runTransforms( Dataset ds, Map<String, String> params, XmlSchema target, User user ) throws Exception {
-		if( ds.getBySchemaName(target.getName()) != null ) return ds.getBySchemaName(target.getName()); 
+		if( ds.getBySchemaName(target.getName()) != null ) return ds.getBySchemaName(target.getName());
 		List<Crosswalk> potentialCrosswalks = DB.getCrosswalkDAO().findByTargetName(target.getName());
 		for( Crosswalk cw: potentialCrosswalks ) {
 			String sourceName = cw.getSourceSchema().getName();
@@ -412,14 +370,14 @@ public class ExtendedBasePublication extends Publication {
 			}
 		}
 
-		// indirect 
+		// indirect
 		for( Crosswalk cw: potentialCrosswalks ) {
 			if( pathlenSchema( 1, ds, cw.getSourceSchema()) == 1 ) {
 				Dataset intermediate = runTransforms( ds, params, cw.getSourceSchema(), user);
 				return directTransformation(intermediate, params, cw, user );
 			}
 		}
-		
+
 		// should not get here
 		return null;
 	}
@@ -438,7 +396,7 @@ public class ExtendedBasePublication extends Publication {
 			tr.init(user);
 		else
 			tr.init( ds.getCreator());
-		
+
 		tr.setOrganization(ds.getOrganization());
 		tr.setName("Auto Crosswalk to " + cw.getTargetSchema().getName());
 		tr.setParentDataset(ds);
@@ -452,28 +410,28 @@ public class ExtendedBasePublication extends Publication {
 		xt.runInThread();
 		return tr;
 	}
-	
+
 	/**
 	 * Send the data away. If you want all the Transformation magic, you can just overwrite this one.
 	 * @param ds
 	 * @return
 	 */
-	
+
 	public void externalPublish( Dataset ds, User publisher,String namespace ) {
 		final Dataset originalDataset = ds.getOrigin();
-		
+
 		//final Dataset theds = ds;
 		log.debug( "External publish " + originalDataset.getName() );
 
-	//	originalDataset.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
+		//	originalDataset.logEvent("Sending to External.", "Use schema " + oaiSchema + " to publish to OAI." );
 		//final Dataset derivedItemsDataset = ds.getBySchemaName(oaiSchema);
 		final Dataset theds = ds;
 		log.debug( "External publish " + theds.getName() );
 		// get or make a publication record
-		
-	//	log.debug(theds.getName());
+
+		//	log.debug(theds.getName());
 		PublicationRecord pr;
-	//	pr = DB.getPublicationRecordDAO().getByPublishedDataset(originalDataset);
+		//	pr = DB.getPublicationRecordDAO().getByPublishedDataset(originalDataset);
 		pr = DB.getPublicationRecordDAO().getByPublishedDataset(theds);
 		if( pr == null ) {
 
@@ -489,13 +447,13 @@ public class ExtendedBasePublication extends Publication {
 			DB.commit();
 		} else {
 			pr.setStatus(Dataset.PUBLICATION_RUNNING);
-			DB.commit();			
+			DB.commit();
 		}
-		
+
 		final Counter itemCounter = new Counter();
 		String exchange = "test_exchange";
 		if ( Config.get("exchange")!=null){
-			 exchange  = Config.get("exchange");
+			exchange  = Config.get("exchange");
 		}
 		try {
 			log.debug("queue host is:" + Config.get("queue.host"));
@@ -507,43 +465,43 @@ public class ExtendedBasePublication extends Publication {
 
 			final int schemaId = theds.getSchema().getDbID().intValue();
 			pr.setPublishedDataset(theds);
-			
+
 			String routingKeysConfig = Config.get("queue.routingKey");
-			
+
 			if(StringUtils.empty(routingKeysConfig)) {
 				log.warn( "No routing Key for Publication.");
 				ds.logEvent("No routing Key for Publication." );
 				throw new Exception( "No routing key");
 			}
-			
+
 			log.debug("routing key is  "+routingKeysConfig);
 			final Set<String> routingKeys =  TextParseUtil.commaDelimitedStringToSet(routingKeysConfig);
 			log.debug(routingKeys);
 			XpathHolder xmlRoot = theds.getRootHolder().getChildren().get(0);
-			
+
 			//ns.setPrefix( xmlRoot.getUriPrefix());
-			
+
 			ns.setUri(xmlRoot.getUri());
 			//for checking publication report tests
 			int check  = 1;
-			if (ns.getPrefix().equals("rdf")){ 
+			if (ns.getPrefix().equals("rdf")){
 				check =2;
-					
+
 			}
-			
+
 			OAIServiceClient osc = new OAIServiceClient(Config.get( "OAI.server.host"), Integer.parseInt(Config.get("OAI.server.port")));
-			
+
 			String projectName = "";
 			for( String s: routingKeys ) {
-				//if( s.contains("oai")) 
+				//if( s.contains("oai"))
 				projectName= s;
 			}
-			
+
 			ArrayList<Integer> datasetIds = new ArrayList<Integer>();
 			datasetIds.add( theds.getDbID().intValue());
-			
-			final String reportId = osc.createReport(projectName, originalDataset.getCreator().getDbID().intValue(), 
-					(int) originalDataset.getOrganization().getDbID(), 
+
+			final String reportId = osc.createReport(projectName, originalDataset.getCreator().getDbID().intValue(),
+					(int) originalDataset.getOrganization().getDbID(),
 					datasetIds );
 			ds.logEvent( "OAI report id is " + reportId);
 			ExtendedParameter ep = new ExtendedParameter();
@@ -551,36 +509,36 @@ public class ExtendedBasePublication extends Publication {
 			ep.setParameterValue(reportId);
 			final ArrayList<ExtendedParameter> params = new ArrayList<ExtendedParameter>();
 			params.add( ep );
-			
+
 			itemCounter.set(0);
-			
+
 			ApplyI<Item> itemSender = new ApplyI<Item>() {
 				@Override
 				public void apply(Item item) throws Exception {
-						ItemMessage im = new ItemMessage();
-						im.setDataset_id(item.getDataset().getDbID().intValue());
-						im.setDatestamp(System.currentTimeMillis());
-						im.setItem_id(item.getDbID());
-						im.setOrg_id((int) item.getDataset().getOrganization().getDbID());
-						im.setPrefix(ns);
-						im.setProject("");
-						im.setSchema_id(schemaId);
-						im.setSourceDataset_id(originalDataset.getDbID().intValue());
-						if(item.getSourceItem() != null)
-							im.setSourceItem_id(item.getSourceItem().getDbID());
-						else
-							im.setSourceItem_id(item.getImportItem().getDbID());
-						im.setUser_id(originalDataset.getCreator().getDbID().intValue());
-						im.setXml(chain(item));
-						im.setParams(params);
-						
-						for( String routingKey: routingKeys )
-							rmp.send(im, routingKey );
-						
-						itemCounter.inc();
+					ItemMessage im = new ItemMessage();
+					im.setDataset_id(item.getDataset().getDbID().intValue());
+					im.setDatestamp(System.currentTimeMillis());
+					im.setItem_id(item.getDbID());
+					im.setOrg_id((int) item.getDataset().getOrganization().getDbID());
+					im.setPrefix(ns);
+					im.setProject("");
+					im.setSchema_id(schemaId);
+					im.setSourceDataset_id(originalDataset.getDbID().intValue());
+					if(item.getSourceItem() != null)
+						im.setSourceItem_id(item.getSourceItem().getDbID());
+					else
+						im.setSourceItem_id(item.getImportItem().getDbID());
+					im.setUser_id(originalDataset.getCreator().getDbID().intValue());
+					im.setXml(item.getXml());
+					im.setParams(params);
+
+					for( String routingKey: routingKeys )
+						rmp.send(im, routingKey );
+
+					itemCounter.inc();
 				}
 			};
-			
+
 			theds.processAllValidItems(itemSender, false);
 			long lastChange = System.currentTimeMillis();
 			int lastTotal=0;
@@ -602,7 +560,7 @@ public class ExtendedBasePublication extends Publication {
 				}
 				Thread.sleep( 30000l );
 			}
-			
+
 			pr.setReport(osc.getProgress(reportId).toString());
 			osc.closeReport(reportId);
 			osc.close();
@@ -622,17 +580,17 @@ public class ExtendedBasePublication extends Publication {
 			pr.setPublishedItemCount(itemCounter.get());
 			DB.commit();
 		}
-		
-	
-		
-		
+
+
+
+
 	}
 
 
 	public boolean externalUnpublish( Dataset ds ) {
 		log.debug( "External unpublish " + ds.getName() );
 		OAIServiceClient osc = new OAIServiceClient(Config.get( "OAI.server.host"), Integer.parseInt(Config.get("OAI.server.port")));
-		
+
 		String routingKeysConfig = Config.get("queue.routingKey");
 		if(StringUtils.empty(routingKeysConfig)) {
 			log.warn( "No routing Key for Publication.");
@@ -642,12 +600,12 @@ public class ExtendedBasePublication extends Publication {
 		String projectName = "";
 		for( String s: routingKeys ) {
 			//if( s.contains("oai"))
-				projectName= s;
+			projectName= s;
 		}
 
-		osc.unpublishRecordsByDatasetId((int)ds.getOrganization().getDbID(), 
+		osc.unpublishRecordsByDatasetId((int)ds.getOrganization().getDbID(),
 				ds.getCreator().getDbID().intValue(),
-				projectName, 
+				projectName,
 				ds.getOrigin().getDbID().intValue());
 		ds.logEvent("Removed from External.");
 		return true;
