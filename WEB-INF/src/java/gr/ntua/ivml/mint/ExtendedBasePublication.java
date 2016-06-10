@@ -19,6 +19,9 @@ import gr.ntua.ivml.mint.util.Config;
 import gr.ntua.ivml.mint.util.Counter;
 import gr.ntua.ivml.mint.util.StringUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,10 +31,18 @@ import java.util.Map;
 import java.util.Set;
 
 import com.opensymphony.xwork2.util.TextParseUtil;
+import gr.ntua.ivml.mint.xml.transform.PluginLoader;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 
 public class ExtendedBasePublication extends Publication {
-	
+
+	private Templates templates;
+
 	public class Publish implements Runnable {
 		private Dataset ds;
 		private User publisher;
@@ -42,6 +53,15 @@ public class ExtendedBasePublication extends Publication {
 		public Publish( Dataset ds, User publisher ) {
 			this.ds = ds;
 			this.publisher = publisher;
+
+			if ( templates == null )
+				try {
+					PluginLoader.getTransformerFactory().newInstance().newTemplates(
+							new StreamSource(ExtendedBasePublication.class.getResourceAsStream("/pid.xsl"))
+					);
+				} catch (TransformerConfigurationException e) {
+					log.error(e);
+				}
 		}
 		
 		public void run() {
@@ -91,6 +111,28 @@ public class ExtendedBasePublication extends Publication {
 				DB.closeStatelessSession();
 			}
 		}
+	}
+
+	private String chain(Item item) {
+
+		final StreamSource xmlSource = new StreamSource(new ByteArrayInputStream(item.getXml().getBytes()));
+		final ByteArrayOutputStream os = new ByteArrayOutputStream();
+		final Result result = new StreamResult(os);
+
+		try {
+			templates.newTransformer().transform(xmlSource, result);
+		} catch (TransformerException e) {
+			log.error(e);
+			return item.getXml();
+		}
+
+		try {
+			return new String( os.toByteArray() , "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			log.error(e);
+		}
+
+		return item.getXml();
 	}
 	
 	public class UnPublish implements Runnable {
@@ -529,7 +571,7 @@ public class ExtendedBasePublication extends Publication {
 						else
 							im.setSourceItem_id(item.getImportItem().getDbID());
 						im.setUser_id(originalDataset.getCreator().getDbID().intValue());
-						im.setXml(item.getXml());
+						im.setXml(chain(item));
 						im.setParams(params);
 						
 						for( String routingKey: routingKeys )
@@ -585,7 +627,7 @@ public class ExtendedBasePublication extends Publication {
 		
 		
 	}
-	
+
 
 	public boolean externalUnpublish( Dataset ds ) {
 		log.debug( "External unpublish " + ds.getName() );
