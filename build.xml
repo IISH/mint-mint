@@ -141,6 +141,10 @@ build-time=${NOW}</echo>
 		<copy todir="${dist}/${appname}/schemas">
 			<fileset dir="schemas" />
 		</copy>
+		<echo message="Copying plugins..." />
+		<copy todir="${dist}/${appname}/plugins">
+			<fileset dir="plugins" />
+		</copy>
 		<echo message="Copying xsl..." />
 		<copy todir="${dist}/${appname}/xsl">
 			<fileset dir="xsl" />
@@ -152,6 +156,10 @@ build-time=${NOW}</echo>
 		<echo message="Copying views..." />
 		<copy todir="${dist}/${appname}/views">
 			<fileset dir="views" />
+		</copy>
+		<echo message="Copying plugins..."/>
+		<copy todir="${dist}/${appname}/plugins">
+			<fileset dir="plugins"/>
 		</copy>
 		<echo message="Copying WEB-INF..." />
 		<copy todir="${dist}/${appname}/WEB-INF">
