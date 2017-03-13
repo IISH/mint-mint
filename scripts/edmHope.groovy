@@ -2,6 +2,7 @@
 rights = template.find("//edm:rights");
 for(Element edmRights : rights) {
 	rightsType = edmRights.getAttribute("@rdf:resource")
+	rightsType.addEnumeration("http://rightsstatements.org/vocab/InC/1.0/");
 	rightsType.addEnumeration("http://www.europeana.eu/rights/rr-f/");
 	rightsType.addEnumeration("http://www.europeana.eu/rights/rr-p/");
 	rightsType.addEnumeration("http://www.europeana.eu/rights/unknown/");
