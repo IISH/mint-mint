@@ -21,14 +21,14 @@
 		
 		<!-- faster json operations -->
 		<dependency org="net.minidev" name="json-smart" rev="2.2.1"/>
-		<dependency org="org.apache.struts" name="struts2-core"  rev="2.3.24.1">
+		<dependency org="org.apache.struts" name="struts2-core"  rev="2.3.32">
 		    	<exclude org="asm" />
 		    	<exclude org="javassist" />
 		</dependency>
-		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.24.1">
+		<dependency org="org.apache.struts" name="struts2-convention-plugin" rev="2.3.32">
 			<exclude org="asm" />
 		</dependency>
-		<dependency org="org.apache.struts" name="struts2-java8-support-plugin" rev="2.3.24.1"/>
+		<dependency org="org.apache.struts" name="struts2-java8-support-plugin" rev="2.3.32"/>
 		
 		
 		
